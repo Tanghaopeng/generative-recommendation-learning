@@ -1,0 +1,5 @@
+# Suggested runtime: Python 3.11 or 3.12. Data scripts use only the standard library.
+# This dependency range is a starting point, not a validated training lockfile.
+# For GPU use, install the correct PyTorch build for your hardware first.
+numpy>=1.26,<3
+torch>=2.2,<3

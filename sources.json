@@ -1,0 +1,40 @@
+{
+  "retrieved_on": "2026-10-07",
+  "dataset_page": "https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/",
+  "dataset_version": "Amazon Reviews 2018, Office Products official 5-core plus category metadata",
+  "files": [
+    {
+      "name": "Office_Products_5.json.gz",
+      "url": "https://mcauleylab.ucsd.edu/public_datasets/data/amazon_v2/categoryFilesSmall/Office_Products_5.json.gz",
+      "bytes": 111785349,
+      "sha256": "325277af44e0566f21a6e03022f83b030e8e6e94300a0f7a2ae58490062d8670",
+      "parsed_rows": 800357,
+      "gzip_read_to_eof_verified": true
+    },
+    {
+      "name": "meta_Office_Products.json.gz",
+      "url": "https://mcauleylab.ucsd.edu/public_datasets/data/amazon_v2/metaFiles2/meta_Office_Products.json.gz",
+      "bytes": 514243589,
+      "sha256": "6912cdf3edf0e36520cf8cfb4ec1f87542423021a48459dbb66193b1c2a1382d",
+      "parsed_rows": 315458,
+      "gzip_read_to_eof_verified": true
+    }
+  ],
+  "repositories": [
+    {
+      "name": "SASRec.pytorch",
+      "url": "https://github.com/pmixer/SASRec.pytorch",
+      "commit": "b253407b3c5d6ec3201a39767a572f44fd5ef6d0",
+      "role": "third-party PyTorch implementation used for code walkthrough",
+      "upstream_code_modified": false
+    },
+    {
+      "name": "SASRec.original",
+      "url": "https://github.com/kang205/SASRec",
+      "commit": "e3738967fddab206d6eeb4fda433e7a7034dd8b1",
+      "role": "paper authors original TensorFlow implementation for reference",
+      "upstream_code_modified": false
+    }
+  ],
+  "training_executed": false
+}

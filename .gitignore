@@ -1,0 +1,34 @@
+# Downloaded datasets, mappings and local reference checkouts
+/data/*
+!/data/README.md
+/repos/
+/docs/
+/baselines/sasrec/data/*
+!/baselines/sasrec/data/README.md
+
+# Training outputs and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+*.pth
+*.pt
+*.ckpt
+*.onnx
+*.safetensors
+*.part
+*.log
+wandb/
+outputs/
+runs/
+/baselines/sasrec/office2018_*/
+/baselines/sasrec/smoke_*/
+
+# Editor / operating system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
