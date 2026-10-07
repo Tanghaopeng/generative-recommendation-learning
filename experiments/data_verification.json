@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "users": 86713,
+  "items": 25898,
+  "interactions": 677247,
+  "verified_upstream_split": true,
+  "checks": [
+    "contiguous positive IDs",
+    "chronological histories",
+    "unique user-item pairs",
+    "user and item 5-core",
+    "upstream train/valid/test equality",
+    "input checksum and copy equality",
+    "item-metadata ID alignment"
+  ],
+  "training_executed": false
+}
