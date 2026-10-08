@@ -1,0 +1,5 @@
+# Tested CPU environment for this project's first local SASRec run.
+# Install with: uv pip install --python .venv/Scripts/python.exe -r requirements-cpu.txt
+--index-url https://download.pytorch.org/whl/cpu
+numpy==2.2.6
+torch==2.7.1+cpu

@@ -25,7 +25,7 @@
       "name": "SASRec.pytorch",
       "url": "https://github.com/pmixer/SASRec.pytorch",
       "commit": "b253407b3c5d6ec3201a39767a572f44fd5ef6d0",
-      "role": "third-party PyTorch implementation used for code walkthrough",
+      "role": "third-party PyTorch model used for walkthrough and baseline training through the project runner",
       "upstream_code_modified": false
     },
     {
@@ -36,5 +36,7 @@
       "upstream_code_modified": false
     }
   ],
-  "training_executed": false
+  "training_executed": true,
+  "training_record": "experiments/sasrec_cpu_20261007.json",
+  "continued_training_record": "experiments/sasrec_cpu_extend40_20261007.json"
 }
