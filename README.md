@@ -22,6 +22,8 @@
 **2026-10-09新增：** [Qwen全参数SFT运行说明](04_推荐生成/02_Qwen2.5-1.5B-Instruct/README.md)与[原理讲解](01_知识库/05_SFT与生成式推荐/Qwen全参数SFT流程.md)。
 复用已有MiniLM及四段SID，提供Q1主任务、Q2可选标题对齐、GPU训练和约束商品检索代码；CPU检查通过不等于完成1.5B训练，当前没有Qwen推荐指标。参考源码已固定版本下载并保留在[MiniOneRec参考目录](baselines/minionerec_reference/README.md)。
 
+**MiniLM文件已随仓库提供：** [模型权重、分词器与架构说明](02_商品编码/01_MiniLM/README.md)，固定官方版本，权重约90.87 MB；可分别离线加载，不需自行训练MiniLM。
+
 > 当前 SASRec 最佳权重为第 23 轮：测试 Recall@10=0.057650，NDCG@10=0.035554。
 > 续训在第 25 轮因连续过拟合迹象自动暂停；配置、验证走势和检查点见 [续训报告](experiments/sasrec_cpu_extend40_20261007.md)。
 > [首次 20 轮实验](experiments/sasrec_cpu_20261007.md) 保留作历史对照，包含一次优化器重置后的恢复。
@@ -67,7 +69,7 @@ HitRate@10 是命中用户数除以全部测试用户数；每人仅一个测试
 但验证 NDCG@10 均低于第 23 轮最佳值，触发连续两次过拟合预警，暂停于第 25 轮。
 这是保守的暂停信号，不能表述为验证成绩逐轮下降或已经证明过拟合。
 报告、逐轮记录与配置见 [实验总表](experiments/README.md) 和 [续训报告](experiments/sasrec_cpu_extend40_20261007.md)。
-训练代码、依赖、测试与聚合报告公开；数据、用户映射、权重及完整本机日志保留在本地忽略目录。
+训练代码、依赖、测试与聚合报告公开；数据、用户映射、训练权重及完整本机日志保留在本地忽略目录。指定的公开预训练MiniLM权重和配套分词器另在02目录提供。
 
 **已完成首轮：** [小型 TIGER 实施路线](01_知识库/04_TIGER/小型TIGER实施路线.md)：商品文本 → 冻结MiniLM向量 → RQ-VAE → 四段唯一SID → 下一物品生成。原版与EMA的[正式对照](experiments/semantic_retrievers_comparison_20261008.md)已导出。
 沿用相同数据划分、用户、目录与历史过滤；TIGER有限beam属于近似检索，不能表述为SASRec那样的全目录精确打分。

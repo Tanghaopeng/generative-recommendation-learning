@@ -45,7 +45,7 @@
 - 模型：[sentence-transformers/all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)。
 - 固定 revision：`1110a243fdf4706b3f48f1d95db1a4f5529b4d41`；模型卡标注 Apache-2.0。
 - 本项目使用 Transformers 加载预训练权重，masked mean pooling、L2归一化，离线产出384维向量。
-- 不训练此编码器，CPU版本实际截断128 token；权重留在本地，不提交到本仓库。
+- 不训练此编码器，CPU版本实际截断128 token。按用户要求，2026-10-09将这份固定版本的实际权重和tokenizer发布到[02商品编码/MiniLM](02_商品编码/01_MiniLM/README.md)，保留官方模型卡、Apache-2.0许可说明、逐文件来源与校验值；其他训练权重仍保留本地。
 
 ## Qwen SFT 的 MiniOneRec 单卡参考
 

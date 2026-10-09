@@ -8,5 +8,10 @@
   "dimension": 384,
   "frozen": true,
   "pooling": "masked_mean",
-  "l2_normalize": true
+  "l2_normalize": true,
+  "packaged_weights": "模型权重",
+  "packaged_tokenizer": "分词器",
+  "asset_manifest": "来源/manifest.json",
+  "offline_verification": "来源/离线验证.json",
+  "legacy_batch_encoder_cache": "data/models/all-MiniLM-L6-v2"
 }

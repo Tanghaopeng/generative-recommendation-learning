@@ -5,3 +5,9 @@
 /baselines/** -text
 /tests/** -text
 /sources.json text eol=lf
+
+# Preserve the exact upstream MiniLM bytes used in source checksums.
+/02_商品编码/01_MiniLM/模型权重/** -text
+/02_商品编码/01_MiniLM/分词器/** -text
+/02_商品编码/01_MiniLM/来源/上游模型卡.md -text
+/02_商品编码/01_MiniLM/来源/sentence_transformers配置/** -text

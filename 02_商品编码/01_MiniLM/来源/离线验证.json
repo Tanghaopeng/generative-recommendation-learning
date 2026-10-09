@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "date": "2026-10-09",
+  "model_id": "sentence-transformers/all-MiniLM-L6-v2",
+  "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "files_verified": 11,
+  "model_class": "BertModel",
+  "parameters": 22713216,
+  "vocabulary": 30522,
+  "layers": 6,
+  "attention_heads": 12,
+  "hidden_size": 384,
+  "intermediate_size": 1536,
+  "trainable_parameters": 0,
+  "output_shape": [
+    2,
+    384
+  ],
+  "l2_norms": [
+    1.0000001192092896,
+    0.9999998807907104
+  ],
+  "max_tokens": 128,
+  "local_files_only": true,
+  "original_cache_comparison": {
+    "token_ids_equal": true,
+    "vectors_bitwise_equal": true,
+    "max_absolute_difference": 0.0
+  },
+  "scope": "two synthetic product texts; offline inference only; no training or recommendation metrics"
+}

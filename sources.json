@@ -62,7 +62,11 @@
     "dimension": 384,
     "frozen": true,
     "local_max_tokens": 128,
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "packaged_assets": "02_商品编码/01_MiniLM",
+    "file_fingerprints": "02_商品编码/01_MiniLM/来源/manifest.json",
+    "weights_in_git": true,
+    "parameters": 22713216
   },
   "training_executed": true,
   "training_record": "experiments/sasrec_cpu_20261007.json",

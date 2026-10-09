@@ -19,6 +19,8 @@ venv/
 *.ckpt
 *.onnx
 *.safetensors
+# Explicitly requested pinned MiniLM checkpoint; other weights remain ignored.
+!/02_商品编码/01_MiniLM/模型权重/model.safetensors
 *.part
 *.log
 wandb/
