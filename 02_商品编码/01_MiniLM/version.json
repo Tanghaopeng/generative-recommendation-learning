@@ -1,0 +1,12 @@
+{
+  "id": "minilm_l6_v2_128_mean_l2",
+  "status": "completed",
+  "entry": "scripts/build_item_embeddings.py",
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "max_tokens": 128,
+  "dimension": 384,
+  "frozen": true,
+  "pooling": "masked_mean",
+  "l2_normalize": true
+}

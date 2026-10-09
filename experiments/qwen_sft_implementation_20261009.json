@@ -1,0 +1,146 @@
+{
+  "date": "2026-10-09",
+  "status": "implemented_cpu_verified_gpu_not_run",
+  "pretrained_qwen_training_executed": false,
+  "real_recommendation_metrics": null,
+  "data": {
+    "users": 86713,
+    "items": 25898,
+    "training_targets": 397345
+  },
+  "tokenizer_checks": {
+    "adam_q1": {
+      "status": "tokenizer_and_sample_checks_passed",
+      "actual_gpu_training": false,
+      "prepared_manifest_sha256": "6e0a9a179409cf2b7dc5ea8115e092310f18611a222225b9740721274e9aab58",
+      "vocabulary": {
+        "original_tokenizer_size": 151665,
+        "added_tokens": 1024,
+        "tokenizer_size": 152689,
+        "sid_token_count": 1024
+      },
+      "train_rows": 10000,
+      "main_next_item_rows": 10000,
+      "validation_users": 64,
+      "example_batch_shape": [
+        3,
+        64
+      ],
+      "supervised_tokens_per_example": [
+        5,
+        5,
+        5
+      ],
+      "code_sha256": {
+        "qwen_sft.py": "965f85b7a03ad93e8183cfa5fec897f9f38649000dd158e7cecbb7a2b50c3364",
+        "prepare_qwen_sft.py": "57c3deb4f2b86ef68d6465f07bdeb7ada01e38f6bb877b40a760adbf26709046",
+        "train_qwen_sft.py": "52a4c2fb53462703e7eedbff27979dec849d6b6805e71cc3ec956c4227c96488"
+      },
+      "model_metadata_sha256": {
+        "config.json": "98d2ff8cc47488d08a2b0b3acf4eb99ef210779b42bd48605f6b8e36acdbf670",
+        "tokenizer_config.json": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583",
+        "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+        "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+        "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+      },
+      "scope": "tokenizer/sample check only, no 1.5B forward/backward or recommendation metric"
+    },
+    "adam_q2": {
+      "status": "tokenizer_and_sample_checks_passed",
+      "actual_gpu_training": false,
+      "prepared_manifest_sha256": "6e0a9a179409cf2b7dc5ea8115e092310f18611a222225b9740721274e9aab58",
+      "vocabulary": {
+        "original_tokenizer_size": 151665,
+        "added_tokens": 1024,
+        "tokenizer_size": 152689,
+        "sid_token_count": 1024
+      },
+      "train_rows": 845996,
+      "main_next_item_rows": 397345,
+      "validation_users": 5000,
+      "example_batch_shape": [
+        3,
+        88
+      ],
+      "supervised_tokens_per_example": [
+        5,
+        33,
+        5
+      ],
+      "code_sha256": {
+        "qwen_sft.py": "965f85b7a03ad93e8183cfa5fec897f9f38649000dd158e7cecbb7a2b50c3364",
+        "prepare_qwen_sft.py": "57c3deb4f2b86ef68d6465f07bdeb7ada01e38f6bb877b40a760adbf26709046",
+        "train_qwen_sft.py": "52a4c2fb53462703e7eedbff27979dec849d6b6805e71cc3ec956c4227c96488"
+      },
+      "model_metadata_sha256": {
+        "config.json": "98d2ff8cc47488d08a2b0b3acf4eb99ef210779b42bd48605f6b8e36acdbf670",
+        "tokenizer_config.json": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583",
+        "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+        "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+        "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+      },
+      "scope": "tokenizer/sample check only, no 1.5B forward/backward or recommendation metric"
+    },
+    "ema_q1": {
+      "status": "tokenizer_and_sample_checks_passed",
+      "actual_gpu_training": false,
+      "prepared_manifest_sha256": "3640e51714dbb009fa2e4f0186bf8ac747e7396224c94c114a2e5d0829cc402e",
+      "vocabulary": {
+        "original_tokenizer_size": 151665,
+        "added_tokens": 1024,
+        "tokenizer_size": 152689,
+        "sid_token_count": 1024
+      },
+      "train_rows": 10000,
+      "main_next_item_rows": 10000,
+      "validation_users": 64,
+      "example_batch_shape": [
+        3,
+        64
+      ],
+      "supervised_tokens_per_example": [
+        5,
+        5,
+        5
+      ],
+      "code_sha256": {
+        "qwen_sft.py": "965f85b7a03ad93e8183cfa5fec897f9f38649000dd158e7cecbb7a2b50c3364",
+        "prepare_qwen_sft.py": "57c3deb4f2b86ef68d6465f07bdeb7ada01e38f6bb877b40a760adbf26709046",
+        "train_qwen_sft.py": "52a4c2fb53462703e7eedbff27979dec849d6b6805e71cc3ec956c4227c96488"
+      },
+      "model_metadata_sha256": {
+        "config.json": "98d2ff8cc47488d08a2b0b3acf4eb99ef210779b42bd48605f6b8e36acdbf670",
+        "tokenizer_config.json": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583",
+        "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+        "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+        "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+      },
+      "scope": "tokenizer/sample check only, no 1.5B forward/backward or recommendation metric"
+    }
+  },
+  "code_sha256": {
+    "qwen_sft.py": "965f85b7a03ad93e8183cfa5fec897f9f38649000dd158e7cecbb7a2b50c3364",
+    "prepare_qwen_sft.py": "57c3deb4f2b86ef68d6465f07bdeb7ada01e38f6bb877b40a760adbf26709046",
+    "train_qwen_sft.py": "52a4c2fb53462703e7eedbff27979dec849d6b6805e71cc3ec956c4227c96488",
+    "evaluate_qwen_sft.py": "eb0b9b22e2282a62a443ce39df91c3f5720f0465d27b9b7216b1ec7d8a843138",
+    "freeze_qwen_selection.py": "28e4b8e63c05b9ee19ac54e8402fa4a4aaf32a0be6e297baa48b97e61f0b5a8d"
+  },
+  "testing": {
+    "previous_full_regression": "24 tests passed before adding selection protocol test",
+    "current_sft_suite": "6 tests passed",
+    "model": "tiny random Qwen2, hidden16, one layer; CPU only",
+    "checks": [
+      "response mask and EOS padding",
+      "causal loss shift",
+      "all-parameter gradients",
+      "optimizer/scheduler/RNG resume matching next weights",
+      "constrained beam matching exhaustive tiny catalog",
+      "test/partial/protocol-mismatched report rejection"
+    ]
+  },
+  "upstream": {
+    "repository": "https://github.com/wbn11/minionerec-single-gpu",
+    "commit": "bccd7ef70291c5b4b0c30b6222bc491039b4cd18",
+    "usage": "preserved source reference; independent local four-token SID adapter"
+  }
+}

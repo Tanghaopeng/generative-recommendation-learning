@@ -1,0 +1,24 @@
+{
+  "repository": "https://github.com/EdoardoBotta/RQ-VAE-Recommender",
+  "commit": "957d32bda43958ba641ae919abb1092ac6738798",
+  "archive_sha256": "d444cde93ef3051962b7769030109ee4107102f09c2637544c4b4a10c16b24a7",
+  "retrieved_on": "2026-10-08",
+  "vendored_files": {
+    "LICENSE": "238efd28336d8b05fcd82e957f0c6ac4028703c5799e41a734e656f064a6d48b",
+    "README.md": "cf7342d4865b48e99a3991275de2d4ee0a2dc9178b33e03f650ba5bde2d10462",
+    "data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "data/schemas.py": "817b7df515c515310ac482e4e51d7f8d4606a7c6fa3c8885cc3bf98155f5c8ce",
+    "modules/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "modules/rqvae.py": "52fcaedc8ded0687690b46a8281ca581ab6d566d47702f07e03c36c417d0da2d",
+    "modules/quantize.py": "2130fe9b7fed3054f12c619e70fd47b2682d041b42781c0cadf3ddcacb3d6c98",
+    "modules/encoder.py": "139a2cfa9fad4ecf9b795d435a640a927dd01a2d52911cea7c58a8de53c0a475",
+    "modules/loss.py": "f236ad53cfbe8fb9d1940deaab60d4da1a659bf34df2c566f76ee4887929f3d7",
+    "modules/normalize.py": "e063b3cc49e1d9571c6388251212054e269de43e2794e28238021fe9ccca67f6",
+    "modules/model.py": "117407866f696906882b8cc649ead2e021d830399c9c1fa7bbd0535456a067af",
+    "init/__init__.py": "58730796001a852b0971951ed6216b18ecfbe576a129e05046c9bc8e5b5f2ba4",
+    "init/kmeans.py": "7109304a3c7408d49872a079763d9c0b05820e8475f6db4d6ded0ad2e24e5e15",
+    "distributions/__init__.py": "6fcd9cf970336067f9fdc8752d315b5b8d5f1d268300835dc9ba96dcc83583cb",
+    "distributions/gumbel.py": "a83fcd0eb96b416d8cc9c9011aaa1de36700a2dceb01d31bb293f73a14261edc"
+  },
+  "upstream_files_modified": false
+}

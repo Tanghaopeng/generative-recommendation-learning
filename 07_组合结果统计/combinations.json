@@ -1,0 +1,78 @@
+{
+  "updated_on": "2026-10-09",
+  "source": "experiments/semantic_retrievers_comparison_20261008.json",
+  "combinations": [
+    {
+      "id": "sasrec",
+      "status": "trained",
+      "test": {
+        "Recall@10": 0.05764994868128193,
+        "NDCG@10": 0.035553734866091743,
+        "Recall@20": 0.07440637505333687,
+        "NDCG@20": 0.03977526806033629,
+        "users": 86713,
+        "seconds": 52.333
+      }
+    },
+    {
+      "id": "minilm_rqvae_adam_tiger",
+      "status": "trained",
+      "test": {
+        "Recall@10": 0.049565809048239595,
+        "NDCG@10": 0.036791814872069284,
+        "Recall@20": 0.060636813395915264,
+        "NDCG@20": 0.03958230509527544,
+        "users": 86713,
+        "seconds": 514.5949629999959,
+        "beam": 20,
+        "shortfall_users": 0,
+        "returned_items": 1734260,
+        "legal_item_fraction": 1.0,
+        "warm_batch_seconds_p50": 0.15335079999931622,
+        "warm_batch_seconds_p95": 0.3631089599948609,
+        "timing_batch_size": 32,
+        "smoke_only": false
+      }
+    },
+    {
+      "id": "minilm_rqvae_ema_tiger",
+      "status": "trained",
+      "test": {
+        "Recall@10": 0.0498195195645405,
+        "NDCG@10": 0.03753884504620937,
+        "Recall@20": 0.05709639846389815,
+        "NDCG@20": 0.03938150210277673,
+        "users": 86713,
+        "seconds": 574.9172664000071,
+        "beam": 20,
+        "shortfall_users": 0,
+        "returned_items": 1734260,
+        "legal_item_fraction": 1.0,
+        "warm_batch_seconds_p50": 0.1570713999972213,
+        "warm_batch_seconds_p95": 0.42101423999993054,
+        "timing_batch_size": 32,
+        "smoke_only": false
+      }
+    },
+    {
+      "id": "minilm_rqvae_adam_qwen15b_q1",
+      "status": "implemented_gpu_not_run",
+      "test": null
+    },
+    {
+      "id": "minilm_rqvae_adam_qwen15b_q2",
+      "status": "implemented_gpu_not_run",
+      "test": null
+    },
+    {
+      "id": "minilm_rqvae_ema_qwen15b_q1",
+      "status": "implemented_gpu_not_run",
+      "test": null
+    },
+    {
+      "id": "minilm_rqkmeans_qwen15b",
+      "status": "planned_not_implemented",
+      "test": null
+    }
+  ]
+}

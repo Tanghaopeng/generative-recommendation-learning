@@ -1,0 +1,627 @@
+{
+  "exported_at_utc": "2026-10-08T07:23:59.382753+00:00",
+  "retriever": {
+    "status": "completed",
+    "started_at_utc": "2026-10-08T04:01:12.259501+00:00",
+    "arguments": {
+      "sids": "./data/processed/office2018/tiger_sids",
+      "output": "outputs/tiger_office2018_cpu_20261008",
+      "epochs": 3,
+      "batch_size": 128,
+      "eval_batch_size": 32,
+      "maxlen": 20,
+      "beam": 20,
+      "hidden": 64,
+      "layers": 1,
+      "heads": 2,
+      "ff": 128,
+      "lr": 0.001,
+      "threads": 2,
+      "seed": 2026,
+      "patience": 2,
+      "resume": null,
+      "smoke_steps": 0,
+      "smoke_eval_users": 64
+    },
+    "config": {
+      "vocabulary": 256,
+      "hidden": 64,
+      "heads": 2,
+      "layers": 1,
+      "ff": 128
+    },
+    "process_id": 18700,
+    "parent_process_id": 12460,
+    "parameters": 328320,
+    "training_examples": 397345,
+    "data_sha256": "f5f7dac1e2f51d95d3eea381381ec2f12f03e46dcf3e176274d187deda4e24ad",
+    "sequence_sha256": "a242718d3410cfdf75a0ca411c530a9c4ae3898e293476922fd7a66861e4bcf6",
+    "sid_manifest": {
+      "status": "completed",
+      "completed_at_utc": "2026-10-08T03:58:04.536296+00:00",
+      "items": 25898,
+      "sid_length": 4,
+      "codebook_size": 256,
+      "tokens_per_hierarchy": 256,
+      "raw_unique_ids": 20332,
+      "raw_duplicate_items": 5566,
+      "raw_duplicate_fraction": 0.21492007104795738,
+      "max_collision_group": 34,
+      "codebook_usage": [
+        84,
+        256,
+        256
+      ],
+      "final_unique_ids": 25898,
+      "roundtrip_verified": true,
+      "padding_row": -1,
+      "collision_order": "ascending item_id, fourth token=within-group counter",
+      "items_source_sha256": "384f4e588f516272d4c43b18766b7f047ea4415d4d71b7ebb5191f12a62798ae",
+      "embedding_sha256": "45a2535449726c0aaebf914eb5e3021fa64f822d6bf6d0c909fbb2d20f66c6c0",
+      "checkpoint_sha256": "092f6e27fb4c7acb33a5de6ce69701856909eeaa0f2716443d9d153261836cbd",
+      "rqvae_best_epoch": 30,
+      "sid_sha256": "f768d10b58f31c4d0d89d69becfef48ed3415877a0845e0b2d6680843dac9293"
+    },
+    "source_sha256": {
+      "baselines/tiger/upstream/data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "baselines/tiger/upstream/data/schemas.py": "817b7df515c515310ac482e4e51d7f8d4606a7c6fa3c8885cc3bf98155f5c8ce",
+      "baselines/tiger/upstream/distributions/__init__.py": "6fcd9cf970336067f9fdc8752d315b5b8d5f1d268300835dc9ba96dcc83583cb",
+      "baselines/tiger/upstream/distributions/gumbel.py": "a83fcd0eb96b416d8cc9c9011aaa1de36700a2dceb01d31bb293f73a14261edc",
+      "baselines/tiger/upstream/init/__init__.py": "58730796001a852b0971951ed6216b18ecfbe576a129e05046c9bc8e5b5f2ba4",
+      "baselines/tiger/upstream/init/kmeans.py": "7109304a3c7408d49872a079763d9c0b05820e8475f6db4d6ded0ad2e24e5e15",
+      "baselines/tiger/upstream/modules/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "baselines/tiger/upstream/modules/encoder.py": "139a2cfa9fad4ecf9b795d435a640a927dd01a2d52911cea7c58a8de53c0a475",
+      "baselines/tiger/upstream/modules/loss.py": "f236ad53cfbe8fb9d1940deaab60d4da1a659bf34df2c566f76ee4887929f3d7",
+      "baselines/tiger/upstream/modules/model.py": "117407866f696906882b8cc649ead2e021d830399c9c1fa7bbd0535456a067af",
+      "baselines/tiger/upstream/modules/normalize.py": "e063b3cc49e1d9571c6388251212054e269de43e2794e28238021fe9ccca67f6",
+      "baselines/tiger/upstream/modules/quantize.py": "2130fe9b7fed3054f12c619e70fd47b2682d041b42781c0cadf3ddcacb3d6c98",
+      "baselines/tiger/upstream/modules/rqvae.py": "52fcaedc8ded0687690b46a8281ca581ab6d566d47702f07e03c36c417d0da2d",
+      "scripts/benchmark_tiger.py": "c6ac00150a208b7048527ea27e888174b79132a7c72def746b4c8ce79950aedb",
+      "scripts/build_item_embeddings.py": "aa241eda3f9d7001703d61fd346b6cbf6e403133cf65b66767f0a2f0383ce9f1",
+      "scripts/build_semantic_ids.py": "1fd5ecdf939ef7053c0dda221405d0e7beab5d79d1d9096bf08f363b410a00da",
+      "scripts/recommend_tiger.py": "2f1b709d5ce9bddf1cbb9e3bbcc6af593fa723512e5ac7944b058adf1c3fd9e6",
+      "scripts/report_tiger.py": "35a7596ab15acc8e69a9ec373cda97dd591438f5e6bedbe373bf68a6032df082",
+      "scripts/run_tiger.py": "f26fc6fe2acb7694cf743896bfe8dab3ec21c111597575d11b1ead22b7d76c07",
+      "scripts/tiger_common.py": "c08f042c03044f7e45ec8b7d8c972a0d88c64f36e0dbf650cfc9767968babeb5",
+      "scripts/tiger_job.py": "b84672a4aff3c341635f20681090ec82672f112f46cef71d91f5291956daf113",
+      "scripts/tiger_model.py": "94123b9bf4d6fbe32c93f64176c7c096fc44b88d9393ee8cc1a6a7c03eecfb77",
+      "scripts/train_rqvae.py": "75d1179e4f7e7054c0ab3b5b7a5d2773440c3bf00567c659eb766db47e2e61da"
+    },
+    "history": [
+      {
+        "epoch": 1,
+        "training_loss": 3.2021599235458345,
+        "training_examples": 397345,
+        "training_seconds": 466.6139848000021,
+        "validation": {
+          "Recall@10": 0.05574711980902518,
+          "NDCG@10": 0.03876377908078386,
+          "Recall@20": 0.06751006192843056,
+          "NDCG@20": 0.041738617937478344,
+          "users": 86713,
+          "seconds": 719.8421844999975,
+          "beam": 20,
+          "shortfall_users": 0,
+          "returned_items": 1734260,
+          "legal_item_fraction": 1.0,
+          "warm_batch_seconds_p50": 0.20719980000285432,
+          "warm_batch_seconds_p95": 0.5721952799940482,
+          "timing_batch_size": 32,
+          "smoke_only": false
+        },
+        "consecutive_overfit_warnings": 0
+      },
+      {
+        "epoch": 2,
+        "training_loss": 2.9413376150726576,
+        "training_examples": 397345,
+        "training_seconds": 6541.312131500003,
+        "validation": {
+          "Recall@10": 0.062458916194803545,
+          "NDCG@10": 0.04578593568631515,
+          "Recall@20": 0.07625154244461614,
+          "NDCG@20": 0.04925597487766384,
+          "users": 86713,
+          "seconds": 563.8786125000042,
+          "beam": 20,
+          "shortfall_users": 0,
+          "returned_items": 1734260,
+          "legal_item_fraction": 1.0,
+          "warm_batch_seconds_p50": 0.15846049999527168,
+          "warm_batch_seconds_p95": 0.34559902000182763,
+          "timing_batch_size": 32,
+          "smoke_only": false
+        },
+        "consecutive_overfit_warnings": 0
+      },
+      {
+        "epoch": 3,
+        "training_loss": 2.870125744192167,
+        "training_examples": 397345,
+        "training_seconds": 2427.031348199991,
+        "validation": {
+          "Recall@10": 0.06905538961862696,
+          "NDCG@10": 0.050949415716901425,
+          "Recall@20": 0.08260583764833417,
+          "NDCG@20": 0.05437283278827927,
+          "users": 86713,
+          "seconds": 923.268484699991,
+          "beam": 20,
+          "shortfall_users": 0,
+          "returned_items": 1734260,
+          "legal_item_fraction": 1.0,
+          "warm_batch_seconds_p50": 0.16686320000735577,
+          "warm_batch_seconds_p95": 0.3940539199946215,
+          "timing_batch_size": 32,
+          "smoke_only": false
+        },
+        "consecutive_overfit_warnings": 0
+      }
+    ],
+    "smoke_only": false,
+    "evaluation": "full catalog trie, deterministic finite beam; history excluded",
+    "checkpoint_selection": "validation NDCG@10 only",
+    "training": "all effective SASRec positive positions once/epoch, length buckets, four-token CE mean",
+    "negative_sampling": "none; per-hierarchy vocabulary softmax",
+    "stop_rule": "two consecutive lower validation NDCG@10 while loss below validation-best epoch",
+    "current_epoch": 3,
+    "current_batch": 3101,
+    "epoch_batches": 3105,
+    "current_loss": 2.8700902558891155,
+    "peak_observed_rss_bytes": 370397184,
+    "best_epoch": 3,
+    "best_validation_ndcg10": 0.050949415716901425,
+    "stop_reason": "requested_epochs_completed",
+    "test": {
+      "Recall@10": 0.049565809048239595,
+      "NDCG@10": 0.036791814872069284,
+      "Recall@20": 0.060636813395915264,
+      "NDCG@20": 0.03958230509527544,
+      "users": 86713,
+      "seconds": 514.5949629999959,
+      "beam": 20,
+      "shortfall_users": 0,
+      "returned_items": 1734260,
+      "legal_item_fraction": 1.0,
+      "warm_batch_seconds_p50": 0.15335079999931622,
+      "warm_batch_seconds_p95": 0.3631089599948609,
+      "timing_batch_size": 32,
+      "smoke_only": false
+    },
+    "completed_at_utc": "2026-10-08T07:23:49.158737+00:00",
+    "elapsed_seconds": 12156.865483000001,
+    "checkpoint_sha256": "f0dc28463d773d9ea792bc972cf7093aef22d4133524e7effb8275393d20aa2d"
+  },
+  "codec": {
+    "status": "completed",
+    "started_at_utc": "2026-10-08T03:55:42.330225+00:00",
+    "arguments": {
+      "embeddings": "./data/processed/office2018/tiger_embeddings",
+      "output": "outputs/rqvae_office2018_cpu_20261008",
+      "epochs": 30,
+      "batch_size": 512,
+      "threads": 2,
+      "seed": 2026,
+      "lr": 0.001,
+      "patience": 5,
+      "resume": null
+    },
+    "config": {
+      "input_dim": 384,
+      "embed_dim": 32,
+      "hidden_dims": [
+        256,
+        128
+      ],
+      "codebook_size": 256,
+      "codebook_kmeans_init": false,
+      "n_layers": 3,
+      "n_cat_features": 0,
+      "commitment_weight": 0.25
+    },
+    "embedding_sha256": "45a2535449726c0aaebf914eb5e3021fa64f822d6bf6d0c909fbb2d20f66c6c0",
+    "embedding_manifest": {
+      "contract": {
+        "model": "sentence-transformers/all-MiniLM-L6-v2",
+        "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+        "dimension": 384,
+        "max_tokens": 128,
+        "items": 25898,
+        "items_source_sha256": "384f4e588f516272d4c43b18766b7f047ea4415d4d71b7ebb5191f12a62798ae",
+        "smoke_only": false,
+        "normalization": "attention-mask mean pooling then L2",
+        "frozen": true
+      },
+      "status": "completed",
+      "encoded_items": 25898,
+      "started_at_utc": "2026-10-08T03:27:38.342044+00:00",
+      "missing_metadata": 28,
+      "placeholder_items": 28,
+      "duplicate_text_items": 101,
+      "truncated_text_items": 20645,
+      "batch_size": 32,
+      "threads": 2,
+      "elapsed_this_segment_seconds": 3.3719840999983717,
+      "peak_observed_rss_bytes": 694714368,
+      "completed_at_utc": "2026-10-08T03:55:18.940671+00:00",
+      "embedding_sha256": "45a2535449726c0aaebf914eb5e3021fa64f822d6bf6d0c909fbb2d20f66c6c0",
+      "array_shape": [
+        25899,
+        384
+      ]
+    },
+    "history": [
+      {
+        "epoch": 1,
+        "loss": 0.9542565162780832,
+        "validation": {
+          "reconstruction_loss": 0.7463774546232923,
+          "total_loss": 0.7893876684678568,
+          "items": 1295
+        },
+        "seconds": 1.9115342000004603
+      },
+      {
+        "epoch": 2,
+        "loss": 0.7422653917921698,
+        "validation": {
+          "reconstruction_loss": 0.643324605562512,
+          "total_loss": 0.7127561441259495,
+          "items": 1295
+        },
+        "seconds": 1.830865800002357
+      },
+      {
+        "epoch": 3,
+        "loss": 0.7146422853534,
+        "validation": {
+          "reconstruction_loss": 0.5873656953623856,
+          "total_loss": 0.7206194109438009,
+          "items": 1295
+        },
+        "seconds": 1.6477283999993233
+      },
+      {
+        "epoch": 4,
+        "loss": 0.741555380197636,
+        "validation": {
+          "reconstruction_loss": 0.5541755187465417,
+          "total_loss": 0.758631017907706,
+          "items": 1295
+        },
+        "seconds": 2.037964800001646
+      },
+      {
+        "epoch": 5,
+        "loss": 0.7730694337162124,
+        "validation": {
+          "reconstruction_loss": 0.5354654070953605,
+          "total_loss": 0.7973730395659516,
+          "items": 1295
+        },
+        "seconds": 1.8548322999995435
+      },
+      {
+        "epoch": 6,
+        "loss": 0.8036141663514778,
+        "validation": {
+          "reconstruction_loss": 0.519317767288694,
+          "total_loss": 0.8209847489379087,
+          "items": 1295
+        },
+        "seconds": 1.6234223000064958
+      },
+      {
+        "epoch": 7,
+        "loss": 0.8304377187680739,
+        "validation": {
+          "reconstruction_loss": 0.5067233592386872,
+          "total_loss": 0.8452627471054843,
+          "items": 1295
+        },
+        "seconds": 1.6666677999965032
+      },
+      {
+        "epoch": 8,
+        "loss": 0.8557386948064891,
+        "validation": {
+          "reconstruction_loss": 0.4976952266048741,
+          "total_loss": 0.8766064630972372,
+          "items": 1295
+        },
+        "seconds": 1.7389607000004617
+      },
+      {
+        "epoch": 9,
+        "loss": 0.8780877250813568,
+        "validation": {
+          "reconstruction_loss": 0.4897552137669449,
+          "total_loss": 0.9002029060396909,
+          "items": 1295
+        },
+        "seconds": 2.2541001999998116
+      },
+      {
+        "epoch": 10,
+        "loss": 0.9055391073721151,
+        "validation": {
+          "reconstruction_loss": 0.4833786211648963,
+          "total_loss": 0.9300435796207442,
+          "items": 1295
+        },
+        "seconds": 4.418347099999664
+      },
+      {
+        "epoch": 11,
+        "loss": 0.9213802530548173,
+        "validation": {
+          "reconstruction_loss": 0.47543583873616224,
+          "total_loss": 0.9393727719093382,
+          "items": 1295
+        },
+        "seconds": 1.6373911000046064
+      },
+      {
+        "epoch": 12,
+        "loss": 0.9411593464842193,
+        "validation": {
+          "reconstruction_loss": 0.46977831293257044,
+          "total_loss": 0.9582431855809275,
+          "items": 1295
+        },
+        "seconds": 4.134160699999484
+      },
+      {
+        "epoch": 13,
+        "loss": 0.9602042246711829,
+        "validation": {
+          "reconstruction_loss": 0.4675021744142628,
+          "total_loss": 0.9867526820267489,
+          "items": 1295
+        },
+        "seconds": 1.8086673999932827
+      },
+      {
+        "epoch": 14,
+        "loss": 0.9751870383800775,
+        "validation": {
+          "reconstruction_loss": 0.4626648635017366,
+          "total_loss": 1.0069663725304328,
+          "items": 1295
+        },
+        "seconds": 1.8077470999996876
+      },
+      {
+        "epoch": 15,
+        "loss": 0.9905232301268283,
+        "validation": {
+          "reconstruction_loss": 0.45834000147447623,
+          "total_loss": 1.0160667867734166,
+          "items": 1295
+        },
+        "seconds": 4.665340799998376
+      },
+      {
+        "epoch": 16,
+        "loss": 1.0023223793914113,
+        "validation": {
+          "reconstruction_loss": 0.45334657421443453,
+          "total_loss": 1.0193496063409164,
+          "items": 1295
+        },
+        "seconds": 2.275925499998266
+      },
+      {
+        "epoch": 17,
+        "loss": 1.015241103652376,
+        "validation": {
+          "reconstruction_loss": 0.45040101701228313,
+          "total_loss": 1.0281423326624866,
+          "items": 1295
+        },
+        "seconds": 3.0891524000035133
+      },
+      {
+        "epoch": 18,
+        "loss": 1.0241817576136234,
+        "validation": {
+          "reconstruction_loss": 0.4478400758104435,
+          "total_loss": 1.0444469207041973,
+          "items": 1295
+        },
+        "seconds": 2.056818300006853
+      },
+      {
+        "epoch": 19,
+        "loss": 1.0416122582105778,
+        "validation": {
+          "reconstruction_loss": 0.4462205662230267,
+          "total_loss": 1.0593023996095399,
+          "items": 1295
+        },
+        "seconds": 2.4054907000027015
+      },
+      {
+        "epoch": 20,
+        "loss": 1.0494012487752067,
+        "validation": {
+          "reconstruction_loss": 0.444509777967534,
+          "total_loss": 1.0712917466881653,
+          "items": 1295
+        },
+        "seconds": 2.994197799998801
+      },
+      {
+        "epoch": 21,
+        "loss": 1.0618522048883214,
+        "validation": {
+          "reconstruction_loss": 0.44072902368302513,
+          "total_loss": 1.079254742110558,
+          "items": 1295
+        },
+        "seconds": 8.203380999999354
+      },
+      {
+        "epoch": 22,
+        "loss": 1.0709138912616385,
+        "validation": {
+          "reconstruction_loss": 0.4386103728333035,
+          "total_loss": 1.0950947597680405,
+          "items": 1295
+        },
+        "seconds": 1.9370914999963134
+      },
+      {
+        "epoch": 23,
+        "loss": 1.081832248733445,
+        "validation": {
+          "reconstruction_loss": 0.43887415314273026,
+          "total_loss": 1.10930235864573,
+          "items": 1295
+        },
+        "seconds": 4.501408399999491
+      },
+      {
+        "epoch": 24,
+        "loss": 1.098089677305942,
+        "validation": {
+          "reconstruction_loss": 0.4358574035084846,
+          "total_loss": 1.1170871920567222,
+          "items": 1295
+        },
+        "seconds": 2.109511199996632
+      },
+      {
+        "epoch": 25,
+        "loss": 1.1110664179076732,
+        "validation": {
+          "reconstruction_loss": 0.43349792289917993,
+          "total_loss": 1.1244794215935077,
+          "items": 1295
+        },
+        "seconds": 2.182520399997884
+      },
+      {
+        "epoch": 26,
+        "loss": 1.115860531878889,
+        "validation": {
+          "reconstruction_loss": 0.43240694675206215,
+          "total_loss": 1.1383433548179833,
+          "items": 1295
+        },
+        "seconds": 6.0708263000051375
+      },
+      {
+        "epoch": 27,
+        "loss": 1.1191597316961184,
+        "validation": {
+          "reconstruction_loss": 0.43084834344598777,
+          "total_loss": 1.133208536273264,
+          "items": 1295
+        },
+        "seconds": 4.239031099998101
+      },
+      {
+        "epoch": 28,
+        "loss": 1.1230567852200586,
+        "validation": {
+          "reconstruction_loss": 0.4287159731719485,
+          "total_loss": 1.14658896996708,
+          "items": 1295
+        },
+        "seconds": 3.7741265000004205
+      },
+      {
+        "epoch": 29,
+        "loss": 1.1307026250030106,
+        "validation": {
+          "reconstruction_loss": 0.426350595062764,
+          "total_loss": 1.1489185575352672,
+          "items": 1295
+        },
+        "seconds": 5.879266699994332
+      },
+      {
+        "epoch": 30,
+        "loss": 1.1394446027941254,
+        "validation": {
+          "reconstruction_loss": 0.42613438448390445,
+          "total_loss": 1.1571785743632372,
+          "items": 1295
+        },
+        "seconds": 1.7627700000011828
+      }
+    ],
+    "codec_train_items": 24603,
+    "codec_validation_items": 1295,
+    "selection": "catalog-vector validation reconstruction, not recommendation test",
+    "upstream_forward_used": false,
+    "upstream_quantizer_used": true,
+    "initialization": "bounded sklearn MiniBatchKMeans, separate residual codebooks",
+    "reconstruction": "L2-normalized decoder output; n_cat_features=0",
+    "source_sha256": {
+      "baselines/tiger/upstream/data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "baselines/tiger/upstream/data/schemas.py": "817b7df515c515310ac482e4e51d7f8d4606a7c6fa3c8885cc3bf98155f5c8ce",
+      "baselines/tiger/upstream/distributions/__init__.py": "6fcd9cf970336067f9fdc8752d315b5b8d5f1d268300835dc9ba96dcc83583cb",
+      "baselines/tiger/upstream/distributions/gumbel.py": "a83fcd0eb96b416d8cc9c9011aaa1de36700a2dceb01d31bb293f73a14261edc",
+      "baselines/tiger/upstream/init/__init__.py": "58730796001a852b0971951ed6216b18ecfbe576a129e05046c9bc8e5b5f2ba4",
+      "baselines/tiger/upstream/init/kmeans.py": "7109304a3c7408d49872a079763d9c0b05820e8475f6db4d6ded0ad2e24e5e15",
+      "baselines/tiger/upstream/modules/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "baselines/tiger/upstream/modules/encoder.py": "139a2cfa9fad4ecf9b795d435a640a927dd01a2d52911cea7c58a8de53c0a475",
+      "baselines/tiger/upstream/modules/loss.py": "f236ad53cfbe8fb9d1940deaab60d4da1a659bf34df2c566f76ee4887929f3d7",
+      "baselines/tiger/upstream/modules/model.py": "117407866f696906882b8cc649ead2e021d830399c9c1fa7bbd0535456a067af",
+      "baselines/tiger/upstream/modules/normalize.py": "e063b3cc49e1d9571c6388251212054e269de43e2794e28238021fe9ccca67f6",
+      "baselines/tiger/upstream/modules/quantize.py": "2130fe9b7fed3054f12c619e70fd47b2682d041b42781c0cadf3ddcacb3d6c98",
+      "baselines/tiger/upstream/modules/rqvae.py": "52fcaedc8ded0687690b46a8281ca581ab6d566d47702f07e03c36c417d0da2d",
+      "scripts/benchmark_tiger.py": "c6ac00150a208b7048527ea27e888174b79132a7c72def746b4c8ce79950aedb",
+      "scripts/build_item_embeddings.py": "aa241eda3f9d7001703d61fd346b6cbf6e403133cf65b66767f0a2f0383ce9f1",
+      "scripts/build_semantic_ids.py": "1fd5ecdf939ef7053c0dda221405d0e7beab5d79d1d9096bf08f363b410a00da",
+      "scripts/recommend_tiger.py": "2f1b709d5ce9bddf1cbb9e3bbcc6af593fa723512e5ac7944b058adf1c3fd9e6",
+      "scripts/report_tiger.py": "35a7596ab15acc8e69a9ec373cda97dd591438f5e6bedbe373bf68a6032df082",
+      "scripts/run_tiger.py": "f26fc6fe2acb7694cf743896bfe8dab3ec21c111597575d11b1ead22b7d76c07",
+      "scripts/tiger_common.py": "c08f042c03044f7e45ec8b7d8c972a0d88c64f36e0dbf650cfc9767968babeb5",
+      "scripts/tiger_job.py": "b84672a4aff3c341635f20681090ec82672f112f46cef71d91f5291956daf113",
+      "scripts/tiger_model.py": "94123b9bf4d6fbe32c93f64176c7c096fc44b88d9393ee8cc1a6a7c03eecfb77",
+      "scripts/train_rqvae.py": "75d1179e4f7e7054c0ab3b5b7a5d2773440c3bf00567c659eb766db47e2e61da"
+    },
+    "best_epoch": 30,
+    "best_validation_reconstruction": 0.42613438448390445,
+    "completed_at_utc": "2026-10-08T03:57:14.970560+00:00",
+    "elapsed_seconds": 92.59019629999966,
+    "parameters": 294912,
+    "stop_reason": "requested_epochs_completed"
+  },
+  "embeddings": {
+    "contract": {
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "dimension": 384,
+      "max_tokens": 128,
+      "items": 25898,
+      "items_source_sha256": "384f4e588f516272d4c43b18766b7f047ea4415d4d71b7ebb5191f12a62798ae",
+      "smoke_only": false,
+      "normalization": "attention-mask mean pooling then L2",
+      "frozen": true
+    },
+    "status": "completed",
+    "encoded_items": 25898,
+    "started_at_utc": "2026-10-08T03:27:38.342044+00:00",
+    "missing_metadata": 28,
+    "placeholder_items": 28,
+    "duplicate_text_items": 101,
+    "truncated_text_items": 20645,
+    "batch_size": 32,
+    "threads": 2,
+    "elapsed_this_segment_seconds": 3.3719840999983717,
+    "peak_observed_rss_bytes": 694714368,
+    "completed_at_utc": "2026-10-08T03:55:18.940671+00:00",
+    "embedding_sha256": "45a2535449726c0aaebf914eb5e3021fa64f822d6bf6d0c909fbb2d20f66c6c0",
+    "array_shape": [
+      25899,
+      384
+    ],
+    "recovery_note": "At item 25824, Windows reader temporarily denied atomic rename; resumed from committed rows after adding retry; final full-array fingerprint verified.",
+    "observed_original_encoding_segment_seconds": 1505.630261600003,
+    "model_weights_sha256": "53aa51172d142c89d9012cce15ae4d6cc0ca6895895114379cacb4fab128d9db"
+  }
+}

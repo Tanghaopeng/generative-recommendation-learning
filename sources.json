@@ -25,7 +25,7 @@
       "name": "SASRec.pytorch",
       "url": "https://github.com/pmixer/SASRec.pytorch",
       "commit": "b253407b3c5d6ec3201a39767a572f44fd5ef6d0",
-      "role": "third-party PyTorch implementation used for code walkthrough",
+      "role": "third-party PyTorch model used for walkthrough and baseline training through the project runner",
       "upstream_code_modified": false
     },
     {
@@ -34,7 +34,43 @@
       "commit": "e3738967fddab206d6eeb4fda433e7a7034dd8b1",
       "role": "paper authors original TensorFlow implementation for reference",
       "upstream_code_modified": false
+    },
+    {
+      "name": "RQ-VAE-Recommender",
+      "url": "https://github.com/EdoardoBotta/RQ-VAE-Recommender",
+      "commit": "957d32bda43958ba641ae919abb1092ac6738798",
+      "retrieved_on": "2026-10-08",
+      "role": "unchanged RQ-VAE and T5 modules called by local full-SID CPU adapters",
+      "license": "MIT",
+      "upstream_code_modified": false,
+      "file_fingerprints": "baselines/tiger/upstream_source.json"
+    },
+    {
+      "name": "minionerec-single-gpu",
+      "url": "https://github.com/wbn11/minionerec-single-gpu",
+      "commit": "bccd7ef70291c5b4b0c30b6222bc491039b4cd18",
+      "role": "preserved SFT source reference; local four-token adapter is independent",
+      "upstream_code_modified": false,
+      "file_fingerprints": "baselines/minionerec_reference/upstream_source.json"
     }
   ],
-  "training_executed": false
+  "text_encoder": {
+    "name": "sentence-transformers/all-MiniLM-L6-v2",
+    "url": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "retrieved_on": "2026-10-08",
+    "dimension": 384,
+    "frozen": true,
+    "local_max_tokens": 128,
+    "license": "Apache-2.0"
+  },
+  "training_executed": true,
+  "training_record": "experiments/sasrec_cpu_20261007.json",
+  "continued_training_record": "experiments/sasrec_cpu_extend40_20261007.json",
+  "quantizer_audit_record": "experiments/rqvae_adam_vs_ema_20261008.json",
+  "generative_training_records": [
+    "experiments/tiger_cpu_20261008.json",
+    "experiments/tiger_ema_cpu_20261008.json"
+  ],
+  "generative_comparison_record": "experiments/semantic_retrievers_comparison_20261008.json"
 }

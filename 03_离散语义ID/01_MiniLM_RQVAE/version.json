@@ -1,0 +1,11 @@
+{
+  "id": "01_MiniLM_RQVAE",
+  "encoder": "minilm_l6_v2_128_mean_l2",
+  "entry": "scripts/train_rqvae.py",
+  "sid_directory": "data/processed/office2018/tiger_sids",
+  "codebook_update": "Adam",
+  "semantic_layers": 3,
+  "codebook_size": 256,
+  "sid_length": 4,
+  "status": "completed"
+}

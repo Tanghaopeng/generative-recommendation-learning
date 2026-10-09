@@ -1,0 +1,1490 @@
+{
+  "exported_at_utc": "2026-10-08T08:19:54.289760+00:00",
+  "retriever": {
+    "status": "completed",
+    "started_at_utc": "2026-10-08T07:24:17.205560+00:00",
+    "arguments": {
+      "sids": "data/processed/office2018/tiger_sids_ema_20261008",
+      "output": "outputs/tiger_office2018_ema_cpu_20261008",
+      "epochs": 3,
+      "batch_size": 128,
+      "eval_batch_size": 32,
+      "maxlen": 20,
+      "beam": 20,
+      "hidden": 64,
+      "layers": 1,
+      "heads": 2,
+      "ff": 128,
+      "lr": 0.001,
+      "threads": 2,
+      "seed": 2026,
+      "patience": 2,
+      "resume": null,
+      "smoke_steps": 0,
+      "smoke_eval_users": 64
+    },
+    "config": {
+      "vocabulary": 256,
+      "hidden": 64,
+      "heads": 2,
+      "layers": 1,
+      "ff": 128
+    },
+    "process_id": 27928,
+    "parent_process_id": 101524,
+    "parameters": 328320,
+    "training_examples": 397345,
+    "data_sha256": "f5f7dac1e2f51d95d3eea381381ec2f12f03e46dcf3e176274d187deda4e24ad",
+    "sequence_sha256": "a242718d3410cfdf75a0ca411c530a9c4ae3898e293476922fd7a66861e4bcf6",
+    "sid_manifest": {
+      "status": "completed",
+      "completed_at_utc": "2026-10-08T04:20:30.738338+00:00",
+      "items": 25898,
+      "sid_length": 4,
+      "codebook_size": 256,
+      "tokens_per_hierarchy": 256,
+      "raw_unique_ids": 21474,
+      "raw_duplicate_items": 4424,
+      "raw_duplicate_fraction": 0.17082400185342497,
+      "max_collision_group": 33,
+      "codebook_usage": [
+        117,
+        256,
+        256
+      ],
+      "final_unique_ids": 25898,
+      "roundtrip_verified": true,
+      "padding_row": -1,
+      "collision_order": "ascending item_id, fourth token=within-group counter",
+      "items_source_sha256": "384f4e588f516272d4c43b18766b7f047ea4415d4d71b7ebb5191f12a62798ae",
+      "embedding_sha256": "45a2535449726c0aaebf914eb5e3021fa64f822d6bf6d0c909fbb2d20f66c6c0",
+      "checkpoint_sha256": "53199a2f04865a4a77e05ae60bd1750d95d0bb40f15a03f37d79e4781eaf5e29",
+      "rqvae_best_epoch": 29,
+      "sid_sha256": "975075925cc54f903d7bc9069bf3653a96b8c29b613b846bdc4a27a8351a4554",
+      "codebook_update": "EMA",
+      "ema_config": {
+        "decay": 0.99,
+        "epsilon": 1e-05,
+        "initial_mass": 1.0
+      },
+      "upstream_inference_compatible": true,
+      "training_state_contains_ema_buffers": true
+    },
+    "source_sha256": {
+      "baselines/tiger/upstream/data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "baselines/tiger/upstream/data/schemas.py": "817b7df515c515310ac482e4e51d7f8d4606a7c6fa3c8885cc3bf98155f5c8ce",
+      "baselines/tiger/upstream/distributions/__init__.py": "6fcd9cf970336067f9fdc8752d315b5b8d5f1d268300835dc9ba96dcc83583cb",
+      "baselines/tiger/upstream/distributions/gumbel.py": "a83fcd0eb96b416d8cc9c9011aaa1de36700a2dceb01d31bb293f73a14261edc",
+      "baselines/tiger/upstream/init/__init__.py": "58730796001a852b0971951ed6216b18ecfbe576a129e05046c9bc8e5b5f2ba4",
+      "baselines/tiger/upstream/init/kmeans.py": "7109304a3c7408d49872a079763d9c0b05820e8475f6db4d6ded0ad2e24e5e15",
+      "baselines/tiger/upstream/modules/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "baselines/tiger/upstream/modules/encoder.py": "139a2cfa9fad4ecf9b795d435a640a927dd01a2d52911cea7c58a8de53c0a475",
+      "baselines/tiger/upstream/modules/loss.py": "f236ad53cfbe8fb9d1940deaab60d4da1a659bf34df2c566f76ee4887929f3d7",
+      "baselines/tiger/upstream/modules/model.py": "117407866f696906882b8cc649ead2e021d830399c9c1fa7bbd0535456a067af",
+      "baselines/tiger/upstream/modules/normalize.py": "e063b3cc49e1d9571c6388251212054e269de43e2794e28238021fe9ccca67f6",
+      "baselines/tiger/upstream/modules/quantize.py": "2130fe9b7fed3054f12c619e70fd47b2682d041b42781c0cadf3ddcacb3d6c98",
+      "baselines/tiger/upstream/modules/rqvae.py": "52fcaedc8ded0687690b46a8281ca581ab6d566d47702f07e03c36c417d0da2d",
+      "scripts/benchmark_tiger.py": "c6ac00150a208b7048527ea27e888174b79132a7c72def746b4c8ce79950aedb",
+      "scripts/build_item_embeddings.py": "aa241eda3f9d7001703d61fd346b6cbf6e403133cf65b66767f0a2f0383ce9f1",
+      "scripts/build_semantic_ids.py": "1fd5ecdf939ef7053c0dda221405d0e7beab5d79d1d9096bf08f363b410a00da",
+      "scripts/recommend_tiger.py": "2f1b709d5ce9bddf1cbb9e3bbcc6af593fa723512e5ac7944b058adf1c3fd9e6",
+      "scripts/report_tiger.py": "35a7596ab15acc8e69a9ec373cda97dd591438f5e6bedbe373bf68a6032df082",
+      "scripts/run_tiger.py": "f26fc6fe2acb7694cf743896bfe8dab3ec21c111597575d11b1ead22b7d76c07",
+      "scripts/tiger_common.py": "c08f042c03044f7e45ec8b7d8c972a0d88c64f36e0dbf650cfc9767968babeb5",
+      "scripts/tiger_job.py": "b84672a4aff3c341635f20681090ec82672f112f46cef71d91f5291956daf113",
+      "scripts/tiger_model.py": "94123b9bf4d6fbe32c93f64176c7c096fc44b88d9393ee8cc1a6a7c03eecfb77",
+      "scripts/train_rqvae.py": "75d1179e4f7e7054c0ab3b5b7a5d2773440c3bf00567c659eb766db47e2e61da"
+    },
+    "history": [
+      {
+        "epoch": 1,
+        "training_loss": 3.281010806000239,
+        "training_examples": 397345,
+        "training_seconds": 362.22850460000336,
+        "validation": {
+          "Recall@10": 0.058768581412244995,
+          "NDCG@10": 0.0410221881484168,
+          "Recall@20": 0.07039313597730444,
+          "NDCG@20": 0.04395314856328168,
+          "users": 86713,
+          "seconds": 436.83492470000056,
+          "beam": 20,
+          "shortfall_users": 0,
+          "returned_items": 1734260,
+          "legal_item_fraction": 1.0,
+          "warm_batch_seconds_p50": 0.15490569999383297,
+          "warm_batch_seconds_p95": 0.2098069600004237,
+          "timing_batch_size": 32,
+          "smoke_only": false
+        },
+        "consecutive_overfit_warnings": 0
+      },
+      {
+        "epoch": 2,
+        "training_loss": 3.0088194321397403,
+        "training_examples": 397345,
+        "training_seconds": 371.1611050000065,
+        "validation": {
+          "Recall@10": 0.06350835514859364,
+          "NDCG@10": 0.046420717648352317,
+          "Recall@20": 0.07522516808321705,
+          "NDCG@20": 0.049396151677577146,
+          "users": 86713,
+          "seconds": 504.91564999999537,
+          "beam": 20,
+          "shortfall_users": 0,
+          "returned_items": 1734260,
+          "legal_item_fraction": 1.0,
+          "warm_batch_seconds_p50": 0.14862329998868518,
+          "warm_batch_seconds_p95": 0.3729669599997576,
+          "timing_batch_size": 32,
+          "smoke_only": false
+        },
+        "consecutive_overfit_warnings": 0
+      },
+      {
+        "epoch": 3,
+        "training_loss": 2.9385786437231043,
+        "training_examples": 397345,
+        "training_seconds": 450.58263770000485,
+        "validation": {
+          "Recall@10": 0.06722175452354319,
+          "NDCG@10": 0.049888475760714944,
+          "Recall@20": 0.0779121930967675,
+          "NDCG@20": 0.052597838173375384,
+          "users": 86713,
+          "seconds": 624.2775623000052,
+          "beam": 20,
+          "shortfall_users": 0,
+          "returned_items": 1734260,
+          "legal_item_fraction": 1.0,
+          "warm_batch_seconds_p50": 0.15717209999274928,
+          "warm_batch_seconds_p95": 0.5973117200046538,
+          "timing_batch_size": 32,
+          "smoke_only": false
+        },
+        "consecutive_overfit_warnings": 0
+      }
+    ],
+    "smoke_only": false,
+    "evaluation": "full catalog trie, deterministic finite beam; history excluded",
+    "checkpoint_selection": "validation NDCG@10 only",
+    "training": "all effective SASRec positive positions once/epoch, length buckets, four-token CE mean",
+    "negative_sampling": "none; per-hierarchy vocabulary softmax",
+    "stop_rule": "two consecutive lower validation NDCG@10 while loss below validation-best epoch",
+    "current_epoch": 3,
+    "current_batch": 3101,
+    "epoch_batches": 3105,
+    "current_loss": 2.938554884337319,
+    "peak_observed_rss_bytes": 598339584,
+    "best_epoch": 3,
+    "best_validation_ndcg10": 0.049888475760714944,
+    "stop_reason": "requested_epochs_completed",
+    "test": {
+      "Recall@10": 0.0498195195645405,
+      "NDCG@10": 0.03753884504620937,
+      "Recall@20": 0.05709639846389815,
+      "NDCG@20": 0.03938150210277673,
+      "users": 86713,
+      "seconds": 574.9172664000071,
+      "beam": 20,
+      "shortfall_users": 0,
+      "returned_items": 1734260,
+      "legal_item_fraction": 1.0,
+      "warm_batch_seconds_p50": 0.1570713999972213,
+      "warm_batch_seconds_p95": 0.42101423999993054,
+      "timing_batch_size": 32,
+      "smoke_only": false
+    },
+    "completed_at_utc": "2026-10-08T08:19:42.435133+00:00",
+    "elapsed_seconds": 3325.173186500004,
+    "checkpoint_sha256": "eb19d256544f6c70e42f46f52d33983d4d490e003473de292047f3eee137c433"
+  },
+  "codec": {
+    "status": "completed",
+    "started_at_utc": "2026-10-08T04:15:05.718146+00:00",
+    "arguments": {
+      "embeddings": "./data/processed/office2018/tiger_embeddings",
+      "output": "outputs/rqvae_office2018_ema_cpu_20261008",
+      "epochs": 30,
+      "batch_size": 512,
+      "threads": 2,
+      "seed": 2026,
+      "lr": 0.001,
+      "patience": 5,
+      "decay": 0.99,
+      "epsilon": 1e-05,
+      "initial_mass": 1.0,
+      "resume": null
+    },
+    "config": {
+      "input_dim": 384,
+      "embed_dim": 32,
+      "hidden_dims": [
+        256,
+        128
+      ],
+      "codebook_size": 256,
+      "codebook_kmeans_init": false,
+      "n_layers": 3,
+      "n_cat_features": 0,
+      "commitment_weight": 0.25
+    },
+    "codebook_update": "EMA; no codebook gradient, no dead-code reset",
+    "ema_config": {
+      "decay": 0.99,
+      "epsilon": 1e-05,
+      "initial_mass": 1.0
+    },
+    "embedding_sha256": "45a2535449726c0aaebf914eb5e3021fa64f822d6bf6d0c909fbb2d20f66c6c0",
+    "source_sha256": {
+      "baselines/tiger/upstream/data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "baselines/tiger/upstream/data/schemas.py": "817b7df515c515310ac482e4e51d7f8d4606a7c6fa3c8885cc3bf98155f5c8ce",
+      "baselines/tiger/upstream/distributions/__init__.py": "6fcd9cf970336067f9fdc8752d315b5b8d5f1d268300835dc9ba96dcc83583cb",
+      "baselines/tiger/upstream/distributions/gumbel.py": "a83fcd0eb96b416d8cc9c9011aaa1de36700a2dceb01d31bb293f73a14261edc",
+      "baselines/tiger/upstream/init/__init__.py": "58730796001a852b0971951ed6216b18ecfbe576a129e05046c9bc8e5b5f2ba4",
+      "baselines/tiger/upstream/init/kmeans.py": "7109304a3c7408d49872a079763d9c0b05820e8475f6db4d6ded0ad2e24e5e15",
+      "baselines/tiger/upstream/modules/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "baselines/tiger/upstream/modules/encoder.py": "139a2cfa9fad4ecf9b795d435a640a927dd01a2d52911cea7c58a8de53c0a475",
+      "baselines/tiger/upstream/modules/loss.py": "f236ad53cfbe8fb9d1940deaab60d4da1a659bf34df2c566f76ee4887929f3d7",
+      "baselines/tiger/upstream/modules/model.py": "117407866f696906882b8cc649ead2e021d830399c9c1fa7bbd0535456a067af",
+      "baselines/tiger/upstream/modules/normalize.py": "e063b3cc49e1d9571c6388251212054e269de43e2794e28238021fe9ccca67f6",
+      "baselines/tiger/upstream/modules/quantize.py": "2130fe9b7fed3054f12c619e70fd47b2682d041b42781c0cadf3ddcacb3d6c98",
+      "baselines/tiger/upstream/modules/rqvae.py": "52fcaedc8ded0687690b46a8281ca581ab6d566d47702f07e03c36c417d0da2d",
+      "scripts/benchmark_tiger.py": "c6ac00150a208b7048527ea27e888174b79132a7c72def746b4c8ce79950aedb",
+      "scripts/build_item_embeddings.py": "aa241eda3f9d7001703d61fd346b6cbf6e403133cf65b66767f0a2f0383ce9f1",
+      "scripts/build_semantic_ids.py": "1fd5ecdf939ef7053c0dda221405d0e7beab5d79d1d9096bf08f363b410a00da",
+      "scripts/recommend_tiger.py": "2f1b709d5ce9bddf1cbb9e3bbcc6af593fa723512e5ac7944b058adf1c3fd9e6",
+      "scripts/report_tiger.py": "35a7596ab15acc8e69a9ec373cda97dd591438f5e6bedbe373bf68a6032df082",
+      "scripts/run_tiger.py": "f26fc6fe2acb7694cf743896bfe8dab3ec21c111597575d11b1ead22b7d76c07",
+      "scripts/tiger_common.py": "c08f042c03044f7e45ec8b7d8c972a0d88c64f36e0dbf650cfc9767968babeb5",
+      "scripts/tiger_job.py": "b84672a4aff3c341635f20681090ec82672f112f46cef71d91f5291956daf113",
+      "scripts/tiger_model.py": "94123b9bf4d6fbe32c93f64176c7c096fc44b88d9393ee8cc1a6a7c03eecfb77",
+      "scripts/train_rqvae.py": "75d1179e4f7e7054c0ab3b5b7a5d2773440c3bf00567c659eb766db47e2e61da",
+      "scripts/rqvae_ema.py": "8949905f62a57eb4117fb8c4aecd9effb8e387a05dc5cca0fa92b8c98551e003",
+      "scripts/train_rqvae_ema.py": "da0d9c2489f3afc43158aa97a241d14421db18808bf8215ab410b10eebc5312a",
+      "scripts/audit_codebooks.py": "233a1cfaef4c723a91c9cd93ad19571c8d47e52c6b4afb9f903263018174c631"
+    },
+    "history": [
+      {
+        "epoch": 1,
+        "loss": 0.9429919208781785,
+        "validation": {
+          "reconstruction_loss": 0.7702772824000208,
+          "total_loss": 0.7811346823644454,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 23,
+            "dead_codes": 233,
+            "utilization": 0.08984375,
+            "effective_codes": 4.489113746869841,
+            "top1_fraction": 0.38320530016664633,
+            "top10_fraction": 0.9993090273543876
+          },
+          {
+            "layer": 2,
+            "active_codes": 91,
+            "dead_codes": 165,
+            "utilization": 0.35546875,
+            "effective_codes": 12.825700777166684,
+            "top1_fraction": 0.21891639230988091,
+            "top10_fraction": 0.8843636954842905
+          },
+          {
+            "layer": 3,
+            "active_codes": 103,
+            "dead_codes": 153,
+            "utilization": 0.40234375,
+            "effective_codes": 23.5909949117011,
+            "top1_fraction": 0.12994350282485875,
+            "top10_fraction": 0.6503271958704223
+          }
+        ],
+        "seconds": 6.948497400007909
+      },
+      {
+        "epoch": 2,
+        "loss": 0.7453576822797007,
+        "validation": {
+          "reconstruction_loss": 0.6912748461064224,
+          "total_loss": 0.7152605233505426,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 15,
+            "dead_codes": 241,
+            "utilization": 0.05859375,
+            "effective_codes": 6.526628638550282,
+            "top1_fraction": 0.2333861724179978,
+            "top10_fraction": 0.9996748364020648
+          },
+          {
+            "layer": 2,
+            "active_codes": 46,
+            "dead_codes": 210,
+            "utilization": 0.1796875,
+            "effective_codes": 22.710193910623204,
+            "top1_fraction": 0.08677803519895948,
+            "top10_fraction": 0.5969190749095639
+          },
+          {
+            "layer": 3,
+            "active_codes": 75,
+            "dead_codes": 181,
+            "utilization": 0.29296875,
+            "effective_codes": 32.83795182255651,
+            "top1_fraction": 0.06995081900581229,
+            "top10_fraction": 0.4889241149453319
+          }
+        ],
+        "seconds": 8.220339699997567
+      },
+      {
+        "epoch": 3,
+        "loss": 0.6983642022100855,
+        "validation": {
+          "reconstruction_loss": 0.6311460328378272,
+          "total_loss": 0.6805724633246315,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 22,
+            "dead_codes": 234,
+            "utilization": 0.0859375,
+            "effective_codes": 11.397653007087559,
+            "top1_fraction": 0.1809128968012031,
+            "top10_fraction": 0.9033857659635004
+          },
+          {
+            "layer": 2,
+            "active_codes": 48,
+            "dead_codes": 208,
+            "utilization": 0.1875,
+            "effective_codes": 29.63744870176658,
+            "top1_fraction": 0.0672275738731049,
+            "top10_fraction": 0.4813640612933382
+          },
+          {
+            "layer": 3,
+            "active_codes": 65,
+            "dead_codes": 191,
+            "utilization": 0.25390625,
+            "effective_codes": 40.51523125088334,
+            "top1_fraction": 0.06039913831646547,
+            "top10_fraction": 0.38698532699264315
+          }
+        ],
+        "seconds": 6.879524900010438
+      },
+      {
+        "epoch": 4,
+        "loss": 0.670623952325503,
+        "validation": {
+          "reconstruction_loss": 0.5959490395420767,
+          "total_loss": 0.6581598842005932,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 21,
+            "dead_codes": 235,
+            "utilization": 0.08203125,
+            "effective_codes": 12.89817510969402,
+            "top1_fraction": 0.1602650083323172,
+            "top10_fraction": 0.8468885908222574
+          },
+          {
+            "layer": 2,
+            "active_codes": 50,
+            "dead_codes": 206,
+            "utilization": 0.1953125,
+            "effective_codes": 38.01357805194788,
+            "top1_fraction": 0.04564484006015527,
+            "top10_fraction": 0.3666219566719506
+          },
+          {
+            "layer": 3,
+            "active_codes": 70,
+            "dead_codes": 186,
+            "utilization": 0.2734375,
+            "effective_codes": 50.58286809972057,
+            "top1_fraction": 0.03373572328577816,
+            "top10_fraction": 0.2995976100475552
+          }
+        ],
+        "seconds": 7.445357499993406
+      },
+      {
+        "epoch": 5,
+        "loss": 0.6498865187277141,
+        "validation": {
+          "reconstruction_loss": 0.5715139005174968,
+          "total_loss": 0.638899339350034,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 28,
+            "dead_codes": 228,
+            "utilization": 0.109375,
+            "effective_codes": 17.032276049144762,
+            "top1_fraction": 0.1543307726699996,
+            "top10_fraction": 0.7211315693208146
+          },
+          {
+            "layer": 2,
+            "active_codes": 63,
+            "dead_codes": 193,
+            "utilization": 0.24609375,
+            "effective_codes": 49.689184828471596,
+            "top1_fraction": 0.040482867942933785,
+            "top10_fraction": 0.3057757184083242
+          },
+          {
+            "layer": 3,
+            "active_codes": 86,
+            "dead_codes": 170,
+            "utilization": 0.3359375,
+            "effective_codes": 65.55210050262647,
+            "top1_fraction": 0.028086005771653863,
+            "top10_fraction": 0.22529772791935943
+          }
+        ],
+        "seconds": 11.551075600000331
+      },
+      {
+        "epoch": 6,
+        "loss": 0.6330904411270488,
+        "validation": {
+          "reconstruction_loss": 0.5560583427605942,
+          "total_loss": 0.6252628678060407,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 38,
+            "dead_codes": 218,
+            "utilization": 0.1484375,
+            "effective_codes": 21.648708901475313,
+            "top1_fraction": 0.13278868430679186,
+            "top10_fraction": 0.6185830996219973
+          },
+          {
+            "layer": 2,
+            "active_codes": 77,
+            "dead_codes": 179,
+            "utilization": 0.30078125,
+            "effective_codes": 63.99873597851005,
+            "top1_fraction": 0.028207942120879567,
+            "top10_fraction": 0.23741007194244604
+          },
+          {
+            "layer": 3,
+            "active_codes": 113,
+            "dead_codes": 143,
+            "utilization": 0.44140625,
+            "effective_codes": 87.25810172619028,
+            "top1_fraction": 0.021216924765272527,
+            "top10_fraction": 0.1835142055846848
+          }
+        ],
+        "seconds": 7.630540500002098
+      },
+      {
+        "epoch": 7,
+        "loss": 0.6167192318519625,
+        "validation": {
+          "reconstruction_loss": 0.5369836291291079,
+          "total_loss": 0.6049793512664706,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 39,
+            "dead_codes": 217,
+            "utilization": 0.15234375,
+            "effective_codes": 28.435072173791852,
+            "top1_fraction": 0.11023045970003659,
+            "top10_fraction": 0.49701255944397027
+          },
+          {
+            "layer": 2,
+            "active_codes": 112,
+            "dead_codes": 144,
+            "utilization": 0.4375,
+            "effective_codes": 88.64033772758853,
+            "top1_fraction": 0.021216924765272527,
+            "top10_fraction": 0.1833109783359753
+          },
+          {
+            "layer": 3,
+            "active_codes": 154,
+            "dead_codes": 102,
+            "utilization": 0.6015625,
+            "effective_codes": 120.09126825965723,
+            "top1_fraction": 0.01564849815063204,
+            "top10_fraction": 0.1307970572694387
+          }
+        ],
+        "seconds": 9.912875699999859
+      },
+      {
+        "epoch": 8,
+        "loss": 0.5990164062455772,
+        "validation": {
+          "reconstruction_loss": 0.5229274980349891,
+          "total_loss": 0.5903421630270232,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 49,
+            "dead_codes": 207,
+            "utilization": 0.19140625,
+            "effective_codes": 33.89723776078772,
+            "top1_fraction": 0.1076697963662968,
+            "top10_fraction": 0.46258586351257974
+          },
+          {
+            "layer": 2,
+            "active_codes": 154,
+            "dead_codes": 102,
+            "utilization": 0.6015625,
+            "effective_codes": 120.19240593514935,
+            "top1_fraction": 0.017193025240824288,
+            "top10_fraction": 0.14538877372678127
+          },
+          {
+            "layer": 3,
+            "active_codes": 191,
+            "dead_codes": 65,
+            "utilization": 0.74609375,
+            "effective_codes": 163.56892986454403,
+            "top1_fraction": 0.014673007356826404,
+            "top10_fraction": 0.10730398731861968
+          }
+        ],
+        "seconds": 7.5058298999938415
+      },
+      {
+        "epoch": 9,
+        "loss": 0.5819768831094474,
+        "validation": {
+          "reconstruction_loss": 0.5084531655642978,
+          "total_loss": 0.5762762478419713,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 59,
+            "dead_codes": 197,
+            "utilization": 0.23046875,
+            "effective_codes": 41.127571366693594,
+            "top1_fraction": 0.09137097101979433,
+            "top10_fraction": 0.4194203958866805
+          },
+          {
+            "layer": 2,
+            "active_codes": 185,
+            "dead_codes": 71,
+            "utilization": 0.72265625,
+            "effective_codes": 153.0178376863361,
+            "top1_fraction": 0.014388489208633094,
+            "top10_fraction": 0.12360281266512214
+          },
+          {
+            "layer": 3,
+            "active_codes": 237,
+            "dead_codes": 19,
+            "utilization": 0.92578125,
+            "effective_codes": 213.2081575926325,
+            "top1_fraction": 0.008982644392960207,
+            "top10_fraction": 0.07625086371580701
+          }
+        ],
+        "seconds": 7.024160399989341
+      },
+      {
+        "epoch": 10,
+        "loss": 0.5703102340180957,
+        "validation": {
+          "reconstruction_loss": 0.49676042178422786,
+          "total_loss": 0.5672334565619244,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 66,
+            "dead_codes": 190,
+            "utilization": 0.2578125,
+            "effective_codes": 46.68771806878416,
+            "top1_fraction": 0.07560053651993659,
+            "top10_fraction": 0.388692435881803
+          },
+          {
+            "layer": 2,
+            "active_codes": 218,
+            "dead_codes": 38,
+            "utilization": 0.8515625,
+            "effective_codes": 185.47851358497388,
+            "top1_fraction": 0.011583953176441897,
+            "top10_fraction": 0.09884973377230419
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 246.42334722258335,
+            "top1_fraction": 0.007844571800186969,
+            "top10_fraction": 0.06580498313213835
+          }
+        ],
+        "seconds": 10.42888189999212
+      },
+      {
+        "epoch": 11,
+        "loss": 0.5603481213484325,
+        "validation": {
+          "reconstruction_loss": 0.48800303188069905,
+          "total_loss": 0.5607928888678091,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 73,
+            "dead_codes": 183,
+            "utilization": 0.28515625,
+            "effective_codes": 52.1587816066674,
+            "top1_fraction": 0.06527659228549364,
+            "top10_fraction": 0.3518676584156404
+          },
+          {
+            "layer": 2,
+            "active_codes": 254,
+            "dead_codes": 2,
+            "utilization": 0.9921875,
+            "effective_codes": 221.74425395817568,
+            "top1_fraction": 0.01227492582205422,
+            "top10_fraction": 0.09763037028004715
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 242.7849283613432,
+            "top1_fraction": 0.008698126244766898,
+            "top10_fraction": 0.07657602731374223
+          }
+        ],
+        "seconds": 6.4052226000058
+      },
+      {
+        "epoch": 12,
+        "loss": 0.5533208040179787,
+        "validation": {
+          "reconstruction_loss": 0.4806975703211825,
+          "total_loss": 0.5582704158823463,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 77,
+            "dead_codes": 179,
+            "utilization": 0.30078125,
+            "effective_codes": 56.71471821937857,
+            "top1_fraction": 0.06194366540665772,
+            "top10_fraction": 0.32874039751249845
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 235.34894343512204,
+            "top1_fraction": 0.010283298784701052,
+            "top10_fraction": 0.08779417144250701
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 232.78185767897534,
+            "top1_fraction": 0.01081168963134577,
+            "top10_fraction": 0.08482705361134821
+          }
+        ],
+        "seconds": 4.92014279999421
+      },
+      {
+        "epoch": 13,
+        "loss": 0.5503452165492234,
+        "validation": {
+          "reconstruction_loss": 0.47190144315189375,
+          "total_loss": 0.5535070191939365,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 83,
+            "dead_codes": 173,
+            "utilization": 0.32421875,
+            "effective_codes": 59.8016760823342,
+            "top1_fraction": 0.05966752022111125,
+            "top10_fraction": 0.31874161687599073
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 238.58012159730026,
+            "top1_fraction": 0.01081168963134577,
+            "top10_fraction": 0.08580254440515385
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 240.85397293860896,
+            "top1_fraction": 0.009226517091411616,
+            "top10_fraction": 0.07734829085883835
+          }
+        ],
+        "seconds": 4.2927171000046656
+      },
+      {
+        "epoch": 14,
+        "loss": 0.5478158787159989,
+        "validation": {
+          "reconstruction_loss": 0.4666705588116149,
+          "total_loss": 0.5528885306538762,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 88,
+            "dead_codes": 168,
+            "utilization": 0.34375,
+            "effective_codes": 64.17199500256557,
+            "top1_fraction": 0.0583262203796285,
+            "top10_fraction": 0.3026460187781978
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 238.35079974006743,
+            "top1_fraction": 0.010892980530829573,
+            "top10_fraction": 0.0844612445636711
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 236.48719048571422,
+            "top1_fraction": 0.011462016827216193,
+            "top10_fraction": 0.08133154493354469
+          }
+        ],
+        "seconds": 4.889079000000493
+      },
+      {
+        "epoch": 15,
+        "loss": 0.5457821117205062,
+        "validation": {
+          "reconstruction_loss": 0.46278023091522424,
+          "total_loss": 0.5543616997229086,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 90,
+            "dead_codes": 166,
+            "utilization": 0.3515625,
+            "effective_codes": 67.3678380071946,
+            "top1_fraction": 0.04771775799699224,
+            "top10_fraction": 0.2888672113156932
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 241.02178129186774,
+            "top1_fraction": 0.01081168963134577,
+            "top10_fraction": 0.08234768117709222
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 242.59647188873885,
+            "top1_fraction": 0.0073974718530260535,
+            "top10_fraction": 0.06795919196845913
+          }
+        ],
+        "seconds": 4.490445400006138
+      },
+      {
+        "epoch": 16,
+        "loss": 0.5459499334904283,
+        "validation": {
+          "reconstruction_loss": 0.45659126878705264,
+          "total_loss": 0.5508716143696465,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 93,
+            "dead_codes": 163,
+            "utilization": 0.36328125,
+            "effective_codes": 68.7638535035636,
+            "top1_fraction": 0.045279031012478155,
+            "top10_fraction": 0.28545299353737347
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 241.8044330994042,
+            "top1_fraction": 0.012112344023086615,
+            "top10_fraction": 0.08336381742063977
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 244.73913575678546,
+            "top1_fraction": 0.008413608096573589,
+            "top10_fraction": 0.07137340974677885
+          }
+        ],
+        "seconds": 4.337225399998715
+      },
+      {
+        "epoch": 17,
+        "loss": 0.5458087716355332,
+        "validation": {
+          "reconstruction_loss": 0.45326955801731833,
+          "total_loss": 0.551513373299455,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 94,
+            "dead_codes": 162,
+            "utilization": 0.3671875,
+            "effective_codes": 71.2344576650243,
+            "top1_fraction": 0.03954802259887006,
+            "top10_fraction": 0.27858391253099213
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 242.21286055246657,
+            "top1_fraction": 0.010974271430313376,
+            "top10_fraction": 0.07828313620290209
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 240.74261719650218,
+            "top1_fraction": 0.009795553387798236,
+            "top10_fraction": 0.08413608096573588
+          }
+        ],
+        "seconds": 4.84854579999228
+      },
+      {
+        "epoch": 18,
+        "loss": 0.5441780405640917,
+        "validation": {
+          "reconstruction_loss": 0.44952550581063083,
+          "total_loss": 0.5518627798695361,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 101,
+            "dead_codes": 155,
+            "utilization": 0.39453125,
+            "effective_codes": 73.5580917424445,
+            "top1_fraction": 0.04141771328699752,
+            "top10_fraction": 0.2763890582449295
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 242.95498602878146,
+            "top1_fraction": 0.009836198837540137,
+            "top10_fraction": 0.08051863593870666
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 241.19608659045397,
+            "top1_fraction": 0.00987684428728204,
+            "top10_fraction": 0.07669796366296792
+          }
+        ],
+        "seconds": 4.435364300006768
+      },
+      {
+        "epoch": 19,
+        "loss": 0.5440159133840895,
+        "validation": {
+          "reconstruction_loss": 0.4472058973947547,
+          "total_loss": 0.5536662812858935,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 102,
+            "dead_codes": 154,
+            "utilization": 0.3984375,
+            "effective_codes": 74.27464171025716,
+            "top1_fraction": 0.04133642238751372,
+            "top10_fraction": 0.27557614925009144
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 240.72394270527042,
+            "top1_fraction": 0.00991748973702394,
+            "top10_fraction": 0.07929927244644962
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 235.27268629259626,
+            "top1_fraction": 0.01227492582205422,
+            "top10_fraction": 0.09100516197211722
+          }
+        ],
+        "seconds": 4.750104899998405
+      },
+      {
+        "epoch": 20,
+        "loss": 0.5442831036603892,
+        "validation": {
+          "reconstruction_loss": 0.4426970372328887,
+          "total_loss": 0.5520182084853125,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 103,
+            "dead_codes": 153,
+            "utilization": 0.40234375,
+            "effective_codes": 75.87445846073734,
+            "top1_fraction": 0.037678331910742595,
+            "top10_fraction": 0.27273096776815836
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 242.32148696867887,
+            "top1_fraction": 0.010242653334959152,
+            "top10_fraction": 0.07925862699670772
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 242.2127922267654,
+            "top1_fraction": 0.009145226191927813,
+            "top10_fraction": 0.07462504572613096
+          }
+        ],
+        "seconds": 4.166731300007086
+      },
+      {
+        "epoch": 21,
+        "loss": 0.543949596843976,
+        "validation": {
+          "reconstruction_loss": 0.44240197902940875,
+          "total_loss": 0.5548811562273033,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 104,
+            "dead_codes": 152,
+            "utilization": 0.40625,
+            "effective_codes": 76.4535192666879,
+            "top1_fraction": 0.04117384058854611,
+            "top10_fraction": 0.27386904036093157
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 241.3593344069826,
+            "top1_fraction": 0.010120716985733446,
+            "top10_fraction": 0.08027476324025526
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 240.21873195692368,
+            "top1_fraction": 0.009673617038572531,
+            "top10_fraction": 0.07954314514490103
+          }
+        ],
+        "seconds": 4.046419300007983
+      },
+      {
+        "epoch": 22,
+        "loss": 0.5440285260302408,
+        "validation": {
+          "reconstruction_loss": 0.437528336830581,
+          "total_loss": 0.5513876945355685,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 108,
+            "dead_codes": 148,
+            "utilization": 0.421875,
+            "effective_codes": 78.6306301087692,
+            "top1_fraction": 0.03727187741332358,
+            "top10_fraction": 0.2712677315774499
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 244.74334386319836,
+            "top1_fraction": 0.009754907938056334,
+            "top10_fraction": 0.0730398731861968
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 246.05704713140557,
+            "top1_fraction": 0.011055562329797179,
+            "top10_fraction": 0.0727553550380035
+          }
+        ],
+        "seconds": 5.0689259999926435
+      },
+      {
+        "epoch": 23,
+        "loss": 0.5430634628586307,
+        "validation": {
+          "reconstruction_loss": 0.43455971907464697,
+          "total_loss": 0.5498472404295873,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 108,
+            "dead_codes": 148,
+            "utilization": 0.421875,
+            "effective_codes": 79.66219561538068,
+            "top1_fraction": 0.03682477746616266,
+            "top10_fraction": 0.27025159533390236
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 243.45958316924285,
+            "top1_fraction": 0.010364589684184855,
+            "top10_fraction": 0.078730236150063
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 244.92768812051946,
+            "top1_fraction": 0.011787180425151405,
+            "top10_fraction": 0.07499085477380807
+          }
+        ],
+        "seconds": 4.341177800000878
+      },
+      {
+        "epoch": 24,
+        "loss": 0.5420445861823383,
+        "validation": {
+          "reconstruction_loss": 0.43364299156030633,
+          "total_loss": 0.5526357204757602,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 110,
+            "dead_codes": 146,
+            "utilization": 0.4296875,
+            "effective_codes": 80.17313496831831,
+            "top1_fraction": 0.03666219566719506,
+            "top10_fraction": 0.26964191358777384
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 241.55107921277573,
+            "top1_fraction": 0.010852335081087672,
+            "top10_fraction": 0.08011218144128765
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 240.52043290308595,
+            "top1_fraction": 0.013534934764053165,
+            "top10_fraction": 0.08389220826728448
+          }
+        ],
+        "seconds": 4.586083899994264
+      },
+      {
+        "epoch": 25,
+        "loss": 0.5423245669520832,
+        "validation": {
+          "reconstruction_loss": 0.4323883119697276,
+          "total_loss": 0.5549726597130529,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 112,
+            "dead_codes": 144,
+            "utilization": 0.4375,
+            "effective_codes": 81.51386396047316,
+            "top1_fraction": 0.03613380482055034,
+            "top10_fraction": 0.2708612770800309
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 240.00727322709827,
+            "top1_fraction": 0.009714262488314434,
+            "top10_fraction": 0.07929927244644962
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 236.94561442904447,
+            "top1_fraction": 0.011136853229280982,
+            "top10_fraction": 0.08267284477502744
+          }
+        ],
+        "seconds": 3.7966916000004858
+      },
+      {
+        "epoch": 26,
+        "loss": 0.5422847881814462,
+        "validation": {
+          "reconstruction_loss": 0.4304422171419652,
+          "total_loss": 0.5542177899924025,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 112,
+            "dead_codes": 144,
+            "utilization": 0.4375,
+            "effective_codes": 82.23675593547372,
+            "top1_fraction": 0.0350770231272609,
+            "top10_fraction": 0.26403284152339146
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 243.33115966466528,
+            "top1_fraction": 0.010364589684184855,
+            "top10_fraction": 0.0758850546681299
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 240.76766743661847,
+            "top1_fraction": 0.011502662276958094,
+            "top10_fraction": 0.07970572694386864
+          }
+        ],
+        "seconds": 4.077937200010638
+      },
+      {
+        "epoch": 27,
+        "loss": 0.5424336720006192,
+        "validation": {
+          "reconstruction_loss": 0.42897336147006415,
+          "total_loss": 0.5540863948899346,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 114,
+            "dead_codes": 142,
+            "utilization": 0.4453125,
+            "effective_codes": 82.47588805832518,
+            "top1_fraction": 0.03580864122261513,
+            "top10_fraction": 0.26573995041255133
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 243.04783224611154,
+            "top1_fraction": 0.011299435028248588,
+            "top10_fraction": 0.0760882819168394
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 241.6850090342102,
+            "top1_fraction": 0.01077104418160387,
+            "top10_fraction": 0.0786895907003211
+          }
+        ],
+        "seconds": 3.263835799996741
+      },
+      {
+        "epoch": 28,
+        "loss": 0.5418205118826656,
+        "validation": {
+          "reconstruction_loss": 0.42749972732370883,
+          "total_loss": 0.5557255190311712,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 116,
+            "dead_codes": 140,
+            "utilization": 0.453125,
+            "effective_codes": 83.6363216403498,
+            "top1_fraction": 0.03320733243913344,
+            "top10_fraction": 0.2627321871316506
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 241.4068669104477,
+            "top1_fraction": 0.011340080477990488,
+            "top10_fraction": 0.08133154493354469
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 239.7567222572306,
+            "top1_fraction": 0.010689753282120067,
+            "top10_fraction": 0.07970572694386864
+          }
+        ],
+        "seconds": 3.937091400002828
+      },
+      {
+        "epoch": 29,
+        "loss": 0.5418137554927982,
+        "validation": {
+          "reconstruction_loss": 0.42372778435471437,
+          "total_loss": 0.5534581213384061,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 116,
+            "dead_codes": 140,
+            "utilization": 0.453125,
+            "effective_codes": 85.02098948445712,
+            "top1_fraction": 0.03219119619558591,
+            "top10_fraction": 0.25838312400926716
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 244.19499466217277,
+            "top1_fraction": 0.010120716985733446,
+            "top10_fraction": 0.07686054546193553
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 244.77462148414887,
+            "top1_fraction": 0.010974271430313376,
+            "top10_fraction": 0.07625086371580701
+          }
+        ],
+        "seconds": 4.040361099992879
+      },
+      {
+        "epoch": 30,
+        "loss": 0.5428023710874156,
+        "validation": {
+          "reconstruction_loss": 0.4249480957920487,
+          "total_loss": 0.5585819361292718,
+          "items": 1295
+        },
+        "train_occupancy_snapshot": [
+          {
+            "layer": 1,
+            "active_codes": 116,
+            "dead_codes": 140,
+            "utilization": 0.453125,
+            "effective_codes": 85.11940316238831,
+            "top1_fraction": 0.0322318416453278,
+            "top10_fraction": 0.2555379425273341
+          },
+          {
+            "layer": 2,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 241.2999278055591,
+            "top1_fraction": 0.0116245986261838,
+            "top10_fraction": 0.08206316302889892
+          },
+          {
+            "layer": 3,
+            "active_codes": 256,
+            "dead_codes": 0,
+            "utilization": 1.0,
+            "effective_codes": 237.97767220472568,
+            "top1_fraction": 0.01138072592773239,
+            "top10_fraction": 0.08421737186521969
+          }
+        ],
+        "seconds": 3.8188028000004124
+      }
+    ],
+    "codec_train_items": 24603,
+    "codec_validation_items": 1295,
+    "selection": "same 5% catalog-vector reconstruction validation as Adam baseline",
+    "loss": "normalized reconstruction + 0.25 * summed per-level commitment; no codebook loss",
+    "optimizer": "Adam encoder/decoder only; EMA applied after optimizer step using pre-step residuals",
+    "residual_graph": "same upstream per-level STE as Adam; no residual-gradient changes",
+    "initialization": "same bounded residual MiniBatchKMeans and 4096 training vectors; EMA pseudocount=initial_mass",
+    "dead_code_reset": false,
+    "best_epoch": 29,
+    "best_validation_reconstruction": 0.42372778435471437,
+    "completed_at_utc": "2026-10-08T04:17:59.414936+00:00",
+    "elapsed_seconds": 173.6883458000084,
+    "parameters": 294912,
+    "optimizer_parameters": 270336,
+    "best_checkpoint_sha256": "53199a2f04865a4a77e05ae60bd1750d95d0bb40f15a03f37d79e4781eaf5e29",
+    "stop_reason": "requested_epochs_completed"
+  },
+  "embeddings": {
+    "contract": {
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "dimension": 384,
+      "max_tokens": 128,
+      "items": 25898,
+      "items_source_sha256": "384f4e588f516272d4c43b18766b7f047ea4415d4d71b7ebb5191f12a62798ae",
+      "smoke_only": false,
+      "normalization": "attention-mask mean pooling then L2",
+      "frozen": true
+    },
+    "status": "completed",
+    "encoded_items": 25898,
+    "started_at_utc": "2026-10-08T03:27:38.342044+00:00",
+    "missing_metadata": 28,
+    "placeholder_items": 28,
+    "duplicate_text_items": 101,
+    "truncated_text_items": 20645,
+    "batch_size": 32,
+    "threads": 2,
+    "elapsed_this_segment_seconds": 3.3719840999983717,
+    "peak_observed_rss_bytes": 694714368,
+    "completed_at_utc": "2026-10-08T03:55:18.940671+00:00",
+    "embedding_sha256": "45a2535449726c0aaebf914eb5e3021fa64f822d6bf6d0c909fbb2d20f66c6c0",
+    "array_shape": [
+      25899,
+      384
+    ],
+    "recovery_note": "At item 25824, Windows reader temporarily denied atomic rename; resumed from committed rows after adding retry; final full-array fingerprint verified.",
+    "observed_original_encoding_segment_seconds": 1505.630261600003,
+    "model_weights_sha256": "53aa51172d142c89d9012cce15ae4d6cc0ca6895895114379cacb4fab128d9db"
+  }
+}

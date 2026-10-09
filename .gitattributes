@@ -1,1 +1,7 @@
 * text=auto
+
+# Experiment fingerprints hash exact file bytes; preserve executable sources on all platforms.
+/scripts/** -text
+/baselines/** -text
+/tests/** -text
+/sources.json text eol=lf
