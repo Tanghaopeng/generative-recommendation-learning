@@ -1,0 +1,32 @@
+{
+  "checked_date": "2026-10-10",
+  "model_id": "Qwen/Qwen3-Embedding-4B",
+  "revision": "5cf2132abc99cad020ac570b19d031efec650f2b",
+  "provider": "矩池云网盘",
+  "region": "1区",
+  "cloud_directory": "/Qwen3-Embedding-4B",
+  "same_region_instance_path": "/mnt/Qwen3-Embedding-4B",
+  "status": "upload_complete_verified_by_ui",
+  "weights": [
+    {
+      "name": "model-00001-of-00002.safetensors",
+      "bytes": 4965826464,
+      "local_sha256": "e70bfe3c970523fb7ef4eddffed2254ce3f1e7150c3de2af4342de129dd756f8",
+      "upload_ui_icon": "mp-check-success",
+      "recovery": "resubmitted through browser; reused existing uploaded blocks"
+    },
+    {
+      "name": "model-00002-of-00002.safetensors",
+      "bytes": 3077765624,
+      "local_sha256": "ed1b87c8e9eb7e535a1a155e4fd00d9f4dba80e58a6db48a4c9f82cede7079c1",
+      "upload_ui_icon": "mp-check-success"
+    }
+  ],
+  "supporting_files": "tokenizer, model config, index, Sentence Transformers configs and 1_Pooling/config.json uploaded",
+  "historical_failed_task_retained": true,
+  "remote_sha256_verified": false,
+  "verification_scope": "local hashes match pinned official files; cloud upload completion checked through UI success icons, not a remote full-file hash or model forward",
+  "excluded_test_directory": "HTTP导入测试_已取消_不可用",
+  "catalog_embeddings_generated": false,
+  "model_training_run": false
+}

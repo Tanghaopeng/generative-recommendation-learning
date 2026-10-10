@@ -3,7 +3,7 @@
   "commit": "bccd7ef70291c5b4b0c30b6222bc491039b4cd18",
   "retrieved_on": "2026-10-09",
   "upstream_files_modified": false,
-  "purpose": "source-reading reference; not imported by local runner",
+  "purpose": "unmodified SFT and GRPO entry points and transitive minionerec source dependencies; reading/reference only; not imported by local runner",
   "license_file": "upstream/LICENSE-MiniOneRec.txt",
   "sha256": {
     "LICENSE-MiniOneRec.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
@@ -12,6 +12,15 @@
     "src/minionerec/training/sft_vocab.py": "dc2a9181a36b68f50d1dd858b84071eca566250c3ec91e4ca7b55bf02f14bfdf",
     "src/minionerec/data/sft_datasets.py": "ceaa73997664f48dbbacda13e942083491f4e9d674c52052542de5ad4b9935de",
     "scripts/train_sft.py": "4797d1ab63c99c9d1ee7697972d8f51add442283e749a14cd42185eabe262636",
-    "requirements-a6000.txt": "edc1986c02cb58c5d0efc1cbe9d9aee76b6e6c8c0f77bda028d524ba85b16d93"
-  }
+    "requirements-a6000.txt": "edc1986c02cb58c5d0efc1cbe9d9aee76b6e6c8c0f77bda028d524ba85b16d93",
+    "scripts/train_grpo.py": "1eebfa5f553a0bd7cdfa46c3401175f2372f3730a540f6af0e8950cb8bffb168",
+    "src/minionerec/training/grpo_training.py": "fd703fe756c8761f005ba8473b9c27fc4c4d9a91d10a90032016b70c09987cb9",
+    "src/minionerec/data/grpo_datasets.py": "d54e217d4abf7fa27b839f645c4e9c18506794de57aa792faabda6d0b87100ce",
+    "src/minionerec/generation/grpo_generation.py": "1f19332398760b15b4db6f3277ae8d56454555df005115388ae04f3ba155cb2b",
+    "src/minionerec/generation/sft_generation.py": "dc360b54b457d2962319b191469c66110cb1f05e66f781cd08a4c2f6882938cd",
+    "src/minionerec/rewards/ranking_grpo.py": "0a7637ab08c0887f16dbdffa552d233cd399931e328ade35885697d5c09bdcd2",
+    "src/minionerec/training/grpo_loss.py": "1aec36028945578956b3111e4eb9ad855e40e60d8f18cc4d24c3162941647b35",
+    "src/minionerec/evaluation/ranking.py": "c47607cf6c4e774e981961faab63d0f5790bcc1077fa8ffc662b27a34a7064f7"
+  },
+  "grpo_retrieved_on": "2026-10-10"
 }

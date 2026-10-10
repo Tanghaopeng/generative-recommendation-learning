@@ -1,0 +1,11 @@
+{
+  "model_id": "Qwen/Qwen3-Embedding-4B",
+  "revision": "5cf2132abc99cad020ac570b19d031efec650f2b",
+  "model_card": "https://huggingface.co/Qwen/Qwen3-Embedding-4B",
+  "license_declared_in_model_card": "apache-2.0",
+  "license_text_note": "Standard Apache-2.0 text supplied by this project; not a separate LICENSE file downloaded from the model repository",
+  "selected_size": "4B",
+  "default_dimension": 2560,
+  "pooling": "last effective token + L2 normalization",
+  "status": "assets_downloading_no_catalog_embeddings_yet"
+}

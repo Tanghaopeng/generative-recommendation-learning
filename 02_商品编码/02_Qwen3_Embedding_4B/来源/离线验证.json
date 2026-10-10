@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "model_id": "Qwen/Qwen3-Embedding-4B",
+  "revision": "5cf2132abc99cad020ac570b19d031efec650f2b",
+  "files_verified": 13,
+  "stored_parameters": 4021774336,
+  "weight_tensor_bytes": 8043548672,
+  "layers": 36,
+  "hidden_size": 2560,
+  "embedding_dimension": 2560,
+  "attention_heads": 32,
+  "kv_heads": 8,
+  "head_dim": 128,
+  "tokenizer_batch_shape": [
+    2,
+    9
+  ],
+  "pooling": "last effective token + L2 normalization",
+  "local_files_only": true,
+  "scope": "SHA256, safetensors headers/index and tokenizer only; no full-model forward, training or catalog embedding"
+}

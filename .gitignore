@@ -21,6 +21,9 @@ venv/
 *.safetensors
 # Explicitly requested pinned MiniLM checkpoint; other weights remain ignored.
 !/02_商品编码/01_MiniLM/模型权重/model.safetensors
+# Larger embedding assets are downloaded locally and copied to persistent cloud storage.
+/02_商品编码/02_Qwen3_Embedding_4B/模型文件/
+/02_商品编码/02_Qwen3_Embedding_0.6B/
 *.part
 *.log
 wandb/

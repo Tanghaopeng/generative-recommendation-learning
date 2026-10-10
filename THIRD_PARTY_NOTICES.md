@@ -47,9 +47,16 @@
 - 本项目使用 Transformers 加载预训练权重，masked mean pooling、L2归一化，离线产出384维向量。
 - 不训练此编码器，CPU版本实际截断128 token。按用户要求，2026-10-09将这份固定版本的实际权重和tokenizer发布到[02商品编码/MiniLM](02_商品编码/01_MiniLM/README.md)，保留官方模型卡、Apache-2.0许可说明、逐文件来源与校验值；其他训练权重仍保留本地。
 
-## Qwen SFT 的 MiniOneRec 单卡参考
+## Qwen SFT / GRPO 的 MiniOneRec 单卡参考
 
 - 来源：[wbn11/minionerec-single-gpu](https://github.com/wbn11/minionerec-single-gpu)，固定提交 `bccd7ef70291c5b4b0c30b6222bc491039b4cd18`。
 - 未修改参考源码、README、依赖和上游提供的 Apache-2.0 `LICENSE-MiniOneRec.txt` 保存在 [baselines/minionerec_reference](baselines/minionerec_reference/README.md)，校验值见该目录 `upstream_source.json`。
+- 2026-10-10 补齐上游 GRPO 入口、训练、样本、候选生成、奖励、损失及相关源码依赖；与 SFT 使用同一固定提交，文件未修改。它们作为阅读参考保留，本项目四段 SID 的 GRPO 适配尚未实现或训练。
 - 参考其全参数BF16 SFT、SID词表扩展、回答监督与多任务对齐设计。本地 `qwen_sft.py`、`prepare_qwen_sft.py`、`train_qwen_sft.py`、`evaluate_qwen_sft.py` 为独立适配，未直接调用上游三段SID训练入口；不是官方OneRec或精确论文复现。
 - 模型：[Qwen/Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct)，固定 revision `989aa7980e4cf806f80c7fef2b1adb7bc71aa306`。本地已验证模型权重，权重和数据均不提交Git；遵循模型自带许可证。
+
+## 第二套商品文本编码器
+
+- 模型：[Qwen/Qwen3-Embedding-4B](https://huggingface.co/Qwen/Qwen3-Embedding-4B)，固定 revision `5cf2132abc99cad020ac570b19d031efec650f2b`，官方模型卡标注 Apache-2.0。
+- 本地资产及说明：[02_Qwen3_Embedding_4B](02_商品编码/02_Qwen3_Embedding_4B/README.md)。下载器逐文件核对官方固定版本的 Git blob 或 LFS SHA256；ModelScope 仅作为下载镜像，不能替代固定版本的校验依据。
+- 原始模型卡保留在本地标准模型目录；约8.04GB权重保留本地和矩阵云，不进入普通Git。
