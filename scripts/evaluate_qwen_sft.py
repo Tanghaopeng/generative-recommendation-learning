@@ -20,6 +20,10 @@ def main():
     parser.add_argument('--selection-record', type=Path, help='Required for test: frozen selection JSON with checkpoint and data hashes')
     args = parser.parse_args()
     manifest, rows, catalog, _ = load_prepared(args.data)
+    q0 = None
+    if (args.checkpoint / 'q0_initialization.json').is_file():
+        from qwen_initialization import check_initialization
+        q0 = check_initialization(args.checkpoint, args.data)
     if args.output.exists():
         raise ValueError('Evaluation output already exists; preserve the prior record')
     if args.split == 'test':
@@ -39,6 +43,8 @@ def main():
     result = evaluate_retrieval(model, tokenizer, catalog, select_subset(rows, args.users, args.seed),
                                 args.split, args.beam, manifest['max_history'], args.max_length)
     result.update(split=args.split, diagnostic_only=args.users > 0,
+                  model_stage='q0_untrained_sid' if q0 else 'trained_checkpoint',
+                  initialization_seed=q0['seed'] if q0 else None,
                   max_length=args.max_length,
                   checkpoint_weight_sha256=sha256(args.checkpoint / 'model.safetensors'),
                   prepared_manifest_sha256=sha256(args.data / 'manifest.json'))

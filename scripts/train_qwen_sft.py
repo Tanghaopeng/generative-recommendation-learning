@@ -20,6 +20,7 @@ def main():
     parser.add_argument('--config', type=Path, required=True)
     parser.add_argument('--data', type=Path, required=True)
     parser.add_argument('--model', type=Path, required=True)
+    parser.add_argument('--initialization', type=Path, help='Verified Q0 export: load these exact weights and SID tokenizer')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--dry-run', action='store_true', help='Tokenizer and sample checks only; NO 1.5B model loaded')
     parser.add_argument('--resume', type=Path, help='A Trainer checkpoint, including optimizer/scheduler/RNG')
@@ -33,8 +34,18 @@ def main():
     if config.get('max_steps', -1) > 0 and not config['pilot']:
         raise ValueError('Step-limited training must be labelled pilot')
     set_seed(config['seed'])
-    tokenizer = AutoTokenizer.from_pretrained(args.model, local_files_only=True, trust_remote_code=False)
+    initialization = None
+    model_source = args.model
+    if args.initialization:
+        from qwen_initialization import check_initialization
+        initialization = check_initialization(args.initialization, args.data, config['seed'])
+        model_source = args.initialization
+    tokenizer = AutoTokenizer.from_pretrained(model_source, local_files_only=True, trust_remote_code=False)
     vocab = extend_tokenizer(tokenizer, manifest['tokens_per_namespace'])
+    if initialization:
+        if vocab['added_tokens'] != 0 or len(tokenizer) != initialization['vocabulary']['tokenizer_size']:
+            raise ValueError('Q0 tokenizer does not already contain the complete SID vocabulary')
+        vocab = initialization['vocabulary']
     train_examples = select_subset(examples, config['train_limit'], config['seed'])
     valid_rows = select_subset(rows, config['validation_users'], config['seed'] + 1)
     train = SFTDataset(rows, catalog, train_examples, tokenizer, config['recipe'], config['max_length'], config['max_history'])
@@ -54,11 +65,15 @@ def main():
                model_metadata_sha256={name: sha256(args.model / name) for name in
                                       ('config.json', 'tokenizer_config.json', 'tokenizer.json', 'vocab.json', 'merges.txt')},
                config=config, prepared_manifest_sha256=sha256(args.data / 'manifest.json'),
+               initialization=None if initialization is None else {
+                   'checkpoint_weight_sha256': initialization['checkpoint_weight_sha256'],
+                   'record_sha256': sha256(args.initialization / 'q0_initialization.json'),
+                   'seed': initialization['seed']},
                vocabulary=vocab, train_rows=len(train), main_next_item_rows=len(train_examples),
                validation_users=len(valid_rows), example_batch_shape=list(batch['input_ids'].shape),
                supervised_tokens_per_example=[sum(x != -100 for x in row['labels']) for row in checks],
                code_sha256={name: sha256(ROOT / 'scripts' / name) for name in
-                            ('qwen_sft.py', 'prepare_qwen_sft.py', 'train_qwen_sft.py')},
+                            ('qwen_sft.py', 'qwen_initialization.py', 'prepare_qwen_sft.py', 'train_qwen_sft.py')},
                timestamp_utc=datetime.now(timezone.utc).isoformat())
     if args.dry_run:
         args.output.mkdir(parents=True)
@@ -72,10 +87,12 @@ def main():
         raise ValueError('This recipe is validated for one GPU only; expose one using CUDA_VISIBLE_DEVICES')
     if sha256(args.model / 'model.safetensors') != MODEL_SHA256:
         raise ValueError('Base model weight differs from the pinned, verified Qwen checkpoint')
+    if initialization and run['model_metadata_sha256'] != initialization['source_model_metadata_sha256']:
+        raise ValueError('Q0 source model metadata differs from the requested original model')
     from transformers import TrainingArguments, EarlyStoppingCallback
 
     # Resume guards prevent mixing SIDs, subsets, recipes, or code with old optimizer states.
-    contract = {key: run[key] for key in ('config', 'prepared_manifest_sha256', 'code_sha256', 'model_revision', 'model_metadata_sha256')}
+    contract = {key: run[key] for key in ('config', 'prepared_manifest_sha256', 'code_sha256', 'model_revision', 'model_metadata_sha256', 'initialization')}
     if args.resume:
         if args.dry_run or not args.resume.is_dir():
             raise ValueError('Invalid resume checkpoint')
@@ -86,11 +103,12 @@ def main():
         saved_tokenizer = AutoTokenizer.from_pretrained(args.resume, local_files_only=True)
         if saved_tokenizer.get_vocab() != tokenizer.get_vocab():
             raise ValueError('Resume SID tokenizer differs')
-    model = AutoModelForCausalLM.from_pretrained(args.model, local_files_only=True,
+    model = AutoModelForCausalLM.from_pretrained(model_source, local_files_only=True,
                                                trust_remote_code=False, dtype=torch.bfloat16,
                                                attn_implementation='sdpa')
     # Explicit normal initialization avoids a costly covariance computation on the large Qwen vocabulary.
-    model.resize_token_embeddings(len(tokenizer), mean_resizing=False)
+    if not initialization:
+        model.resize_token_embeddings(len(tokenizer), mean_resizing=False)
     model.requires_grad_(True)
     model.config.use_cache = False
     if any(not parameter.requires_grad for parameter in model.parameters()):

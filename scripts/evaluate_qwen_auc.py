@@ -47,6 +47,10 @@ def main():
     if args.users < 0 or args.negatives < 1 or args.candidate_batch_size < 1:
         raise ValueError('Invalid users/negative count/batch size')
     manifest, rows, catalog, _ = load_prepared(args.data)
+    q0 = None
+    if (args.checkpoint / 'q0_initialization.json').is_file():
+        from qwen_initialization import check_initialization
+        q0 = check_initialization(args.checkpoint, args.data)
     weight_hash = sha256(args.checkpoint / 'model.safetensors')
     data_hash = sha256(args.data / 'manifest.json')
     if args.split == 'test':
@@ -94,6 +98,8 @@ def main():
                 print(f'AUC users: {index+1}/{len(rows)}', flush=True)
     metrics = grouped_auc(groups)
     metrics.update(status='completed', split=args.split, users=len(rows),
+                   model_stage='q0_untrained_sid' if q0 else 'trained_checkpoint',
+                   initialization_seed=q0['seed'] if q0 else None,
                    diagnostic_only=len(rows) < manifest['users'], sampled_negatives=args.negatives,
                    protocol=f'uniform_without_replacement_S{args.negatives}', seed=args.seed,
                    score='sum of four SID token log-probabilities under the unmasked full vocabulary; no EOS',

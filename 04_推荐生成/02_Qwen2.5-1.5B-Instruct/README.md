@@ -3,6 +3,35 @@
 流程：已有商品文本 → 冻结MiniLM向量 → 已有Adam/EMA四段SID → Qwen推荐样本 → 全参数SFT → 商品级检索验证 → 固定选模后测试。
 Qwen 在这一版负责生成 SID，不负责重新生成商品内容向量。
 
+## 先保存 Q0，再从同一检查点训练 Q1
+
+2026-10-12 增加 [export_qwen_q0.py](../../scripts/export_qwen_q0.py) 和 [qwen_initialization.py](../../scripts/qwen_initialization.py)。
+Q0 在 CPU 上加载固定官方 BF16 权重，固定 seed=2026，增加 4×256 个普通 SID token，初始化其输入/输出向量后保存完整检查点；没有反向传播或优化器更新。
+Qwen 原权重中有 tokenizer 尚未使用的词表行，SID 会占用其中一部分。因此初始化覆盖全部 1024 个 SID 对应行，而非仅覆盖 resize 新增的行。
+原 tokenizer 可表达的 token 向量及 Transformer 层参数不变；若输入/输出权重绑定，仍保持绑定。
+
+以下命令在项目根目录和已配置的 Python 环境内执行；模型和 Q0 完整检查点放在实例硬盘，避免把 5GB 网盘塞满：
+
+```bash
+python scripts/export_qwen_q0.py --model /root/generative-run-20261012/assets/Qwen2.5-1.5B-Instruct --data data/processed/office2018/qwen_sft_adam --seed 2026 --output /root/generative-run-20261012/outputs/qwen_q0_seed2026
+python scripts/evaluate_qwen_sft.py --checkpoint /root/generative-run-20261012/outputs/qwen_q0_seed2026 --data data/processed/office2018/qwen_sft_adam --split valid --users 64 --seed 2027 --output outputs/q0_valid_u64_seed2027.json
+```
+
+64 人结果仅为通路与耗时诊断，不能当成正式效果；正式比较固定同一用户集合、SID、提示模板和解码配置。Q0 新 SID 未经过商品语义对齐，不代表已对齐的大模型零样本推荐能力。
+完整验证、冻结选择和测试沿用下方入口；评测报告中标记 `model_stage=q0_untrained_sid`。
+
+Q1 显式传入已保存的 Q0，直接加载其权重与 tokenizer，不重新随机初始化 SID：
+
+```bash
+python scripts/train_qwen_sft.py --config 04_推荐生成/02_Qwen2.5-1.5B-Instruct/configs/q1_pilot.json --data data/processed/office2018/qwen_sft_adam --model /root/generative-run-20261012/assets/Qwen2.5-1.5B-Instruct --initialization /root/generative-run-20261012/outputs/qwen_q0_seed2026 --output outputs/qwen_q1_from_q0_pilot --dry-run
+```
+
+Q0 记录绑定原模型、SID 数据 manifest、seed、全部导出文件指纹；校验失败会拒绝加载。`--initialization` 同样适用于正式 Q1、Q2 和续训命令。
+下方不带 `--initialization` 的旧命令仍兼容，但属于重新扩词初始化的旧方案，不能作为“与 Q0 相同起点”的主线结果。
+导出目录已存在时拒绝覆盖；若导出中断，应保留现场并使用新的目录，而不是把半成品当成完整检查点。
+
+[start_q0_tabby.sh](../../scripts/start_q0_tabby.sh) 是本次实例的人工操作辅助入口：按指定完整 Git 提交下载适配代码，备份旧脚本，然后只导出 Q0；不自动执行评测、SFT 或 GRPO。
+
 ## 入口与配置
 
 | 文件 | 作用 |
@@ -35,7 +64,7 @@ python scripts/train_qwen_sft.py --config 04_推荐生成/02_Qwen2.5-1.5B-Instru
 ```
 
 全参训练：全部Qwen层、输入embedding、输出头都更新；无LoRA、无量化训练。BF16、梯度检查点、microbatch2、累积64，即单GPU每次更新128条样本；AdamW、lr5e-5、cosine、3%warmup、梯度裁剪1.0。
-先跑pilot测峰值显存再确定正式预算；48GB是目标环境，尚未实测显存与耗时。
+先跑pilot测峰值显存再确定正式预算；当前实例为 A100 40GB，BF16 运算和样本 dry-run 已通过，正式训练显存与耗时尚未测量。
 Q1约397345主任务/轮。Q2每轮访问同样的主任务，再加每件有标题商品的两条对齐样本和每条有目标标题的历史→标题样本，按拼接数据集均匀shuffle；它的算力预算更大，要记录总样本/token/更新次数，不能归因于方法一定更好。
 Q2也是从原始Qwen初始化，不能偷偷接着Q1训练再与Q1当等预算比较。短pilot不用于报告算法优劣。
 
