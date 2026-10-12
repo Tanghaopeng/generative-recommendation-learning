@@ -10,7 +10,7 @@ import time
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from qwen_sft import load_prepared, prompt_ids, read_json, select_subset, sha256, sid_text, write_json
+from qwen_sft import load_prepared, load_qwen_tokenizer, prompt_ids, read_json, select_subset, sha256, sid_text, write_json
 from recommendation_auc import candidate_ids, grouped_auc
 
 
@@ -64,7 +64,7 @@ def main():
             raise ValueError('Selection record does not match checkpoint/data/prompt length')
     if not torch.cuda.is_available() or not torch.cuda.is_bf16_supported():
         raise RuntimeError('This scoring entry requires a BF16 CUDA GPU; no training is started')
-    tokenizer = AutoTokenizer.from_pretrained(args.checkpoint, local_files_only=True, trust_remote_code=False)
+    tokenizer = load_qwen_tokenizer(args.checkpoint)
     codes = {int(item): tokenizer.encode(sid_text(value['sid']), add_special_tokens=False)
              for item, value in catalog.items()}
     if any(len(code) != 4 for code in codes.values()):

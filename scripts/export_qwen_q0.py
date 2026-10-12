@@ -9,7 +9,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
 
 from qwen_initialization import initialize_sid_rows
-from qwen_sft import (MODEL_REVISION, MODEL_SHA256, load_prepared, sha256,
+from qwen_sft import (MODEL_REVISION, MODEL_SHA256, load_prepared, load_qwen_tokenizer, sha256,
                       sid_text, write_json)
 
 
@@ -28,7 +28,7 @@ def main():
     if sha256(args.model / 'model.safetensors') != MODEL_SHA256:
         raise ValueError('Original model weight differs from the pinned official Qwen')
     set_seed(args.seed)
-    tokenizer = AutoTokenizer.from_pretrained(args.model, local_files_only=True, trust_remote_code=False)
+    tokenizer = load_qwen_tokenizer(args.model)
     # Export is a CPU operation. No GPU allocation, gradient, or optimizer step.
     model = AutoModelForCausalLM.from_pretrained(args.model, local_files_only=True,
                                                trust_remote_code=False, dtype=torch.bfloat16,

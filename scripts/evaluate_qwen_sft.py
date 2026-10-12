@@ -1,10 +1,12 @@
 """Explicit frozen-checkpoint item retrieval evaluation, separate from SFT training."""
 import argparse
 from pathlib import Path
+import time
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from qwen_sft import load_prepared, evaluate_retrieval, select_subset, write_json, sha256
+from qwen_sft import (SID_DECODING_PROTOCOL, load_prepared, load_qwen_tokenizer,
+                      evaluate_retrieval, select_subset, write_json, sha256)
 
 
 def main():
@@ -35,16 +37,27 @@ def main():
             raise ValueError('Selection record does not match checkpoint/data')
         if selected.get('beam') != args.beam or selected.get('max_length') != args.max_length or not selected.get('full_validation_completed'):
             raise ValueError('Selection must include full validation and frozen beam')
+        if selected.get('decoding_protocol') != SID_DECODING_PROTOCOL:
+            raise ValueError('Decoding changed; repeat validation and freeze the current protocol before testing')
     if not torch.cuda.is_available():
         raise RuntimeError('Qwen 1.5B evaluation requires the GPU environment')
-    tokenizer = AutoTokenizer.from_pretrained(args.checkpoint, local_files_only=True)
+    tokenizer = load_qwen_tokenizer(args.checkpoint)
     model = AutoModelForCausalLM.from_pretrained(args.checkpoint, local_files_only=True,
                                                dtype=torch.bfloat16, attn_implementation='sdpa').to('cuda')
+    torch.cuda.synchronize()
+    started = time.perf_counter()
+    torch.cuda.reset_peak_memory_stats()
     result = evaluate_retrieval(model, tokenizer, catalog, select_subset(rows, args.users, args.seed),
                                 args.split, args.beam, manifest['max_history'], args.max_length)
+    torch.cuda.synchronize()
+    seconds = time.perf_counter() - started
     result.update(split=args.split, diagnostic_only=args.users > 0,
                   model_stage='q0_untrained_sid' if q0 else 'trained_checkpoint',
                   initialization_seed=q0['seed'] if q0 else None,
+                  seconds=seconds, users_per_second=result['users'] / seconds,
+                  peak_cuda_allocated_bytes=torch.cuda.max_memory_allocated(),
+                  code_sha256={name: sha256(Path(__file__).with_name(name)) for name in
+                               ('qwen_sft.py', 'evaluate_qwen_sft.py')},
                   max_length=args.max_length,
                   checkpoint_weight_sha256=sha256(args.checkpoint / 'model.safetensors'),
                   prepared_manifest_sha256=sha256(args.data / 'manifest.json'))

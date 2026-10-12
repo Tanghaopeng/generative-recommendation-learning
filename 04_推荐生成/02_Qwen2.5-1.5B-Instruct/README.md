@@ -20,6 +20,9 @@ python scripts/evaluate_qwen_sft.py --checkpoint /root/generative-run-20261012/o
 64 人结果仅为通路与耗时诊断，不能当成正式效果；正式比较固定同一用户集合、SID、提示模板和解码配置。Q0 新 SID 未经过商品语义对齐，不代表已对齐的大模型零样本推荐能力。
 完整验证、冻结选择和测试沿用下方入口；评测报告中标记 `model_stage=q0_untrained_sid`。
 
+2026-10-12 解码修正为 `sid_beam_v2`：独立 GenerationConfig，关闭模型默认值回填，不采样、重复惩罚 1.0；避免继承原 Instruct 的文本生成惩罚，保证 SID 分数口径一致。原 Q0 权重可直接复用，但旧解码配置的指标须保留为旧协议，统一重评后比较。
+Qwen tokenizer 明确保持原正则，规避 Transformers 4.57.6 的 Mistral 误判；不要给 Qwen 盲目设置 `fix_mistral_regex=True`。检索报告增加耗时、吞吐和峰值显存。
+
 Q1 显式传入已保存的 Q0，直接加载其权重与 tokenizer，不重新随机初始化 SID：
 
 ```bash

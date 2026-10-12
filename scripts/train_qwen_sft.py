@@ -11,7 +11,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, set_seed
 
 from qwen_sft import (ROOT, MODEL_REVISION, MODEL_SHA256, read_json, write_json, sha256,
-                      load_prepared, extend_tokenizer, select_subset, SFTDataset,
+                      load_prepared, load_qwen_tokenizer, extend_tokenizer, select_subset, SFTDataset,
                       ValidationDataset, CompletionCollator, evaluate_retrieval, RankingTrainer)
 
 
@@ -40,7 +40,7 @@ def main():
         from qwen_initialization import check_initialization
         initialization = check_initialization(args.initialization, args.data, config['seed'])
         model_source = args.initialization
-    tokenizer = AutoTokenizer.from_pretrained(model_source, local_files_only=True, trust_remote_code=False)
+    tokenizer = load_qwen_tokenizer(model_source)
     vocab = extend_tokenizer(tokenizer, manifest['tokens_per_namespace'])
     if initialization:
         if vocab['added_tokens'] != 0 or len(tokenizer) != initialization['vocabulary']['tokenizer_size']:
@@ -100,7 +100,7 @@ def main():
             raise ValueError('Resume contract mismatch: configuration, data or code changed')
         if not (args.resume / 'optimizer.pt').is_file():
             raise ValueError('Resume requires optimizer state, not just model weights')
-        saved_tokenizer = AutoTokenizer.from_pretrained(args.resume, local_files_only=True)
+        saved_tokenizer = load_qwen_tokenizer(args.resume)
         if saved_tokenizer.get_vocab() != tokenizer.get_vocab():
             raise ValueError('Resume SID tokenizer differs')
     model = AutoModelForCausalLM.from_pretrained(model_source, local_files_only=True,

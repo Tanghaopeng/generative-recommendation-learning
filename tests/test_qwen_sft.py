@@ -104,7 +104,8 @@ class QwenSFTTests(unittest.TestCase):
         better = dict(report, checkpoint_weight_sha256='b', **{'NDCG@10': .2})
         self.assertEqual(select_full_validation([report, better])['checkpoint_weight_sha256'], 'b')
         for invalid in [dict(better, split='test'), dict(better, users=64),
-                        dict(better, beam=50), dict(better, prepared_manifest_sha256='different')]:
+                        dict(better, beam=50), dict(better, prepared_manifest_sha256='different'),
+                        dict(better, decoding_protocol='different_score_processing')]:
             with self.assertRaises(ValueError):
                 select_full_validation([report, invalid])
 
@@ -112,6 +113,14 @@ class QwenSFTTests(unittest.TestCase):
         tok, catalog, rows = fixture()
         set_seed(2026)
         model = model_for(tok).eval()
+        # The real Instruct checkpoint has these text-generation defaults. SID
+        # retrieval must remain pure conditional log-probability beam search.
+        model.generation_config.repetition_penalty = 1.7
+        model.generation_config.temperature = 0.7
+        model.generation_config.top_p = 0.8
+        model.generation_config.top_k = 20
+        model.generation_config.do_sample = True
+        model.generation_config.transformers_version = '4.57.6'
         history = list(range(1, 25))  # Also excludes observed products outside the last-20 window.
         result = retrieve(model, tok, catalog, history, beam=40)
         self.assertEqual(set(result), set(range(25, 33)))

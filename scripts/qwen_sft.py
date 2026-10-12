@@ -14,11 +14,12 @@ import random
 import numpy as np
 import torch
 from torch.utils.data import Dataset
-from transformers import LogitsProcessor, Trainer
+from transformers import AutoTokenizer, GenerationConfig, LogitsProcessor, Trainer
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL_REVISION = '989aa7980e4cf806f80c7fef2b1adb7bc71aa306'
 MODEL_SHA256 = 'dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee'
+SID_DECODING_PROTOCOL = 'sid_beam_v2: no sampling; repetition_penalty=1.0; original model generation defaults disabled'
 
 
 def sha256(path):
@@ -39,6 +40,15 @@ def write_json(path, value):
 
 def read_json(path):
     return json.loads(Path(path).read_text(encoding='utf-8'))
+
+
+def load_qwen_tokenizer(directory):
+    # Transformers 4.57.6 misclassifies some locally re-saved non-Mistral configs.
+    # Preserve Qwen's original regex; applying the Mistral correction changes it.
+    if read_json(Path(directory) / 'config.json').get('model_type') != 'qwen2':
+        raise ValueError('This tokenizer loader is only for the Qwen2 family')
+    return AutoTokenizer.from_pretrained(directory, local_files_only=True,
+                                        trust_remote_code=False, fix_mistral_regex=False)
 
 
 def read_rows(path):
@@ -269,6 +279,7 @@ def retrieve(model, tokenizer, catalog, history, beam=20, max_history=20, max_le
     constraint.prompt_length, constraint.excluded = len(prompt), set(history)
     ids = torch.tensor([prompt], device=model.device)
     result = model.generate(input_ids=ids, attention_mask=torch.ones_like(ids),
+                            generation_config=GenerationConfig(), use_model_defaults=False,
                             max_new_tokens=4, min_new_tokens=0, num_beams=beam,
                             num_return_sequences=beam, do_sample=False, length_penalty=0.0,
                             eos_token_id=None, forced_eos_token_id=None, forced_bos_token_id=None,
@@ -313,4 +324,5 @@ def evaluate_retrieval(model, tokenizer, catalog, rows, split='valid', beam=20, 
         model.train(was_training)
     return {**{key: value / len(rows) for key, value in totals.items()},
             'users': len(rows), 'beam': beam, 'shortfall_users': shortfalls,
+            'decoding_protocol': SID_DECODING_PROTOCOL,
             'search': 'full catalog, finite beam approximation; complete history excluded'}

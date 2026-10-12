@@ -12,7 +12,8 @@ def select_full_validation(reports):
     for report in reports:
         if report['split'] != 'valid' or report['diagnostic_only'] or report['users'] != 86713:
             raise ValueError('Select only from complete Office Products validation reports')
-        contract = (report['prepared_manifest_sha256'], report['beam'], report['users'], report['max_length'])
+        contract = (report['prepared_manifest_sha256'], report['beam'], report['users'], report['max_length'],
+                    report.get('decoding_protocol', 'legacy_model_generation_defaults'))
         if protocol is not None and protocol != contract:
             raise ValueError('Reports use different data, beam or prompt length')
         protocol = contract
@@ -32,6 +33,7 @@ def main():
     record = {key: selected[key] for key in
               ('checkpoint_weight_sha256', 'prepared_manifest_sha256', 'beam', 'max_length', 'NDCG@10', 'Recall@10')}
     record.update(full_validation_completed=True, selection_metric='full validation NDCG@10',
+                  decoding_protocol=selected.get('decoding_protocol', 'legacy_model_generation_defaults'),
                   validation_reports={str(path): sha256(path) for path in args.reports})
     write_json(args.output, record)
     print('Frozen checkpoint weight hash:', record['checkpoint_weight_sha256'])
