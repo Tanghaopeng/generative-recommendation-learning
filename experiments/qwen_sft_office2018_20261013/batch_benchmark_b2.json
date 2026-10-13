@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "benchmark": "disposable_sft_not_grpo",
+  "batch": 2,
+  "gradient_accumulation_steps": 64,
+  "effective_batch_size": 128,
+  "precision": "bf16",
+  "optimizer": "adamw_torch",
+  "gradient_checkpointing": true,
+  "samples": 128,
+  "sample_seed": 2026,
+  "sequence_min": 48,
+  "sequence_max": 143,
+  "padded_batch_width_min": 48,
+  "padded_batch_width_max": 144,
+  "warmup_optimizer_steps": 1,
+  "timed_optimizer_steps": 2,
+  "steps": [
+    {
+      "step": 1,
+      "warmup": true,
+      "seconds": 11.721687465906143,
+      "loss": 1.7856953283771873,
+      "grad_norm": 7.34375,
+      "peak_allocated_gib": 14.407135009765625,
+      "peak_reserved_gib": 15.2890625,
+      "driver_free_gib_after_step": 23.71173095703125
+    },
+    {
+      "step": 2,
+      "warmup": false,
+      "seconds": 10.67214054055512,
+      "loss": 1.7855298453941941,
+      "grad_norm": 7.34375,
+      "peak_allocated_gib": 14.409065246582031,
+      "peak_reserved_gib": 16.1640625,
+      "driver_free_gib_after_step": 22.83673095703125
+    },
+    {
+      "step": 3,
+      "warmup": false,
+      "seconds": 11.172076124697924,
+      "loss": 1.7842026995494962,
+      "grad_norm": 7.28125,
+      "peak_allocated_gib": 14.409065246582031,
+      "peak_reserved_gib": 16.1640625,
+      "driver_free_gib_after_step": 22.83673095703125
+    }
+  ],
+  "seconds_per_effective_step": 10.922108332626522,
+  "samples_per_second": 11.719349058060375,
+  "longest_sample_backward_peak_gib": 12.403920650482178,
+  "weights_saved": false,
+  "formal_checkpoint_modified": false,
+  "limitations": "Short SFT benchmark on actual sampled lengths, not 512-token stress or GRPO; timing is approximate."
+}

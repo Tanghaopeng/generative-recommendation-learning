@@ -1,0 +1,122 @@
+{
+  "as_of": "2026-10-13",
+  "headers": [
+    "component",
+    "parameters",
+    "gradient_parameters",
+    "dimensions",
+    "layers",
+    "heads",
+    "ffn",
+    "vocabulary",
+    "notes",
+    "source"
+  ],
+  "records": [
+    [
+      "热门商品基线",
+      0,
+      0,
+      "无神经网络",
+      "训练集商品频次统计",
+      "不适用",
+      "不适用",
+      "25898个商品的统计量",
+      "参数量0表示无可训练神经网络权重，不表示无需保存商品频次。",
+      "outputs/sasrec_office2018_cpu_extend40_20261007/run.json"
+    ],
+    [
+      "SASRec",
+      1709440,
+      1709440,
+      "隐藏维度64",
+      "2个因果自注意力Block",
+      "2个Q头",
+      "64→64→64",
+      "商品Embedding 25899×64；位置Embedding 21×64",
+      "ReLU；dropout=0.2；post-norm；最长20件历史；输出与商品Embedding匹配。",
+      "outputs/sasrec_office2018_cpu_extend40_20261007/run.json；baselines/sasrec/model.py"
+    ],
+    [
+      "小型TIGER 梯度码本",
+      328320,
+      328320,
+      "隐藏维度64",
+      "1层Encoder + 1层Decoder",
+      "每层2个头",
+      "FFN维度128",
+      "4×256=1024个SID token；4个256类输出头",
+      "随机初始化的T5式结构；无用户Embedding；beam20；计数含源码内置Embedding。",
+      "outputs/tiger_office2018_cpu_20261008/run.json；scripts/tiger_model.py"
+    ],
+    [
+      "小型TIGER EMA码本",
+      328320,
+      328320,
+      "隐藏维度64",
+      "1层Encoder + 1层Decoder",
+      "每层2个头",
+      "FFN维度128",
+      "4×256=1024个SID token；4个256类输出头",
+      "与梯度版推荐器结构相同；区别在离线SID由EMA码本产生。",
+      "outputs/tiger_office2018_ema_cpu_20261008/run.json"
+    ],
+    [
+      "Qwen 全参数SFT",
+      1544870912,
+      1544870912,
+      "隐藏维度1536",
+      "28层Decoder-only",
+      "12个Q头；2个KV头",
+      "门控FFN维度8960",
+      "扩展词表152689；其中SID token1024个",
+      "每头128维；RoPE；RMSNorm；SiLU；输入输出权重共享。",
+      "outputs/cloud_transfer/doc_sample_evidence.json#model_config；本轮SFT参数记录"
+    ],
+    [
+      "MiniLM 商品编码器",
+      22713216,
+      0,
+      "输入文本；输出384维",
+      "6层双向Transformer",
+      "12个注意力头",
+      "FFN维度1536",
+      "WordPiece词表30522；位置上限512",
+      "项目实际截断128 token；masked mean pooling + L2；冻结，不在推荐训练中更新。",
+      "02_商品编码/01_MiniLM/模型权重/config.json；model.safetensors头部；scripts/build_item_embeddings.py"
+    ],
+    [
+      "RQ-VAE 梯度码本",
+      294912,
+      294912,
+      "输入384维；隐向量32维",
+      "Encoder 384→256→128→32；Decoder逆向",
+      "不使用Attention",
+      "MLP，无bias",
+      "3个码本；每个256×32；另加1段消歧",
+      "重构、码本和承诺损失；Adam；承诺权重0.25；仅离线训练。",
+      "outputs/rqvae_office2018_cpu_20261008/run.json；scripts/train_rqvae.py"
+    ],
+    [
+      "RQ-VAE EMA码本",
+      294912,
+      270336,
+      "输入384维；隐向量32维",
+      "Encoder 384→256→128→32；Decoder逆向",
+      "不使用Attention",
+      "MLP，无bias",
+      "3个码本；每个256×32；另加1段消歧",
+      "梯度只更新Encoder/Decoder；24576个码本参数值由EMA更新；decay=0.99。",
+      "outputs/rqvae_office2018_ema_cpu_20261008/run.json；scripts/train_rqvae_ema.py"
+    ]
+  ],
+  "qwen_parameter_breakdown": {
+    "embedding": 234530304,
+    "attention": 5507072,
+    "ffn": 41287680,
+    "norm": 3072,
+    "final": 1536
+  },
+  "qwen_total": 1544870912,
+  "minilm_float_parameter_count": 22713216
+}

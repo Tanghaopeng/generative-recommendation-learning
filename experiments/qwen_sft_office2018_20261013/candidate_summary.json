@@ -1,0 +1,26 @@
+{
+  "status": "post_hoc_candidate_export_completed",
+  "users": 33,
+  "sampling": "seed=2027, requested=32, additionally include user=1",
+  "not_a_new_formal_test_or_model_selection": true,
+  "beam": 20,
+  "first_sid_unique_count_distribution": {
+    "2": 1,
+    "3": 4,
+    "4": 3,
+    "5": 9,
+    "6": 1,
+    "7": 7,
+    "8": 4,
+    "9": 4
+  },
+  "mean_unique_first_sid": 5.878787878787879,
+  "decoding_protocol": "sid_beam_v2: no sampling; repetition_penalty=1.0; original model generation defaults disabled",
+  "seconds": 4.8221745528280735,
+  "checkpoint_weight_sha256": "b35e06b37b83639a3b58933b8ec78470906bdc47b3f87a94bf0615e277cf418d",
+  "prepared_manifest_sha256": "6e0a9a179409cf2b7dc5ea8115e092310f18611a222225b9740721274e9aab58",
+  "retrieve_code_sha256": "7df6fcf5a1ef98fbd0ab562800889b6330f85165e15f99caa867fd42d51b7eca",
+  "export_code_sha256": "6c38eb15c34ff5722e5f1f3bf438df5a8fbc55e341b2b5824cab6e1112f21ba7",
+  "scores_note": "Full-vocabulary log probabilities before illegal candidates are masked; not renormalized over legal children or top20.",
+  "coverage_note": "Final surviving candidates only; first-stage beam trajectory is not recorded."
+}

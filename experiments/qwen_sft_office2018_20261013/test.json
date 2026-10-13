@@ -1,0 +1,25 @@
+{
+  "Recall@10": 0.09367684199600983,
+  "NDCG@10": 0.07549556623872561,
+  "Recall@20": 0.1088187469006954,
+  "NDCG@20": 0.07931915657505524,
+  "users": 86713,
+  "beam": 20,
+  "shortfall_users": 13,
+  "decoding_protocol": "sid_beam_v2: no sampling; repetition_penalty=1.0; original model generation defaults disabled",
+  "search": "full catalog, finite beam approximation; complete history excluded",
+  "split": "test",
+  "diagnostic_only": false,
+  "model_stage": "trained_checkpoint",
+  "initialization_seed": null,
+  "seconds": 10406.689706105739,
+  "users_per_second": 8.332428702003517,
+  "peak_cuda_allocated_bytes": 3388601856,
+  "code_sha256": {
+    "qwen_sft.py": "7df6fcf5a1ef98fbd0ab562800889b6330f85165e15f99caa867fd42d51b7eca",
+    "evaluate_qwen_sft.py": "1611e7eed1795c77d2d712d840022a88a64e59be2894a265490d0c71199d3c28"
+  },
+  "max_length": 512,
+  "checkpoint_weight_sha256": "b35e06b37b83639a3b58933b8ec78470906bdc47b3f87a94bf0615e277cf418d",
+  "prepared_manifest_sha256": "6e0a9a179409cf2b7dc5ea8115e092310f18611a222225b9740721274e9aab58"
+}

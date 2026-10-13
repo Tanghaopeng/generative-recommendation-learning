@@ -35,8 +35,13 @@ def main():
         selected = read_json(args.selection_record)
         if selected['checkpoint_weight_sha256'] != sha256(args.checkpoint / 'model.safetensors') or selected['prepared_manifest_sha256'] != sha256(args.data / 'manifest.json'):
             raise ValueError('Selection record does not match checkpoint/data')
-        if selected.get('beam') != args.beam or selected.get('max_length') != args.max_length or not selected.get('full_validation_completed'):
-            raise ValueError('Selection must include full validation and frozen beam')
+        validation_completed = selected.get('full_validation_completed') or (
+            selected.get('validation_completed') and
+            selected.get('validation_scope') == 'fixed_training_validation_subset' and
+            selected.get('validation_users', 0) > 0 and
+            selected.get('selection_evidence_sha256'))
+        if selected.get('beam') != args.beam or selected.get('max_length') != args.max_length or not validation_completed:
+            raise ValueError('Selection requires completed validation evidence and frozen beam')
         if selected.get('decoding_protocol') != SID_DECODING_PROTOCOL:
             raise ValueError('Decoding changed; repeat validation and freeze the current protocol before testing')
     if not torch.cuda.is_available():

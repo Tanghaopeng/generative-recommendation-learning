@@ -20,26 +20,26 @@
 根目录05暂未使用。已有`baselines/`、`scripts/`、`experiments/`保留原路径，编号目录提供版本说明、配置和入口链接，保持旧实验指纹可核验。
 
 **2026-10-09新增：** [Qwen全参数SFT运行说明](04_推荐生成/02_Qwen2.5-1.5B-Instruct/README.md)与[原理讲解](01_知识库/05_SFT与生成式推荐/Qwen全参数SFT流程.md)。
-复用已有MiniLM及四段SID，提供Q1主任务、Q2可选标题对齐、GPU训练和约束商品检索代码；CPU检查通过不等于完成1.5B训练，当前没有Qwen推荐指标。参考源码已固定版本下载并保留在[MiniOneRec参考目录](baselines/minionerec_reference/README.md)。
+复用已有MiniLM及四段SID，提供Q1主任务、Q2可选标题对齐、GPU训练和约束商品检索代码；Q1已完成A100全参数训练与86713人全量测试，正式指标与模型指纹见[实验报告](experiments/qwen_sft_office2018_20261013/README.md)。Q2文本对齐版本尚未训练。参考源码已固定版本下载并保留在[MiniOneRec参考目录](baselines/minionerec_reference/README.md)。
 
 **MiniLM文件已随仓库提供：** [模型权重、分词器与架构说明](02_商品编码/01_MiniLM/README.md)，固定官方版本，权重约90.87 MB；可分别离线加载，不需自行训练MiniLM。
 
 **第二套商品编码模型：** [Qwen3-Embedding-4B](02_商品编码/02_Qwen3_Embedding_4B/README.md)，默认输出2560维，使用最后有效token池化；准备本地与矩阵云模型资产后，再独立训练对应的量化器与推荐模型。模型资产准备不等于已完成商品向量生成或推荐训练。
 
-**Q0→SFT→GRPO 评测计划：** [多角度评测协议](01_知识库/03_数据与评测/Q0_SFT_GRPO多角度评测方案_20261010.md)。已增加独立 [AUC/GAUC 评分入口](scripts/evaluate_qwen_auc.py)：固定每用户1正例＋100个无重复代理负例，与完整目录的HR/NDCG分开报告。新增指标单元核验通过，GPU评分未执行。2026-10-12 新增 [Q0 固定初始化导出](scripts/export_qwen_q0.py)，Q1 可用 `--initialization` 直接加载同一检查点；本项目 GRPO 适配仍待完成。
+**Q0→SFT→GRPO 评测计划：** [多角度评测协议](01_知识库/03_数据与评测/Q0_SFT_GRPO多角度评测方案_20261010.md)。已增加独立 [AUC/GAUC 评分入口](scripts/evaluate_qwen_auc.py)：固定每用户1正例＋100个无重复代理负例，与完整目录的HR/NDCG分开报告。新增指标单元核验通过，GPU评分未执行。2026-10-12 新增 [Q0 固定初始化导出](scripts/export_qwen_q0.py)，Q1 可用 `--initialization` 直接加载同一检查点；后续偏好优化作为独立版本发布。
 
 > 当前 SASRec 最佳权重为第 23 轮：测试 Recall@10=0.057650，NDCG@10=0.035554。
 > 续训在第 25 轮因连续过拟合迹象自动暂停；配置、验证走势和检查点见 [续训报告](experiments/sasrec_cpu_extend40_20261007.md)。
 > [首次 20 轮实验](experiments/sasrec_cpu_20261007.md) 保留作历史对照，包含一次优化器重置后的恢复。
 > 小型 TIGER 原版SID已完成3轮生成训练，验证选中第3轮：测试Recall@10=0.049566、NDCG@10=0.036792，见[正式报告](experiments/tiger_cpu_20261008.md)。
 > 首轮采用hidden64、编码器/解码器各1层、2头；沿用[共同评测口径](experiments/tiger_cpu_20261008.md)，全目录前缀树beam20属于近似检索。
-> Qwen全参数SFT已有实现，正式GPU训练待执行；GRPO与OneRec后续实验仍为计划。
+> Qwen全参数SFT已完成，选中第3000步权重：测试Recall@10=0.093677、NDCG@10=0.075496，见[正式报告](experiments/qwen_sft_office2018_20261013/README.md)。后续偏好优化另行发布。
 > 两套SID的独立生成模型均已完成3轮训练，全用户验证都选中第3轮，未触发过拟合暂停；完整结果见[Transformer对照报告](experiments/semantic_retrievers_comparison_20261008.md)。
 > [码本审计与EMA对照](experiments/rqvae_adam_vs_ema_20261008.md)显示第一层活跃码字84→117、死码172→139；EMA召回测试前10指标略高、前20指标略低，量化利用率改善不等于推荐效果全面改善。
 
 ## 已完成的基线与评测口径
 
-2026-10-07至08日的真实本地CPU实验；以下均为测试集结果，按验证NDCG@10选取模型。
+2026-10-07至08日的本地CPU基线与2026-10-13的A100 Qwen SFT实验；以下均为同一86713用户测试集结果，按验证NDCG@10选模。
 
 | 方法 | HitRate@10 / Recall@10 | NDCG@10 | HitRate@20 / Recall@20 | NDCG@20 |
 |---|---:|---:|---:|---:|
@@ -48,6 +48,7 @@
 | SASRec（续训，第 23 轮最佳） | 0.057650 | 0.035554 | 0.074406 | 0.039775 |
 | 小型 TIGER（Adam SID，第3轮最佳） | 0.049566 | 0.036792 | 0.060637 | 0.039582 |
 | 小型 TIGER（EMA SID，第3轮最佳） | 0.049820 | 0.037539 | 0.057096 | 0.039382 |
+| Qwen2.5-1.5B-Instruct 全参SFT（第3000步） | **0.093677** | **0.075496** | **0.108819** | **0.079319** |
 
 **如何理解 5.76%：** 对每个用户推荐 10 件商品，检查真实下一件商品是否在其中。
 HitRate@10 是命中用户数除以全部测试用户数；每人仅一个测试目标，因此与 Recall@10 相等。
@@ -106,7 +107,7 @@ HitRate@10 是命中用户数除以全部测试用户数；每人仅一个测试
 - [x] 审计三层死码、频次与有效码字数，完成30轮EMA量化对照。
 - [x] 完成EMA SID的独立生成训练、全用户验证选模、测试与原版/SASRec对照。
 - [x] 接入Qwen预训练权重、实现四段SID全参数SFT、样本检查和检索评测入口。
-- [ ] 在GPU运行Qwen pilot、正式SFT及全量验证/测试。
+- [x] 在A100运行Qwen pilot与正式Q1 SFT，以固定5000人验证子集选模，完成86713人全量测试。
 - [ ] 探索简化 OneRec 的列表生成与偏好优化。
 
 ## 项目结构

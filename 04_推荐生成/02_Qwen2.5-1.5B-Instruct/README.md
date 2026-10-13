@@ -108,7 +108,7 @@ python scripts/evaluate_qwen_sft.py --checkpoint outputs/qwen_q1_full/selected -
 ## 来源
 
 [固定版本原源码](../../baselines/minionerec_reference/README.md) 已下载保留。使用其全参SFT和四方向任务的设计参考；本地四段SID、数据、prompt、检索和选模代码是适配实现，未直接调用上游三段SID脚本。上游结果不能当成本项目结果。
-详细原理：[从样本到全参数SFT](../../01_知识库/05_SFT与生成式推荐/Qwen全参数SFT流程.md)。GRPO属于后续独立版本，本次未实现或训练。
+详细原理：[从样本到全参数SFT](../../01_知识库/05_SFT与生成式推荐/Qwen全参数SFT流程.md)。本次公开Q1 SFT正式测试；后续偏好优化另行发布。
 
 ## 独立 AUC / GAUC 评测
 
@@ -119,3 +119,9 @@ python scripts/evaluate_qwen_auc.py --checkpoint outputs/qwen_q1_full/selected -
 ```
 
 默认子集仅为诊断；`--users 0` 为全用户。测试额外要求 `--selection-record`，不覆盖旧输出。GPU 评分尚未执行；其他新增维度与统一列表导出仍待接入。详见 [多角度协议](../../01_知识库/03_数据与评测/Q0_SFT_GRPO多角度评测方案_20261010.md)。
+
+## 2026-10-13 正式SFT结果
+
+Q1已完成A100 40GB全参数训练，以固定5000人验证NDCG@10选中第3000步，完成86713人全量测试。见[结果、模型结构与权重指纹](../../experiments/qwen_sft_office2018_20261013/README.md)及[精度设置](../../01_知识库/05_SFT与生成式推荐/FP32_BF16与本项目精度设置.md)。
+
+正式测试沿用sid_beam_v2、beam20与完整历史排除。冻结训练期验证选模证据可使用新增入口 `scripts/freeze_qwen_training_selection.py`；`evaluate_qwen_sft.py`接受这种固定验证子集的选模记录，不要求额外重复全用户验证。

@@ -1,0 +1,833 @@
+{
+  "row": {
+    "user_id": 1,
+    "items": [
+      2652,
+      2673,
+      6017,
+      3120,
+      5283
+    ],
+    "timestamps": [
+      1522540800,
+      1522540800,
+      1522540800,
+      1526774400,
+      1526774400
+    ],
+    "train": [
+      2652,
+      2673,
+      6017
+    ],
+    "valid": [
+      3120
+    ],
+    "test": [
+      5283
+    ]
+  },
+  "catalog": {
+    "2652": {
+      "sid": [
+        54,
+        203,
+        220,
+        0
+      ],
+      "title": "Rolodex Open Rotary Business Card File"
+    },
+    "2673": {
+      "sid": [
+        57,
+        42,
+        209,
+        0
+      ],
+      "title": "Oxford Premium Clear Front Report Covers, Dark Green, Letter Size, 25 per box (58817)"
+    },
+    "6017": {
+      "sid": [
+        112,
+        254,
+        185,
+        0
+      ],
+      "title": "Trinity 3-Tier Utility Cart"
+    },
+    "3120": {
+      "sid": [
+        78,
+        67,
+        59,
+        0
+      ],
+      "title": "Avery Two-Pocket Folders, Green, Pack of 25 (47977)"
+    },
+    "5283": {
+      "sid": [
+        192,
+        16,
+        84,
+        0
+      ],
+      "title": "Shepherd Hardware 3763 Heavy Duty Jumbo Rubber Door Wedge, Yellow"
+    }
+  },
+  "model_config": {
+    "architectures": [
+      "Qwen2ForCausalLM"
+    ],
+    "attention_dropout": 0.0,
+    "dtype": "bfloat16",
+    "eos_token_id": 151645,
+    "hidden_act": "silu",
+    "hidden_size": 1536,
+    "initializer_range": 0.02,
+    "intermediate_size": 8960,
+    "layer_types": [
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention",
+      "full_attention"
+    ],
+    "max_position_embeddings": 32768,
+    "max_window_layers": 21,
+    "model_type": "qwen2",
+    "num_attention_heads": 12,
+    "num_hidden_layers": 28,
+    "num_key_value_heads": 2,
+    "pad_token_id": 151645,
+    "rms_norm_eps": 1e-06,
+    "rope_scaling": null,
+    "rope_theta": 1000000.0,
+    "sliding_window": null,
+    "tie_word_embeddings": true,
+    "transformers_version": "4.57.6",
+    "use_cache": false,
+    "use_sliding_window": false,
+    "vocab_size": 152689
+  },
+  "tokenizer_size": 152689,
+  "bos": null,
+  "eos": 151645,
+  "pad": 151645,
+  "inference": {
+    "input_ids": [
+      151644,
+      8948,
+      198,
+      2610,
+      525,
+      264,
+      1985,
+      27682,
+      17847,
+      13,
+      151645,
+      198,
+      151644,
+      872,
+      198,
+      53544,
+      279,
+      1790,
+      1985,
+      13,
+      3411,
+      1172,
+      1181,
+      3040,
+      56021,
+      11211,
+      624,
+      13424,
+      320,
+      337,
+      4979,
+      311,
+      23601,
+      982,
+      151719,
+      152124,
+      152397,
+      152433,
+      198,
+      151722,
+      151963,
+      152386,
+      152433,
+      198,
+      151777,
+      152175,
+      152362,
+      152433,
+      151645,
+      198,
+      151644,
+      77091,
+      198
+    ],
+    "attention_mask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "position_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52
+    ],
+    "prompt_text": "<|im_start|>system\nYou are a product recommendation assistant.<|im_end|>\n<|im_start|>user\nPredict the next product. Return only its four SID tokens.\nHistory (oldest to newest):\n<sid_0_54><sid_1_203><sid_2_220><sid_3_0>\n<sid_0_57><sid_1_42><sid_2_209><sid_3_0>\n<sid_0_112><sid_1_254><sid_2_185><sid_3_0><|im_end|>\n<|im_start|>assistant\n",
+    "target_ids": [
+      151743,
+      151988,
+      152236,
+      152433
+    ],
+    "token_rows": [
+      {
+        "index": 0,
+        "id": 151644,
+        "token": "<|im_start|>",
+        "text": "<|im_start|>"
+      },
+      {
+        "index": 1,
+        "id": 8948,
+        "token": "system",
+        "text": "system"
+      },
+      {
+        "index": 2,
+        "id": 198,
+        "token": "Ċ",
+        "text": "\n"
+      },
+      {
+        "index": 3,
+        "id": 2610,
+        "token": "You",
+        "text": "You"
+      },
+      {
+        "index": 4,
+        "id": 525,
+        "token": "Ġare",
+        "text": " are"
+      },
+      {
+        "index": 5,
+        "id": 264,
+        "token": "Ġa",
+        "text": " a"
+      },
+      {
+        "index": 6,
+        "id": 1985,
+        "token": "Ġproduct",
+        "text": " product"
+      },
+      {
+        "index": 7,
+        "id": 27682,
+        "token": "Ġrecommendation",
+        "text": " recommendation"
+      },
+      {
+        "index": 8,
+        "id": 17847,
+        "token": "Ġassistant",
+        "text": " assistant"
+      },
+      {
+        "index": 9,
+        "id": 13,
+        "token": ".",
+        "text": "."
+      },
+      {
+        "index": 10,
+        "id": 151645,
+        "token": "<|im_end|>",
+        "text": "<|im_end|>"
+      },
+      {
+        "index": 11,
+        "id": 198,
+        "token": "Ċ",
+        "text": "\n"
+      },
+      {
+        "index": 12,
+        "id": 151644,
+        "token": "<|im_start|>",
+        "text": "<|im_start|>"
+      },
+      {
+        "index": 13,
+        "id": 872,
+        "token": "user",
+        "text": "user"
+      },
+      {
+        "index": 14,
+        "id": 198,
+        "token": "Ċ",
+        "text": "\n"
+      },
+      {
+        "index": 15,
+        "id": 53544,
+        "token": "Predict",
+        "text": "Predict"
+      },
+      {
+        "index": 16,
+        "id": 279,
+        "token": "Ġthe",
+        "text": " the"
+      },
+      {
+        "index": 17,
+        "id": 1790,
+        "token": "Ġnext",
+        "text": " next"
+      },
+      {
+        "index": 18,
+        "id": 1985,
+        "token": "Ġproduct",
+        "text": " product"
+      },
+      {
+        "index": 19,
+        "id": 13,
+        "token": ".",
+        "text": "."
+      },
+      {
+        "index": 20,
+        "id": 3411,
+        "token": "ĠReturn",
+        "text": " Return"
+      },
+      {
+        "index": 21,
+        "id": 1172,
+        "token": "Ġonly",
+        "text": " only"
+      },
+      {
+        "index": 22,
+        "id": 1181,
+        "token": "Ġits",
+        "text": " its"
+      },
+      {
+        "index": 23,
+        "id": 3040,
+        "token": "Ġfour",
+        "text": " four"
+      },
+      {
+        "index": 24,
+        "id": 56021,
+        "token": "ĠSID",
+        "text": " SID"
+      },
+      {
+        "index": 25,
+        "id": 11211,
+        "token": "Ġtokens",
+        "text": " tokens"
+      },
+      {
+        "index": 26,
+        "id": 624,
+        "token": ".Ċ",
+        "text": ".\n"
+      },
+      {
+        "index": 27,
+        "id": 13424,
+        "token": "History",
+        "text": "History"
+      },
+      {
+        "index": 28,
+        "id": 320,
+        "token": "Ġ(",
+        "text": " ("
+      },
+      {
+        "index": 29,
+        "id": 337,
+        "token": "ol",
+        "text": "ol"
+      },
+      {
+        "index": 30,
+        "id": 4979,
+        "token": "dest",
+        "text": "dest"
+      },
+      {
+        "index": 31,
+        "id": 311,
+        "token": "Ġto",
+        "text": " to"
+      },
+      {
+        "index": 32,
+        "id": 23601,
+        "token": "Ġnewest",
+        "text": " newest"
+      },
+      {
+        "index": 33,
+        "id": 982,
+        "token": "):Ċ",
+        "text": "):\n"
+      },
+      {
+        "index": 34,
+        "id": 151719,
+        "token": "<sid_0_54>",
+        "text": "<sid_0_54>"
+      },
+      {
+        "index": 35,
+        "id": 152124,
+        "token": "<sid_1_203>",
+        "text": "<sid_1_203>"
+      },
+      {
+        "index": 36,
+        "id": 152397,
+        "token": "<sid_2_220>",
+        "text": "<sid_2_220>"
+      },
+      {
+        "index": 37,
+        "id": 152433,
+        "token": "<sid_3_0>",
+        "text": "<sid_3_0>"
+      },
+      {
+        "index": 38,
+        "id": 198,
+        "token": "Ċ",
+        "text": "\n"
+      },
+      {
+        "index": 39,
+        "id": 151722,
+        "token": "<sid_0_57>",
+        "text": "<sid_0_57>"
+      },
+      {
+        "index": 40,
+        "id": 151963,
+        "token": "<sid_1_42>",
+        "text": "<sid_1_42>"
+      },
+      {
+        "index": 41,
+        "id": 152386,
+        "token": "<sid_2_209>",
+        "text": "<sid_2_209>"
+      },
+      {
+        "index": 42,
+        "id": 152433,
+        "token": "<sid_3_0>",
+        "text": "<sid_3_0>"
+      },
+      {
+        "index": 43,
+        "id": 198,
+        "token": "Ċ",
+        "text": "\n"
+      },
+      {
+        "index": 44,
+        "id": 151777,
+        "token": "<sid_0_112>",
+        "text": "<sid_0_112>"
+      },
+      {
+        "index": 45,
+        "id": 152175,
+        "token": "<sid_1_254>",
+        "text": "<sid_1_254>"
+      },
+      {
+        "index": 46,
+        "id": 152362,
+        "token": "<sid_2_185>",
+        "text": "<sid_2_185>"
+      },
+      {
+        "index": 47,
+        "id": 152433,
+        "token": "<sid_3_0>",
+        "text": "<sid_3_0>"
+      },
+      {
+        "index": 48,
+        "id": 151645,
+        "token": "<|im_end|>",
+        "text": "<|im_end|>"
+      },
+      {
+        "index": 49,
+        "id": 198,
+        "token": "Ċ",
+        "text": "\n"
+      },
+      {
+        "index": 50,
+        "id": 151644,
+        "token": "<|im_start|>",
+        "text": "<|im_start|>"
+      },
+      {
+        "index": 51,
+        "id": 77091,
+        "token": "assistant",
+        "text": "assistant"
+      },
+      {
+        "index": 52,
+        "id": 198,
+        "token": "Ċ",
+        "text": "\n"
+      }
+    ]
+  },
+  "training": {
+    "input_ids": [
+      151644,
+      8948,
+      198,
+      2610,
+      525,
+      264,
+      1985,
+      27682,
+      17847,
+      13,
+      151645,
+      198,
+      151644,
+      872,
+      198,
+      53544,
+      279,
+      1790,
+      1985,
+      13,
+      3411,
+      1172,
+      1181,
+      3040,
+      56021,
+      11211,
+      624,
+      13424,
+      320,
+      337,
+      4979,
+      311,
+      23601,
+      982,
+      151719,
+      152124,
+      152397,
+      152433,
+      198,
+      151722,
+      151963,
+      152386,
+      152433,
+      151645,
+      198,
+      151644,
+      77091,
+      198,
+      151777,
+      152175,
+      152362,
+      152433,
+      151645
+    ],
+    "attention_mask": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "labels": [
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      -100,
+      151777,
+      152175,
+      152362,
+      152433,
+      151645
+    ],
+    "text": "<|im_start|>system\nYou are a product recommendation assistant.<|im_end|>\n<|im_start|>user\nPredict the next product. Return only its four SID tokens.\nHistory (oldest to newest):\n<sid_0_54><sid_1_203><sid_2_220><sid_3_0>\n<sid_0_57><sid_1_42><sid_2_209><sid_3_0><|im_end|>\n<|im_start|>assistant\n<sid_0_112><sid_1_254><sid_2_185><sid_3_0><|im_end|>"
+  },
+  "sid_token_ids": {
+    "2652": [
+      151719,
+      152124,
+      152397,
+      152433
+    ],
+    "2673": [
+      151722,
+      151963,
+      152386,
+      152433
+    ],
+    "6017": [
+      151777,
+      152175,
+      152362,
+      152433
+    ],
+    "3120": [
+      151743,
+      151988,
+      152236,
+      152433
+    ],
+    "5283": [
+      151857,
+      151937,
+      152261,
+      152433
+    ]
+  }
+}

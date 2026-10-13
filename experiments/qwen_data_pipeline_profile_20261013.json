@@ -1,0 +1,57 @@
+{
+  "status": "cpu_profile_completed",
+  "historical_cloud_timing": false,
+  "model_weights_loaded": false,
+  "recipe": "q1",
+  "seed": 2026,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+  "python": "3.12.13",
+  "versions": {
+    "numpy": "2.2.6",
+    "torch": "2.7.1+cpu",
+    "transformers": "4.57.6",
+    "tokenizers": "0.22.2"
+  },
+  "prepared_manifest_sha256": "6e0a9a179409cf2b7dc5ea8115e092310f18611a222225b9740721274e9aab58",
+  "qwen_sft_sha256": "7df6fcf5a1ef98fbd0ab562800889b6330f85165e15f99caa867fd42d51b7eca",
+  "vocabulary": {
+    "original_tokenizer_size": 151665,
+    "added_tokens": 1024,
+    "tokenizer_size": 152689,
+    "sid_token_count": 1024
+  },
+  "users": 86713,
+  "full_train_examples": 397345,
+  "sampled_examples": 16384,
+  "import_seconds": 18.22301450005034,
+  "load_prepared_including_hashes_and_split_validation_seconds": 2.2114177999901585,
+  "tokenizer_load_seconds": 0.6026259000063874,
+  "rebuild_positions_only_seconds": 0.6359123999718577,
+  "sampled_dataset_init_seconds": 0.07325010001659393,
+  "encode_sampled_examples_seconds": 7.648353299999144,
+  "encoding_examples_per_second": 2142.160456944612,
+  "encoding_ms_per_example": 0.4668184387206509,
+  "estimated_full_pass_encoding_seconds": 185.48797253345703,
+  "sampled_batch4_collation_seconds": 0.9925564000150189,
+  "estimated_full_pass_collation_seconds": 24.07149186791795,
+  "length_min": 48,
+  "length_max": 143,
+  "length_mean": 64.5631103515625,
+  "supervised_token_counts": [
+    5
+  ],
+  "limitations": "Local CPU sampled measurement, not original server timing; excludes embeddings/RQ-VAE, GPU compute, evaluation, checkpoints and network I/O. Parquet test uses warm local filesystem and this subset only.",
+  "parquet": {
+    "version": "26.0.0",
+    "round_trip_exact": true,
+    "arrow_table_seconds": 0.2198126000002958,
+    "write_seconds": 0.1851026999647729,
+    "read_seconds": 0.84485469997162,
+    "convert_to_python_seconds": 0.20740380004281178,
+    "cached_batch4_collation_seconds": 0.9680737000308,
+    "sampled_bytes": 610378,
+    "estimated_full_train_bytes": 14802895.899047852,
+    "estimated_full_read_and_convert_seconds": 25.519388042494775
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "model": "Qwen2.5-1.5B-Instruct full-parameter SID SFT",
+  "run_id": "qwen_q1_from_q0_full",
+  "selected_step": 3000,
+  "parameters": 1544870912,
+  "weight_dtype": "bfloat16",
+  "weight_sha256": "b35e06b37b83639a3b58933b8ec78470906bdc47b3f87a94bf0615e277cf418d",
+  "data_manifest_sha256": "6e0a9a179409cf2b7dc5ea8115e092310f18611a222225b9740721274e9aab58",
+  "weight_publication": "Not included in Git; kept in private persistent cloud storage by user request",
+  "backup": {
+    "archive": "generative-run-20261012.tar",
+    "bytes": 28421529600,
+    "sha256": "84d5a456e4f9e73ec45aa7ca56e4b59d679251267f4a4c87e6a96d6b14f71c58",
+    "checkpoint_path_within_archive": "generative-run-20261012/outputs/qwen_q1_from_q0_full/selected"
+  },
+  "restore_requirements": [
+    "selected model weights",
+    "extended SID tokenizer and model configs",
+    "matching catalog/SID mapping and prepared manifest",
+    "pinned code/dependencies"
+  ],
+  "resume_requires": "Full checkpoint optimizer/scheduler/RNG, not selected weights alone"
+}
