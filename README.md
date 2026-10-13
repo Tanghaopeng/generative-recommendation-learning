@@ -1,225 +1,101 @@
 # Generative Recommendation Learning
 
-个人生成式推荐学习与实践项目，按“理解方法 → 阅读实现 → 准备数据 → 建立基准 → 逐步迭代”的顺序推进。
+**从序列推荐到语义 ID 生成：在同一份 Amazon 数据上，搭建、对比并分析 SASRec、TIGER 式召回与 Qwen 全参数 SFT。**
 
-本仓库与 [推荐系统学习知识库](https://github.com/Tanghaopeng/recommendation-system-learning) 配套：知识库侧重概念与专题整理，这里侧重代码、公开数据、实验协议和实现过程。
+![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12-3776AB?logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-CPU%20%7C%20CUDA-EE4C2C?logo=pytorch&logoColor=white)
+![Dataset](https://img.shields.io/badge/Dataset-Amazon%20Reviews%202018-232F3E)
+![License](https://img.shields.io/badge/License-Apache--2.0-2563EB)
 
-当前主线：**Amazon Reviews 2018 Office Products → SASRec → MiniLM＋RQ-VAE／EMA＋小型TIGER → Qwen2.5-1.5B-Instruct全参数SFT → 后续GRPO**。
+[项目实现与取舍](PROJECT_OVERVIEW.md) · [正式 SFT 报告](experiments/qwen_sft_office2018_20261013/README.md) · [复现与运行](REPRODUCING.md) · [模型参数](07_组合结果统计/模型参数_20261013.json) · [学习知识库](01_知识库/README.md)
 
-## 按阶段学习与运行
+## 项目成果
 
-| 编号 | 目录 | 内容 |
+在 **86,713 位用户、25,898 件商品**的共同测试集上，Qwen SFT 的 **Recall@10 = 9.37%**，SASRec 为 **5.76%**，增加 **3.60 个百分点**（相对 +62.49%）；NDCG@10 从 **0.03555** 提升至 **0.07550**。[原始测试记录](experiments/qwen_sft_office2018_20261013/test.json)
+
+这组结果反映本项目不同方案的实测表现。Qwen 的参数规模、预训练、训练预算与硬件均不同于 SASRec；SASRec 使用精确全目录打分，生成模型使用有限 beam 近似检索，因此**不是单变量消融，也不作为论文 SOTA 声明**。
+
+| 方法 | 推荐模型参数量¹ | Recall@10 | NDCG@10 | Recall@20 | NDCG@20 |
+|---|---:|---:|---:|---:|---:|
+| Popularity | 无神经网络 | 0.008949 | 0.004577 | 0.016572 | 0.006475 |
+| SASRec · 最佳第 23 轮 | 1.71M | 0.057650 | 0.035554 | 0.074406 | 0.039775 |
+| 小型 TIGER · 梯度码本 SID | 0.328M | 0.049566 | 0.036792 | 0.060637 | 0.039582 |
+| 小型 TIGER · EMA 码本 SID | 0.328M | 0.049820 | 0.037539 | 0.057096 | 0.039382 |
+| **Qwen2.5-1.5B-Instruct · 全参数 SFT** | **1.545B** | **0.093677** | **0.075496** | **0.108819** | **0.079319** |
+
+¹ 表中参数量仅指在线推荐模型，不含离线 MiniLM 与 RQ-VAE。每人仅一个测试目标，HitRate@K 与 Recall@K 相同。SASRec / TIGER 为 CPU 实验；Qwen 为 A100 40GB 实验。完整记录见 [SASRec](experiments/sasrec_cpu_extend40_20261007.md)、[TIGER 对照](experiments/semantic_retrievers_comparison_20261008.md)、[Qwen SFT](experiments/qwen_sft_office2018_20261013/README.md)。
+
+## 我在项目中做了什么
+
+| 工作 | 实际改动 | 验证与发现 |
 |---|---|---|
-| 01 | [知识库](01_知识库/README.md) | 原理、数据协议、SFT输入输出与梯度流程 |
-| 02 | [商品编码](02_商品编码/README.md) | MiniLM等连续内容向量版本 |
-| 03 | [离散语义ID](03_离散语义ID/README.md) | RQ-VAE Adam、EMA；RQ-KMeans为预留版本 |
-| 04 | [推荐生成](04_推荐生成/README.md) | 已训练的小型TIGER、Qwen全参数SFT实现 |
-| 06 | [每日效果记录](06_每日效果记录/README.md) | 每天的实现、工程验证与真实实验状态 |
-| 07 | [组合结果统计](07_组合结果统计/README.md) | 编码器×SID×生成器的效果总表 |
+| 建立可比基线 | 对齐清洗、商品 ID、时序划分、历史过滤；SASRec 增加全目录评测、验证集选模和恢复入口 | 统一 86,713 人测试，替代上游采样候选口径；[数据协议](01_知识库/03_数据与评测/数据与评测协议.md) |
+| 构建离散商品表示 | 冻结 MiniLM 编码；训练三层 RQ-VAE；追加一段碰撞消歧码；增加死码审计与 EMA 对照 | 第一层活跃码字 **84→117**，死码 **172→139**；[量化报告](experiments/rqvae_adam_vs_ema_20261008.md) |
+| 打通小型生成召回 | 用四段 SID 训练小型 Transformer，通过商品前缀树约束 beam 检索 | 梯度版 TIGER 的 Recall@10 **低于 SASRec**；保留负向结果，EMA 利用率改善也未转化为全面推荐提升 |
+| 将 Qwen 适配为推荐生成器 | 扩展 **1,024 个 SID token**；固定 Q0 初始化；聊天模板输入历史；只监督答案；全参数 SFT | **397,345 个训练位置**，固定 5,000 人验证子集选中第 3,000 步；完成全用户测试 |
+| 检查生成与评测细节 | 固定 `sid_beam_v2` 解码配置；导出候选四段 SID 与路径分数；记录代码、数据、权重指纹 | 公开 **33 人 / 660 条候选**；第一段 SID 平均 5.88 种；[候选记录](experiments/qwen_sft_office2018_20261013/candidates_33_users.jsonl) |
+| 测量训练吞吐 | 有效 batch=128 不变，短测 microbatch 2→4、累积 64→32 | 更新耗时 **10.92→6.58 秒**，吞吐约 **+66.1%**；仅 2 个计时步，未用于上述正式训练；[原始短测](experiments/qwen_sft_office2018_20261013/batch_benchmark_b4.json) |
 
-根目录05暂未使用。已有`baselines/`、`scripts/`、`experiments/`保留原路径，编号目录提供版本说明、配置和入口链接，保持旧实验指纹可核验。
+基础模型与参考实现保留来源、固定版本及许可证。本项目工作主要是数据与协议统一、适配、对照实验和可核验记录，具体代码边界见[实现说明](PROJECT_OVERVIEW.md)。
 
-**2026-10-09新增：** [Qwen全参数SFT运行说明](04_推荐生成/02_Qwen2.5-1.5B-Instruct/README.md)与[原理讲解](01_知识库/05_SFT与生成式推荐/Qwen全参数SFT流程.md)。
-复用已有MiniLM及四段SID，提供Q1主任务、Q2可选标题对齐、GPU训练和约束商品检索代码；Q1已完成A100全参数训练与86713人全量测试，正式指标与模型指纹见[实验报告](experiments/qwen_sft_office2018_20261013/README.md)。Q2文本对齐版本尚未训练。参考源码已固定版本下载并保留在[MiniOneRec参考目录](baselines/minionerec_reference/README.md)。
+## 系统路线
 
-**MiniLM文件已随仓库提供：** [模型权重、分词器与架构说明](02_商品编码/01_MiniLM/README.md)，固定官方版本，权重约90.87 MB；可分别离线加载，不需自行训练MiniLM。
+```mermaid
+flowchart LR
+    T[商品文本] --> M[冻结 MiniLM<br/>384 维内容向量]
+    M --> R[RQ-VAE<br/>32 维潜空间 / 三层量化]
+    R --> S[三段语义码 + 一段消歧码<br/>每件商品四段唯一 SID]
+    H[用户历史与下一商品目标] --> D[构造 SID 序列样本]
+    S --> D
+    D --> Q[Qwen 全参数 SFT<br/>只监督目标答案]
+    Q --> B[前缀树约束 beam20]
+    S --> B
+    B --> I[SID 映射回商品<br/>过滤历史 / Top-K 评测]
+    H --> A[SASRec 对照基线]
+    D --> G[小型 TIGER 对照]
+```
 
-**第二套商品编码模型：** [Qwen3-Embedding-4B](02_商品编码/02_Qwen3_Embedding_4B/README.md)，默认输出2560维，使用最后有效token池化；准备本地与矩阵云模型资产后，再独立训练对应的量化器与推荐模型。模型资产准备不等于已完成商品向量生成或推荐训练。
+MiniLM 与 RQ-VAE 离线运行，生成器训练时固定 SID 映射。Qwen 学习的是自己的 token embedding 与 Transformer 参数，**不直接使用 RQ-VAE 码本向量作为输入 embedding**。第四段用于唯一性消歧，不是第四层残差量化。
 
-**Q0→SFT→GRPO 评测计划：** [多角度评测协议](01_知识库/03_数据与评测/Q0_SFT_GRPO多角度评测方案_20261010.md)。已增加独立 [AUC/GAUC 评分入口](scripts/evaluate_qwen_auc.py)：固定每用户1正例＋100个无重复代理负例，与完整目录的HR/NDCG分开报告。新增指标单元核验通过，GPU评分未执行。2026-10-12 新增 [Q0 固定初始化导出](scripts/export_qwen_q0.py)，Q1 可用 `--initialization` 直接加载同一检查点；后续偏好优化作为独立版本发布。
+## 模型规模与训练设置
 
-> 当前 SASRec 最佳权重为第 23 轮：测试 Recall@10=0.057650，NDCG@10=0.035554。
-> 续训在第 25 轮因连续过拟合迹象自动暂停；配置、验证走势和检查点见 [续训报告](experiments/sasrec_cpu_extend40_20261007.md)。
-> [首次 20 轮实验](experiments/sasrec_cpu_20261007.md) 保留作历史对照，包含一次优化器重置后的恢复。
-> 小型 TIGER 原版SID已完成3轮生成训练，验证选中第3轮：测试Recall@10=0.049566、NDCG@10=0.036792，见[正式报告](experiments/tiger_cpu_20261008.md)。
-> 首轮采用hidden64、编码器/解码器各1层、2头；沿用[共同评测口径](experiments/tiger_cpu_20261008.md)，全目录前缀树beam20属于近似检索。
-> Qwen全参数SFT已完成，选中第3000步权重：测试Recall@10=0.093677、NDCG@10=0.075496，见[正式报告](experiments/qwen_sft_office2018_20261013/README.md)。后续偏好优化另行发布。
-> 两套SID的独立生成模型均已完成3轮训练，全用户验证都选中第3轮，未触发过拟合暂停；完整结果见[Transformer对照报告](experiments/semantic_retrievers_comparison_20261008.md)。
-> [码本审计与EMA对照](experiments/rqvae_adam_vs_ema_20261008.md)显示第一层活跃码字84→117、死码172→139；EMA召回测试前10指标略高、前20指标略低，量化利用率改善不等于推荐效果全面改善。
+| 组件 | 参数规模 | 主要结构 | 当前使用方式 |
+|---|---:|---|---|
+| MiniLM | 22.71M | 6 层双向 Transformer；hidden 384；12 头 | 冻结；文本截断 128 token；均值池化 + L2 |
+| RQ-VAE | 0.295M | 编码器 384→256→128→32；3×256×32 码本；逆向解码器 | 重构、码本、承诺损失；EMA 版独立对照 |
+| SASRec | 1.71M | 2 个因果注意力 Block；hidden 64；2 头 | 最近 20 件商品；BCE 与随机负例 |
+| 小型 TIGER | 0.328M | 1 层 Encoder + 1 层 Decoder；hidden 64；2 头 | 从头训练；预测四段 SID |
+| Qwen SFT | 1.545B | 28 层 Decoder；hidden 1536；Q/KV 头 12/2；FFN 8960 | 全参数训练；BF16；microbatch 2×累积 64 |
 
-## 已完成的基线与评测口径
+Qwen 扩展后词表为 **152,689**，输入输出 embedding 共享。Q1 主任务训练 1 轮，学习率 5e-5；商品编码器与量化器不参与 SFT 梯度更新。完整结构与精度设置见[模型参数表](07_组合结果统计/模型参数_20261013.json)及[精度说明](01_知识库/05_SFT与生成式推荐/FP32_BF16与本项目精度设置.md)。
 
-2026-10-07至08日的本地CPU基线与2026-10-13的A100 Qwen SFT实验；以下均为同一86713用户测试集结果，按验证NDCG@10选模。
+## 评测约定与结果边界
 
-| 方法 | HitRate@10 / Recall@10 | NDCG@10 | HitRate@20 / Recall@20 | NDCG@20 |
-|---|---:|---:|---:|---:|
-| Popularity（训练集商品计数） | 0.008949 | 0.004577 | 0.016572 | 0.006475 |
-| SASRec（首次 20 轮，第 20 轮最佳） | 0.053660 | 0.031269 | 0.070785 | 0.035575 |
-| SASRec（续训，第 23 轮最佳） | 0.057650 | 0.035554 | 0.074406 | 0.039775 |
-| 小型 TIGER（Adam SID，第3轮最佳） | 0.049566 | 0.036792 | 0.060637 | 0.039582 |
-| 小型 TIGER（EMA SID，第3轮最佳） | 0.049820 | 0.037539 | 0.057096 | 0.039382 |
-| Qwen2.5-1.5B-Instruct 全参SFT（第3000步） | **0.093677** | **0.075496** | **0.108819** | **0.079319** |
+- **数据划分：** 用户内按时间排序，最后一件测试、倒数第二件验证、更早部分训练；用户可以出现在多个划分中，预测目标与可见历史按时间隔离。
+- **候选范围：** 全部 25,898 件商品，过滤完整已知历史；SASRec 精确打分，TIGER / Qwen 使用 beam20 近似检索。主表不采用“1 正 + 100 负”的采样评测。
+- **选模：** SASRec / TIGER 使用其验证集，Qwen 正式训练使用固定 5,000 人验证子集，均按验证 NDCG@10 选模；测试不用于奖励或选模。
+- **证据：** 单随机种子、固定商品目录和用户内时序划分；没有线上 A/B 结论。AUC / GAUC 已有代码入口，尚未实测，不填造数值。
+- **复用：** SFT 权重保留在私有持久网盘；Git 公开代码、配置、结构参数、结果和指纹。克隆仓库不会获得已训练 Qwen 权重。[权重记录](experiments/qwen_sft_office2018_20261013/model_artifact.json)
 
-**如何理解 5.76%：** 对每个用户推荐 10 件商品，检查真实下一件商品是否在其中。
-HitRate@10 是命中用户数除以全部测试用户数；每人仅一个测试目标，因此与 Recall@10 相等。
-这不是推荐商品的准确率，也不是从 10 件候选中挑选正样本。NDCG@10 还衡量命中目标在前 10 中的排位。
+## 阅读与复现导航
 
-下表为SASRec规则。TIGER式召回使用四段SID交叉熵，不抽商品负例；候选检索使用全目录前缀树的有限beam，详见正式报告。
-
-| 环节 | SASRec实际使用的规则 |
+| 入口 | 内容 |
 |---|---|
-| 数据划分 | 每用户按时间排序，最后一项测试、倒数第二项验证、更早部分训练 |
-| 训练负采样 | 每个有效下一物品位置抽 1 个均匀随机负例；排除完整训练历史，每轮重新抽；不读取验证/测试目标进行过滤 |
-| 训练损失 | 正例标签 1、负例标签 0 的 BCE 相加；padding 不参与损失 |
-| 评测用户 | 全部 86,713 个用户，每人 1 个真实目标 |
-| 评测候选 | 全部 25,898 件商品，排除已知历史与 padding；不随机抽负候选 |
-| 测试输入 | 训练历史加验证商品，模型编码最近 20 项，过滤时仍使用完整已知历史 |
-| 排序与选模 | 分数降序、同分时商品 ID 升序；仅验证 NDCG@10 选模与判断暂停，测试不参与 |
+| [项目实现与取舍](PROJECT_OVERVIEW.md) | 问题、改动、效果、代码位置与仍待验证的问题 |
+| [复现与运行](REPRODUCING.md) | 数据下载、CPU 环境、SASRec 检查与训练、生成式运行入口 |
+| [01 · 知识库](01_知识库/README.md) | SASRec、语义 ID、SFT 输入输出和梯度原理 |
+| [02 · 商品编码](02_商品编码/README.md) | MiniLM 模型 / 分词器与其他编码器版本 |
+| [03 · 离散语义 ID](03_离散语义ID/README.md) | 梯度码本、EMA；RQ-KMeans 预留版本 |
+| [04 · 推荐生成](04_推荐生成/README.md) | 小型 TIGER 与 Qwen 配置、实现入口 |
+| [06 · 每日记录](06_每日效果记录/README.md) / [07 · 组合统计](07_组合结果统计/README.md) | 实验过程、组合结果、模型参数与原始指标 |
+| [实验索引](experiments/README.md) / [第三方来源](THIRD_PARTY_NOTICES.md) | 历史报告与来源、许可证、引用 |
 
-上游采样评测在“1 个正样本 + 100 个随机负候选”中排序，**不能与这里的全目录指标直接比较**。
-未观测商品也不等于用户明确不喜欢。当前成绩是单随机种子的起步基线，
-使用用户内划分与固定商品目录，不等于论文精确复现、严格全局时间实验或线上效果。
+代码集中在 `scripts/`，参考源码在 `baselines/`，协议与模型检查在 `tests/`。原始数据、用户映射与训练输出位于 Git 忽略目录。编号 05 暂未使用，保留既有实验路径以便核验历史指纹。
 
-续训计划新增最多 20 轮，实际新增 5 轮：第 24、25 轮训练 loss 低于第 23 轮，
-但验证 NDCG@10 均低于第 23 轮最佳值，触发连续两次过拟合预警，暂停于第 25 轮。
-这是保守的暂停信号，不能表述为验证成绩逐轮下降或已经证明过拟合。
-报告、逐轮记录与配置见 [实验总表](experiments/README.md) 和 [续训报告](experiments/sasrec_cpu_extend40_20261007.md)。
-训练代码、依赖、测试与聚合报告公开；数据、用户映射、训练权重及完整本机日志保留在本地忽略目录。指定的公开预训练MiniLM权重和配套分词器另在02目录提供。
+当前已完成 SASRec、两套小型 TIGER 与 Qwen Q1 SFT 的实测对照。后续方向包括商品编码对照、标题对齐与偏好优化；尚未验证的改动不列为已取得的收益。
 
-**已完成首轮：** [小型 TIGER 实施路线](01_知识库/04_TIGER/小型TIGER实施路线.md)：商品文本 → 冻结MiniLM向量 → RQ-VAE → 四段唯一SID → 下一物品生成。原版与EMA的[正式对照](experiments/semantic_retrievers_comparison_20261008.md)已导出。
-沿用相同数据划分、用户、目录与历史过滤；TIGER有限beam属于近似检索，不能表述为SASRec那样的全目录精确打分。
+## 参考与许可
 
-## 学习导航
+[SASRec](https://github.com/pmixer/SASRec.pytorch) · [TIGER 论文](https://arxiv.org/abs/2305.05065) · [RQ-VAE-Recommender](https://github.com/EdoardoBotta/RQ-VAE-Recommender) · [MiniOneRec](https://github.com/AkaliKong/MiniOneRec) · [OpenOneRec](https://github.com/Kuaishou-OneRec/OpenOneRec)
 
-| 目录 / 文档 | 内容 |
-|---|---|
-| [项目路线](01_知识库/01_项目路线/路线图.md) | 阶段目标、实现顺序、验收标准 |
-| [SASRec 代码流程讲解](01_知识库/02_SASRec/SASRec代码流程讲解.md) | 数据、样本、自注意力、损失、预测与评估 |
-| [本地训练与推理](01_知识库/02_SASRec/本地训练与推理.md) | 已验证的 CPU 环境、完整训练、恢复和推荐调用 |
-| [数据与评测协议](01_知识库/03_数据与评测/数据与评测协议.md) | 清洗、共同划分、元数据缺失与评测口径 |
-| [小型 TIGER 实施路线](01_知识库/04_TIGER/小型TIGER实施路线.md) | 从商品文本、RQ-VAE、语义 ID 到生成与评测的实施顺序 |
-| [SASRec 源码](baselines/sasrec/) | 固定版本的第三方 PyTorch 实现 |
-| [数据目录](data/README.md) | 下载与处理文件的用途 |
-| [实验记录](experiments/README.md) | 数据统计、核验与真实模型指标 |
-| [第三方来源](THIRD_PARTY_NOTICES.md) | 代码来源、固定 commit、许可证与引用 |
-
-## 当前进度
-
-- [x] 下载 Amazon Reviews 2018 Office Products 官方 5-core 交互和元数据。
-- [x] 去重后重新进行用户—物品 5-core，导出共同数据划分。
-- [x] 核验数字 ID、时序、5-core、SASRec 划分和元数据对齐。
-- [x] 整理 SASRec PyTorch 源码、中文讲解与运行入口。
-- [x] 配置训练环境，完成小规模训练通路检查。
-- [x] 适配全物品评估，仅用验证集选模型，完成首次 SASRec 基线训练及推理。
-- [x] 固定并保留第三方TIGER实现来源，完成25,898件商品向量与30轮RQ-VAE。
-- [x] 生成完整四段唯一语义ID，验收生成训练、检索与权重加载通路。
-- [x] 完成原版SID的小型TIGER正式训练、全用户验证选模与一次测试。
-- [x] 审计三层死码、频次与有效码字数，完成30轮EMA量化对照。
-- [x] 完成EMA SID的独立生成训练、全用户验证选模、测试与原版/SASRec对照。
-- [x] 接入Qwen预训练权重、实现四段SID全参数SFT、样本检查和检索评测入口。
-- [x] 在A100运行Qwen pilot与正式Q1 SFT，以固定5000人验证子集选模，完成86713人全量测试。
-- [ ] 探索简化 OneRec 的列表生成与偏好优化。
-
-## 项目结构
-
-```text
-generative-recommendation-learning/
-├── 01_知识库/                  原理、路线、数据协议、SFT讲解
-├── 02_商品编码/                连续商品向量版本
-├── 03_离散语义ID/              Adam / EMA；RQ-KMeans预留
-├── 04_推荐生成/                小型TIGER / Qwen全参SFT配置与入口
-├── 06_每日效果记录/            每日状态与实验证据
-├── 07_组合结果统计/            编码器×SID×生成器效果总表
-├── baselines/                  保留原始第三方源码和许可证
-├── scripts/                    实际可运行入口
-├── tests/                      协议与模型通路检查
-├── experiments/                聚合报告，保留历史路径
-├── data/                       本地忽略：原始、处理、SID数据
-└── outputs/                    本地忽略：权重、训练状态与日志
-```
-
-## 数据准备
-
-脚本只依赖 Python 标准库。在项目根目录执行：
-
-```bash
-python scripts/download_data.py
-python scripts/prepare_office.py
-python scripts/verify_dataset.py
-```
-
-下载脚本检查 SHA-256，复用已有完整文件。只核验已下载数据时执行：
-
-```bash
-python scripts/download_data.py --verify-only
-```
-
-原始压缩文件共约 597MiB；处理需要额外磁盘空间。
-预处理生成 `data/processed/office2018/`，并把两列输入复制到 `baselines/sasrec/data/office2018.txt`。
-原始评论、用户映射、训练数据和训练权重不上传 GitHub。
-
-## 当前数据统计
-
-| 项目 | 数量 |
-|---|---:|
-| 官方 5-core 评论 | 800,357 |
-| 清洗后用户 | 86,713 |
-| 清洗后物品 | 25,898 |
-| 清洗后交互 | 677,247 |
-| 训练交互 | 503,821 |
-| 验证 / 测试目标 | 各 86,713 |
-| 有元数据的物品 | 25,870 |
-| 缺少元数据的物品 | 28 |
-
-统计属于本仓库的处理版本：保留每个用户—物品的首次交互，再重新进行 5-core。
-详细协议见 [数据与评测说明](01_知识库/03_数据与评测/数据与评测协议.md)，统计见 [data_stats.json](experiments/data_stats.json)。
-
-## SASRec 起步运行
-
-已验证独立 Python 3.12.13 环境：PyTorch 2.7.1+cpu、NumPy 2.2.6。
-完整依赖见 `requirements-cpu-lock.txt`，CPU 环境可按下面步骤创建：
-
-```bash
-uv venv --python 3.12 .venv
-uv pip install --python .venv/Scripts/python.exe -r requirements-cpu-lock.txt
-# Windows PowerShell: .\.venv\Scripts\Activate.ps1
-# Linux / macOS: source .venv/bin/activate
-```
-
-GPU 用户需按硬件安装相应 PyTorch 构建，Intel 显卡不能直接使用 CUDA。
-激活虚拟环境后，从项目根目录检查数据、协议和训练通路：
-
-```bash
-python scripts/verify_dataset.py
-python -m unittest discover -s tests -p test_sasrec_runner.py -v
-python scripts/run_sasrec.py --output outputs/sasrec_smoke_new --smoke-only --smoke-steps 20 --threads 2
-```
-
-小规模检查只跑 20 个 batch，并核对权重保存和重新加载一致，不提供正式指标。
-完整训练与推理：
-
-```bash
-python scripts/run_sasrec.py --output outputs/sasrec_office2018_cpu_new --epochs 20 --maxlen 20 --batch-size 128 --eval-batch-size 128 --eval-every 5 --patience 2 --threads 2
-python scripts/recommend_sasrec.py --checkpoint outputs/sasrec_office2018_cpu_new/best.pth --user-id 1 --k 10
-```
-
-不同实验使用新输出目录，避免覆盖旧权重。当前上游源码仍保留供学习；
-实际运行入口使用原模型，独立实现采样、全商品评测、验证集选模、恢复和结果记录。
-训练可能持续占用 CPU，本机恢复阶段使用 2 个线程和 BelowNormal 优先级。
-
-## 当前正式评测适配
-
-上游使用“1 个真实目标 + 100 个随机候选”评估，会随机抽评测用户；保存 checkpoint 的条件还参考测试集。
-这些代码保留供学习，实际入口 `scripts/run_sasrec.py` 不使用该评测和选模逻辑。
-当前已统一全物品、全部用户评估、完整已知历史过滤、固定随机种子和同分排序，
-仅按验证 NDCG@10 选模型，最终报告一次测试结果。
-
-## 实现与结果的边界
-
-- 模型代码来自 [pmixer/SASRec.pytorch](https://github.com/pmixer/SASRec.pytorch)，已保留原作者和许可证。
-- 本项目新增数据下载、处理、核验、训练入口、全商品评测、恢复、推理、实验记录和讲解。
-- 指标在真实训练前保持“未训练”，不引用上游其他数据集成绩替代本项目结果。
-- 论文方法、个人简化设计和真实实验结果分别标注。
-
-## 主要参考
-
-- [SASRec 作者原始实现](https://github.com/kang205/SASRec)
-- [TIGER 论文](https://arxiv.org/abs/2305.05065)
-- [RQ-VAE-Recommender](https://github.com/EdoardoBotta/RQ-VAE-Recommender)
-- [OneRec 论文](https://arxiv.org/abs/2502.18965)
-- [MiniOneRec](https://github.com/AkaliKong/MiniOneRec)
-- [官方 OpenOneRec](https://github.com/Kuaishou-OneRec/OpenOneRec)
-
-## 许可证
-
-代码采用 [Apache-2.0](LICENSE)。第三方数据与内容保留各自原始权利，见 [第三方说明](THIRD_PARTY_NOTICES.md)。
+代码采用 [Apache-2.0](LICENSE)，第三方代码与数据遵循各自许可。本仓库与[推荐系统学习知识库](https://github.com/Tanghaopeng/recommendation-system-learning)配套，侧重实际实现与实验记录。
