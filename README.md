@@ -25,19 +25,6 @@
 
 ¹ 表中参数量仅指在线推荐模型，不含离线 MiniLM 与 RQ-VAE。每人仅一个测试目标，HitRate@K 与 Recall@K 相同。SASRec / TIGER 为 CPU 实验；Qwen 为 A100 40GB 实验。完整记录见 [SASRec](experiments/sasrec_cpu_extend40_20261007.md)、[TIGER 对照](experiments/semantic_retrievers_comparison_20261008.md)、[Qwen SFT](experiments/qwen_sft_office2018_20261013/README.md)。
 
-## 我在项目中做了什么
-
-| 工作 | 实际改动 | 验证与发现 |
-|---|---|---|
-| 建立可比基线 | 对齐清洗、商品 ID、时序划分、历史过滤；SASRec 增加全目录评测、验证集选模和恢复入口 | 统一 86,713 人测试，替代上游采样候选口径；[数据协议](01_知识库/03_数据与评测/数据与评测协议.md) |
-| 构建离散商品表示 | 冻结 MiniLM 编码；训练三层 RQ-VAE；追加一段碰撞消歧码；增加死码审计与 EMA 对照 | 第一层活跃码字 **84→117**，死码 **172→139**；[量化报告](experiments/rqvae_adam_vs_ema_20261008.md) |
-| 打通小型生成召回 | 用四段 SID 训练小型 Transformer，通过商品前缀树约束 beam 检索 | 梯度版 TIGER 的 Recall@10 **低于 SASRec**；保留负向结果，EMA 利用率改善也未转化为全面推荐提升 |
-| 将 Qwen 适配为推荐生成器 | 扩展 **1,024 个 SID token**；固定 Q0 初始化；聊天模板输入历史；只监督答案；全参数 SFT | **397,345 个训练位置**，固定 5,000 人验证子集选中第 3,000 步；完成全用户测试 |
-| 检查生成与评测细节 | 固定 `sid_beam_v2` 解码配置；导出候选四段 SID 与路径分数；记录代码、数据、权重指纹 | 公开 **33 人 / 660 条候选**；第一段 SID 平均 5.88 种；[候选记录](experiments/qwen_sft_office2018_20261013/candidates_33_users.jsonl) |
-| 测量训练吞吐 | 有效 batch=128 不变，短测 microbatch 2→4、累积 64→32 | 更新耗时 **10.92→6.58 秒**，吞吐约 **+66.1%**；仅 2 个计时步，未用于上述正式训练；[原始短测](experiments/qwen_sft_office2018_20261013/batch_benchmark_b4.json) |
-
-基础模型与参考实现保留来源、固定版本及许可证。本项目工作主要是数据与协议统一、适配、对照实验和可核验记录，具体代码边界见[实现说明](PROJECT_OVERVIEW.md)。
-
 ## 系统路线
 
 ```mermaid
