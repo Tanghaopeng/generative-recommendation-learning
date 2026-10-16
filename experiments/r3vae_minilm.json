@@ -1,0 +1,23 @@
+{
+  "seed": 2026,
+  "epochs": 30,
+  "batch_size": 512,
+  "patience": 5,
+  "lr": 0.0005,
+  "weight_decay": 1e-05,
+  "initialization": "residual_kmeans",
+  "init_items": 4096,
+  "sc_weight": 0,
+  "pd_weight": 0,
+  "model": {
+    "input_dim": 384,
+    "latent_dim": 32,
+    "hidden_dims": [
+      256,
+      128
+    ],
+    "codebook_size": 256,
+    "layers": 3,
+    "rating_mode": "official_top1"
+  }
+}

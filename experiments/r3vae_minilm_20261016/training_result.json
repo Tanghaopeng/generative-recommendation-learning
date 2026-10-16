@@ -1,0 +1,448 @@
+{
+  "model": "MiniLM R3-VAE",
+  "status": "completed",
+  "config": {
+    "seed": 2026,
+    "epochs": 30,
+    "batch_size": 512,
+    "patience": 5,
+    "lr": 0.0005,
+    "weight_decay": 1e-05,
+    "initialization": "residual_kmeans",
+    "init_items": 4096,
+    "sc_weight": 0,
+    "pd_weight": 0,
+    "model": {
+      "input_dim": 384,
+      "latent_dim": 32,
+      "hidden_dims": [
+        256,
+        128
+      ],
+      "codebook_size": 256,
+      "layers": 3,
+      "rating_mode": "official_top1"
+    }
+  },
+  "parameters": 294944,
+  "started_at_utc": "2026-10-16T07:36:13.051470+00:00",
+  "completed_at_utc": "2026-10-16T07:39:23.365185+00:00",
+  "best_epoch": 30,
+  "elapsed_seconds": 191.4722838000016,
+  "initialization_seconds": 1.1576942999963649,
+  "codec_train_items": 24603,
+  "codec_validation_items": 1295,
+  "selection": "held-out catalog-vector cosine reconstruction only; no downstream test",
+  "precision": "FP32 CPU",
+  "best_validation_reconstruction": 0.23216062972904633,
+  "history": [
+    {
+      "epoch": 1,
+      "seconds": 6.306307399994694,
+      "validation": {
+        "reconstruction_loss": 0.45160291047630163,
+        "sc_proxy_loss": 0.19909722773955135,
+        "pd_proxy_loss": -1.4703890085220337
+      },
+      "loss": 0.5527807523219396,
+      "reconstruction_loss": 0.5527807523219396,
+      "sc_proxy_loss": 0.18726308916488013,
+      "pd_proxy_loss": -1.4703169763609099
+    },
+    {
+      "epoch": 2,
+      "seconds": 5.814040999997815,
+      "validation": {
+        "reconstruction_loss": 0.3970804654033028,
+        "sc_proxy_loss": 0.36415718621268695,
+        "pd_proxy_loss": -1.4705880880355835
+      },
+      "loss": 0.4231593168126332,
+      "reconstruction_loss": 0.4231593168126332,
+      "sc_proxy_loss": 0.2770349664636847,
+      "pd_proxy_loss": -1.4704468253133394
+    },
+    {
+      "epoch": 3,
+      "seconds": 5.8537570999978925,
+      "validation": {
+        "reconstruction_loss": 0.3586221634651243,
+        "sc_proxy_loss": 0.43040695319304595,
+        "pd_proxy_loss": -1.470070242881775
+      },
+      "loss": 0.37841672231689466,
+      "reconstruction_loss": 0.37841672231689466,
+      "sc_proxy_loss": 0.38592316773598384,
+      "pd_proxy_loss": -1.4705572284460406
+    },
+    {
+      "epoch": 4,
+      "seconds": 5.875300400002743,
+      "validation": {
+        "reconstruction_loss": 0.3378556119889366,
+        "sc_proxy_loss": 0.5224746211155041,
+        "pd_proxy_loss": -1.4688301086425781
+      },
+      "loss": 0.34712685303576996,
+      "reconstruction_loss": 0.34712685303576996,
+      "sc_proxy_loss": 0.4748372133561268,
+      "pd_proxy_loss": -1.4693580565062818
+    },
+    {
+      "epoch": 5,
+      "seconds": 5.635986799999955,
+      "validation": {
+        "reconstruction_loss": 0.32029937809498615,
+        "sc_proxy_loss": 0.5630056269380577,
+        "pd_proxy_loss": -1.4676809310913086
+      },
+      "loss": 0.3283610284093463,
+      "reconstruction_loss": 0.3283610284093463,
+      "sc_proxy_loss": 0.5422390931041116,
+      "pd_proxy_loss": -1.4683351251151908
+    },
+    {
+      "epoch": 6,
+      "seconds": 5.570010399998864,
+      "validation": {
+        "reconstruction_loss": 0.3055870255448183,
+        "sc_proxy_loss": 0.5857063128681257,
+        "pd_proxy_loss": -1.4665178060531616
+      },
+      "loss": 0.3123552668692062,
+      "reconstruction_loss": 0.3123552668692062,
+      "sc_proxy_loss": 0.570507238394593,
+      "pd_proxy_loss": -1.4671117049700089
+    },
+    {
+      "epoch": 7,
+      "seconds": 6.139829800005828,
+      "validation": {
+        "reconstruction_loss": 0.2952743487928825,
+        "sc_proxy_loss": 0.6125532552082106,
+        "pd_proxy_loss": -1.465083122253418
+      },
+      "loss": 0.30008280191732384,
+      "reconstruction_loss": 0.30008280191732384,
+      "sc_proxy_loss": 0.5933078482267997,
+      "pd_proxy_loss": -1.4659314177479439
+    },
+    {
+      "epoch": 8,
+      "seconds": 5.983700400000089,
+      "validation": {
+        "reconstruction_loss": 0.2876586437225342,
+        "sc_proxy_loss": 0.6192212692558996,
+        "pd_proxy_loss": -1.4639469385147095
+      },
+      "loss": 0.29081431896237003,
+      "reconstruction_loss": 0.29081431896237003,
+      "sc_proxy_loss": 0.6129316650032731,
+      "pd_proxy_loss": -1.4644782918742754
+    },
+    {
+      "epoch": 9,
+      "seconds": 5.633632199998829,
+      "validation": {
+        "reconstruction_loss": 0.2819647132659971,
+        "sc_proxy_loss": 0.6343839243111924,
+        "pd_proxy_loss": -1.4631668329238892
+      },
+      "loss": 0.2835637017202073,
+      "reconstruction_loss": 0.2835637017202073,
+      "sc_proxy_loss": 0.6245578018135256,
+      "pd_proxy_loss": -1.4635932265571117
+    },
+    {
+      "epoch": 10,
+      "seconds": 6.143504799998482,
+      "validation": {
+        "reconstruction_loss": 0.27620536991067834,
+        "sc_proxy_loss": 0.630877839092122,
+        "pd_proxy_loss": -1.4619865417480469
+      },
+      "loss": 0.27770014117463054,
+      "reconstruction_loss": 0.27770014117463054,
+      "sc_proxy_loss": 0.6247987345806473,
+      "pd_proxy_loss": -1.462579170620568
+    },
+    {
+      "epoch": 11,
+      "seconds": 6.484515900003316,
+      "validation": {
+        "reconstruction_loss": 0.2712640169044259,
+        "sc_proxy_loss": 0.6307644777316385,
+        "pd_proxy_loss": -1.4610509872436523
+      },
+      "loss": 0.27237373216653293,
+      "reconstruction_loss": 0.27237373216653293,
+      "sc_proxy_loss": 0.6275927109218867,
+      "pd_proxy_loss": -1.46152147726669
+    },
+    {
+      "epoch": 12,
+      "seconds": 6.364843800001836,
+      "validation": {
+        "reconstruction_loss": 0.2671752666874742,
+        "sc_proxy_loss": 0.6457126885307342,
+        "pd_proxy_loss": -1.4601469039916992
+      },
+      "loss": 0.26771452288770464,
+      "reconstruction_loss": 0.26771452288770464,
+      "sc_proxy_loss": 0.6312257816615844,
+      "pd_proxy_loss": -1.4607308242435655
+    },
+    {
+      "epoch": 13,
+      "seconds": 6.375132000001031,
+      "validation": {
+        "reconstruction_loss": 0.26416204500382473,
+        "sc_proxy_loss": 0.6498303594276251,
+        "pd_proxy_loss": -1.4591439962387085
+      },
+      "loss": 0.26354286461900184,
+      "reconstruction_loss": 0.26354286461900184,
+      "sc_proxy_loss": 0.6376443737232408,
+      "pd_proxy_loss": -1.4596411848012032
+    },
+    {
+      "epoch": 14,
+      "seconds": 6.1945197000022745,
+      "validation": {
+        "reconstruction_loss": 0.260132173957972,
+        "sc_proxy_loss": 0.6460342928249403,
+        "pd_proxy_loss": -1.4580188989639282
+      },
+      "loss": 0.25988406396438374,
+      "reconstruction_loss": 0.25988406396438374,
+      "sc_proxy_loss": 0.642523934035574,
+      "pd_proxy_loss": -1.458587880333822
+    },
+    {
+      "epoch": 15,
+      "seconds": 5.920147800003178,
+      "validation": {
+        "reconstruction_loss": 0.2570653431664102,
+        "sc_proxy_loss": 0.6601303172847939,
+        "pd_proxy_loss": -1.4569568634033203
+      },
+      "loss": 0.2565634289330711,
+      "reconstruction_loss": 0.2565634289330711,
+      "sc_proxy_loss": 0.6479072762214958,
+      "pd_proxy_loss": -1.4576034350099252
+    },
+    {
+      "epoch": 16,
+      "seconds": 6.255159599997569,
+      "validation": {
+        "reconstruction_loss": 0.254742651096182,
+        "sc_proxy_loss": 0.6552406976121733,
+        "pd_proxy_loss": -1.4558013677597046
+      },
+      "loss": 0.25353937529065923,
+      "reconstruction_loss": 0.25353937529065923,
+      "sc_proxy_loss": 0.6583253294502056,
+      "pd_proxy_loss": -1.456432950601817
+    },
+    {
+      "epoch": 17,
+      "seconds": 5.719016600000032,
+      "validation": {
+        "reconstruction_loss": 0.25201628254187153,
+        "sc_proxy_loss": 0.6620144433036274,
+        "pd_proxy_loss": -1.4548091888427734
+      },
+      "loss": 0.25085030916148715,
+      "reconstruction_loss": 0.25085030916148715,
+      "sc_proxy_loss": 0.6599220148854124,
+      "pd_proxy_loss": -1.4552742837817816
+    },
+    {
+      "epoch": 18,
+      "seconds": 6.125958700002229,
+      "validation": {
+        "reconstruction_loss": 0.2495327028528604,
+        "sc_proxy_loss": 0.6677673370681674,
+        "pd_proxy_loss": -1.4540166854858398
+      },
+      "loss": 0.24835985559557228,
+      "reconstruction_loss": 0.24835985559557228,
+      "sc_proxy_loss": 0.6623410753533593,
+      "pd_proxy_loss": -1.4543525379605202
+    },
+    {
+      "epoch": 19,
+      "seconds": 6.120981199994276,
+      "validation": {
+        "reconstruction_loss": 0.24763654102229704,
+        "sc_proxy_loss": 0.6697919251375677,
+        "pd_proxy_loss": -1.453382134437561
+      },
+      "loss": 0.2458791321057428,
+      "reconstruction_loss": 0.2458791321057428,
+      "sc_proxy_loss": 0.6650935012853393,
+      "pd_proxy_loss": -1.4537899239210657
+    },
+    {
+      "epoch": 20,
+      "seconds": 6.226682600005006,
+      "validation": {
+        "reconstruction_loss": 0.24544385814298533,
+        "sc_proxy_loss": 0.6747960639276099,
+        "pd_proxy_loss": -1.4526275396347046
+      },
+      "loss": 0.24403360638052343,
+      "reconstruction_loss": 0.24403360638052343,
+      "sc_proxy_loss": 0.6711678039405965,
+      "pd_proxy_loss": -1.452979059683154
+    },
+    {
+      "epoch": 21,
+      "seconds": 6.231812700003502,
+      "validation": {
+        "reconstruction_loss": 0.24381000346658774,
+        "sc_proxy_loss": 0.6702033972187852,
+        "pd_proxy_loss": -1.4521814584732056
+      },
+      "loss": 0.24194704447704296,
+      "reconstruction_loss": 0.24194704447704296,
+      "sc_proxy_loss": 0.6724112039101161,
+      "pd_proxy_loss": -1.4523351241605862
+    },
+    {
+      "epoch": 22,
+      "seconds": 6.389358000000357,
+      "validation": {
+        "reconstruction_loss": 0.24228461976217028,
+        "sc_proxy_loss": 0.6751487584647985,
+        "pd_proxy_loss": -1.4516258239746094
+      },
+      "loss": 0.23995346550204397,
+      "reconstruction_loss": 0.23995346550204397,
+      "sc_proxy_loss": 0.6738164104451321,
+      "pd_proxy_loss": -1.4518964136295607
+    },
+    {
+      "epoch": 23,
+      "seconds": 6.424576700002945,
+      "validation": {
+        "reconstruction_loss": 0.24051785077827778,
+        "sc_proxy_loss": 0.6780247386357959,
+        "pd_proxy_loss": -1.4510250091552734
+      },
+      "loss": 0.2382874240047858,
+      "reconstruction_loss": 0.2382874240047858,
+      "sc_proxy_loss": 0.6712448892227854,
+      "pd_proxy_loss": -1.451348969099391
+    },
+    {
+      "epoch": 24,
+      "seconds": 6.057306800001243,
+      "validation": {
+        "reconstruction_loss": 0.2394793465330794,
+        "sc_proxy_loss": 0.6767862782054886,
+        "pd_proxy_loss": -1.4503809213638306
+      },
+      "loss": 0.23669182848689063,
+      "reconstruction_loss": 0.23669182848689063,
+      "sc_proxy_loss": 0.6740560111939236,
+      "pd_proxy_loss": -1.4507182589179253
+    },
+    {
+      "epoch": 25,
+      "seconds": 5.866039799999271,
+      "validation": {
+        "reconstruction_loss": 0.23856862682173152,
+        "sc_proxy_loss": 0.6809022801723259,
+        "pd_proxy_loss": -1.4497098922729492
+      },
+      "loss": 0.23499309652991177,
+      "reconstruction_loss": 0.23499309652991177,
+      "sc_proxy_loss": 0.6724047418368064,
+      "pd_proxy_loss": -1.4501025951795838
+    },
+    {
+      "epoch": 26,
+      "seconds": 6.431007399994996,
+      "validation": {
+        "reconstruction_loss": 0.23645052035342773,
+        "sc_proxy_loss": 0.6790791177841687,
+        "pd_proxy_loss": -1.449183464050293
+      },
+      "loss": 0.23365966353732165,
+      "reconstruction_loss": 0.23365966353732165,
+      "sc_proxy_loss": 0.6721609378255432,
+      "pd_proxy_loss": -1.449427625292109
+    },
+    {
+      "epoch": 27,
+      "seconds": 5.576729300002626,
+      "validation": {
+        "reconstruction_loss": 0.2348522519973254,
+        "sc_proxy_loss": 0.6782490934184159,
+        "pd_proxy_loss": -1.448740005493164
+      },
+      "loss": 0.23207391391550336,
+      "reconstruction_loss": 0.23207391391550336,
+      "sc_proxy_loss": 0.674855764814011,
+      "pd_proxy_loss": -1.4489749904929567
+    },
+    {
+      "epoch": 28,
+      "seconds": 5.7648300000000745,
+      "validation": {
+        "reconstruction_loss": 0.2339616357129513,
+        "sc_proxy_loss": 0.6787551289359575,
+        "pd_proxy_loss": -1.4486802816390991
+      },
+      "loss": 0.23072025222622883,
+      "reconstruction_loss": 0.23072025222622883,
+      "sc_proxy_loss": 0.6742501405493562,
+      "pd_proxy_loss": -1.4487211610545754
+    },
+    {
+      "epoch": 29,
+      "seconds": 6.767814699996961,
+      "validation": {
+        "reconstruction_loss": 0.23304558702417322,
+        "sc_proxy_loss": 0.6747225631157864,
+        "pd_proxy_loss": -1.4484974145889282
+      },
+      "loss": 0.2294298427640745,
+      "reconstruction_loss": 0.2294298427640745,
+      "sc_proxy_loss": 0.6755016199026739,
+      "pd_proxy_loss": -1.4486288162468361
+    },
+    {
+      "epoch": 30,
+      "seconds": 6.030386300000828,
+      "validation": {
+        "reconstruction_loss": 0.23216062972904633,
+        "sc_proxy_loss": 0.6803734615962937,
+        "pd_proxy_loss": -1.4484628438949585
+      },
+      "loss": 0.2280417827819899,
+      "reconstruction_loss": 0.2280417827819899,
+      "sc_proxy_loss": 0.674917318864755,
+      "pd_proxy_loss": -1.4484249694906628
+    }
+  ],
+  "source_sha256": {
+    "r3vae.py": "c9fa21eb95534ec0780cbcb40b9824b4036a801c20ceced3450b4c6b50d31d6c",
+    "train_r3vae.py": "31e2aa19933eb7014f928b5e4fb7149f2320952dde86b8ed3f80cfdb5758fc88",
+    "sid_quality.py": "cda38323af30ac78e0d72fe72ecf38c4ef97941062746b29a193cf02ee5bc5df",
+    "build_semantic_ids.py": "1fd5ecdf939ef7053c0dda221405d0e7beab5d79d1d9096bf08f363b410a00da",
+    "tiger_common.py": "c08f042c03044f7e45ec8b7d8c972a0d88c64f36e0dbf650cfc9767968babeb5"
+  },
+  "reference": {
+    "repository": "https://github.com/wwqq/R3-VAE",
+    "commit": "87f1c0c21cecd16a1c44870dabe29d970475b5e1",
+    "paper": "https://arxiv.org/html/2604.11440v3",
+    "implementation": "independently written local adaptation, not verbatim upstream files"
+  },
+  "source_run_sha256": "3504dec440b4f88b537defa9cfff9527cced7919cfc7db75262dfa9dfd3b0e82",
+  "best_checkpoint_sha256": "84a01702e1daf51eecb9daccfee437b41ac227098feb16168b86510443e25c6e",
+  "embedding_sha256": "45a2535449726c0aaebf914eb5e3021fa64f822d6bf6d0c909fbb2d20f66c6c0",
+  "downstream_recommendation_trained": false,
+  "weight_distribution": "weights and SID arrays retained outside ordinary Git; aggregate evidence only"
+}

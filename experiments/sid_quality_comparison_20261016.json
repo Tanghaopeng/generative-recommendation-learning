@@ -1,0 +1,154 @@
+{
+  "date": "2026-10-16",
+  "protocol": "fixed_minilm_cosine_macro_sc_centroid_pd_v1",
+  "scope": "25898 full-catalog frozen MiniLM features; geometric SID evaluation",
+  "semantic_layers": 3,
+  "codebook_size": 256,
+  "collision_counter_excluded": true,
+  "rows": [
+    {
+      "model": "RQ-VAE",
+      "SC": 0.412842854096231,
+      "PD": -0.6299559534176362,
+      "used_codes": [
+        84,
+        256,
+        256
+      ],
+      "codebook_utilization": [
+        0.328125,
+        1.0,
+        1.0
+      ],
+      "dead_codes": [
+        172,
+        0,
+        0
+      ],
+      "items": 25898,
+      "unique_three_sid": 20332,
+      "collision_groups": 2871,
+      "items_in_collision_groups": 8437,
+      "collision_item_fraction": 0.32577805235925555,
+      "excess_fraction": 0.2149200710479574,
+      "largest_group": 34,
+      "full_unique_sid": 25898,
+      "sid_sha256": "f768d10b58f31c4d0d89d69becfef48ed3415877a0845e0b2d6680843dac9293",
+      "embedding_sha256": "45a2535449726c0aaebf914eb5e3021fa64f822d6bf6d0c909fbb2d20f66c6c0"
+    },
+    {
+      "model": "RQ-VAE EMA",
+      "SC": 0.4108499065419024,
+      "PD": -0.6211622227035949,
+      "used_codes": [
+        117,
+        256,
+        256
+      ],
+      "codebook_utilization": [
+        0.45703125,
+        1.0,
+        1.0
+      ],
+      "dead_codes": [
+        139,
+        0,
+        0
+      ],
+      "items": 25898,
+      "unique_three_sid": 21474,
+      "collision_groups": 2506,
+      "items_in_collision_groups": 6930,
+      "collision_item_fraction": 0.26758823075140936,
+      "excess_fraction": 0.17082400185342494,
+      "largest_group": 33,
+      "full_unique_sid": 25898,
+      "sid_sha256": "975075925cc54f903d7bc9069bf3653a96b8c29b613b846bdc4a27a8351a4554",
+      "embedding_sha256": "45a2535449726c0aaebf914eb5e3021fa64f822d6bf6d0c909fbb2d20f66c6c0"
+    },
+    {
+      "model": "R3-VAE",
+      "SC": 0.4458520303684006,
+      "PD": -0.809742416330906,
+      "used_codes": [
+        120,
+        240,
+        208
+      ],
+      "codebook_utilization": [
+        0.46875,
+        0.9375,
+        0.8125
+      ],
+      "dead_codes": [
+        136,
+        16,
+        48
+      ],
+      "items": 25898,
+      "unique_three_sid": 14409,
+      "collision_groups": 3713,
+      "items_in_collision_groups": 15202,
+      "collision_item_fraction": 0.5869951347594409,
+      "excess_fraction": 0.44362499034674496,
+      "largest_group": 97,
+      "full_unique_sid": 25898,
+      "sid_sha256": "592ee910c3bad21d9272368de15eb1a41dc5c2a04fd84b170a15db7b74cc4541",
+      "embedding_sha256": "45a2535449726c0aaebf914eb5e3021fa64f822d6bf6d0c909fbb2d20f66c6c0"
+    }
+  ],
+  "sources": {
+    "RQ-VAE": {
+      "quality_report": "sid_quality_adam_20261016.json",
+      "sha256": "dc0205d9c53fa7f6565a495024344cff15d1446eef87e0c3c1c0eab693c853ae"
+    },
+    "RQ-VAE EMA": {
+      "quality_report": "sid_quality_ema_20261016.json",
+      "sha256": "0cb61921bddc5ec63ceb8ef9f44075791d3a59d5cb01020483dc93fbf3ee0fbd"
+    },
+    "R3-VAE": {
+      "quality_report": "sid_quality_r3vae_20261016.json",
+      "sha256": "0f1f4deb9b11db094f2acf1f2c7a362a06c10fbb438442fe79327488c8653325"
+    }
+  },
+  "evidence_text_hash_convention": "SHA256 of UTF-8 file bytes with CRLF normalized to LF; binary artifact hashes unchanged",
+  "collision_report": {
+    "file": "sid_collision_comparison_20261016.json",
+    "sha256": "317272b5bafe7521d02c23842bfd6be3fe1d56eb780b94aea9be7515597a60d4"
+  },
+  "r3vae_training": {
+    "record": "r3vae_minilm_20261016/training_result.json",
+    "sha256": "a648e76b435317ae795dad10a534cf44702cb87c70a19285e185b3cecda983b5",
+    "parameters": 294944,
+    "epochs": 30,
+    "seconds": 191.4722838000016,
+    "config": {
+      "seed": 2026,
+      "epochs": 30,
+      "batch_size": 512,
+      "patience": 5,
+      "lr": 0.0005,
+      "weight_decay": 1e-05,
+      "initialization": "residual_kmeans",
+      "init_items": 4096,
+      "sc_weight": 0,
+      "pd_weight": 0,
+      "model": {
+        "input_dim": 384,
+        "latent_dim": 32,
+        "hidden_dims": [
+          256,
+          128
+        ],
+        "codebook_size": 256,
+        "layers": 3,
+        "rating_mode": "official_top1"
+      }
+    }
+  },
+  "conclusions": [
+    "R3-VAE has higher SC and lower PD in this fixed-feature protocol",
+    "R3-VAE also has more three-segment collisions; this is a tradeoff",
+    "No new downstream recommendation Recall/NDCG has been measured for R3-VAE"
+  ]
+}

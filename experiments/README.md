@@ -51,3 +51,11 @@ SASRec训练每个有效位置采1个负例；TIGER训练四段SID交叉熵，�
 ## 2026-10-13 Qwen Q1正式结果
 
 [完整实验、模型结构与权重指纹](qwen_sft_office2018_20261013/README.md)。SFT以固定5000人验证子集选模，再对86713人全量测试；指标、硬件及beam协议分别保留。
+
+## 2026年10月16日 SID质量与R³ VAE
+
+[SID质量对比](sid_quality_comparison_20261016.md)、[聚合JSON](sid_quality_comparison_20261016.json)对照同一MiniLM特征下的RQ-VAE、EMA和R³-VAE，包含SC/PD、码本利用率、死码、碰撞余量和最大同码组。
+
+[R³-VAE训练报告](r3vae_minilm_20261016/README.md)保存30轮CPU量化的结构、配置、逐轮记录和SID指纹；[碰撞分布](sid_collision_comparison_20261016.json)同时区分碰撞余量与参与碰撞商品占比。原始逐层报告：[RQ-VAE](sid_quality_adam_20261016.json)、[EMA](sid_quality_ema_20261016.json)、[R³-VAE](sid_quality_r3vae_20261016.json)。
+
+该阶段是离线量化与SID质量验证，R³-VAE尚无对应的下游推荐测试成绩。评测定义与复现入口见[SID质量验证指标](../03_离散语义ID/SID质量验证指标.md)。

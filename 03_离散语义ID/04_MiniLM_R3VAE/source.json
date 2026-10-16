@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/wwqq/R3-VAE",
+  "commit": "87f1c0c21cecd16a1c44870dabe29d970475b5e1",
+  "retrieved_on": "2026-10-16",
+  "files_sha256": {
+    "README.md": "7ae93d75410874323aadecf5a65a59093bc9e20c90af82a6553e15ab884ed339",
+    "src/models/r3_vae.py": "5cd3e41d6f2d8bd7e335514c7f2ab7e4c8df47a411b9ac6511daf18aaaf77f8f",
+    "shells/train.sh": "0ce4ed76fbcff0b69a104943563c33bedf9729373966008c57068d0d447f0834",
+    "train.py": "dcbc62b07db4234bbe32d73cda2eefb2607fe53228e48e00ac0fad682ad29f01"
+  },
+  "adaptation": "independently written local implementation; pinned source is comparison oracle",
+  "upstream_license_file_present": false,
+  "local_reference_directory": "outputs\\vendor_cache\\r3vae_official_20261016"
+}

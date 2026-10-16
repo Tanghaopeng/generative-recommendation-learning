@@ -1,0 +1,22 @@
+{
+  "id": "04_MiniLM_R3VAE",
+  "encoder": "frozen_minilm_l6_v2_128_mean_l2",
+  "entry": "scripts/train_r3vae.py",
+  "upstream_repository": "https://github.com/wwqq/R3-VAE",
+  "upstream_commit": "87f1c0c21cecd16a1c44870dabe29d970475b5e1",
+  "adaptation": "MLP384to32, reference projection, official_top1 rating, residual MiniBatchKMeans initialization",
+  "parameters": 294944,
+  "semantic_layers": 3,
+  "codebook_size": 256,
+  "sid_length": 4,
+  "quality_protocol": "fixed_minilm_cosine_macro_sc_centroid_pd_v1",
+  "status": "codec_training_and_sid_evaluation_completed",
+  "downstream_recommendation_trained": false,
+  "config": "experiments/r3vae_minilm.json",
+  "training_record": "experiments/r3vae_minilm_20261016/training_result.json",
+  "sid_manifest": "experiments/r3vae_minilm_20261016/sid_manifest.json",
+  "quality_record": "experiments/sid_quality_r3vae_20261016.json",
+  "training_objective": "cosine reconstruction",
+  "sc_weight": 0,
+  "pd_weight": 0
+}

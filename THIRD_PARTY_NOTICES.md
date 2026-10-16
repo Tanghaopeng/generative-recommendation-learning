@@ -55,6 +55,13 @@
 - 参考其全参数BF16 SFT、SID词表扩展、回答监督与多任务对齐设计。本地 `qwen_sft.py`、`prepare_qwen_sft.py`、`train_qwen_sft.py`、`evaluate_qwen_sft.py` 为独立适配，未直接调用上游三段SID训练入口；不是官方OneRec或精确论文复现。
 - 模型：[Qwen/Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct)，固定 revision `989aa7980e4cf806f80c7fef2b1adb7bc71aa306`。本地已验证模型权重，权重和数据均不提交Git；遵循模型自带许可证。
 
+## R³ VAE量化方法参考
+
+- 论文：[R3-VAE: Reference Vector-Guided Rating Residual Quantization VAE for Generative Recommendation](https://arxiv.org/abs/2604.11440)，Qiang Wan等，2026。
+- 作者仓库：[wwqq/R3-VAE](https://github.com/wwqq/R3-VAE)，固定提交 `87f1c0c21cecd16a1c44870dabe29d970475b5e1`；来源和文件指纹见[记录](03_离散语义ID/04_MiniLM_R3VAE/source.json)。
+- 本项目的 `scripts/r3vae.py`、`train_r3vae.py`、`sid_quality.py` 为独立编写的适配与评测实现。量化核心参照作者top1余弦评分加权运算，采用本项目32维MLP与残差K-means初始化；公开结果使用余弦重构训练。
+- 原始参考源码下载到本地Git忽略目录作前向和梯度核对，发布范围为适配代码、配置及聚合结果。论文softmax描述、公开代码与本地实现的差异见[适配说明](03_离散语义ID/04_MiniLM_R3VAE/README.md)。
+
 ## 第二套商品文本编码器
 
 - 模型：[Qwen/Qwen3-Embedding-4B](https://huggingface.co/Qwen/Qwen3-Embedding-4B)，固定 revision `5cf2132abc99cad020ac570b19d031efec650f2b`，官方模型卡标注 Apache-2.0。
