@@ -1,0 +1,13 @@
+{
+  "id": "03_MiniLM_RQKMeans",
+  "status": "full_catalog_sid_evaluation_completed",
+  "date": "2026-10-16",
+  "items": 25898,
+  "semantic_layers": 3,
+  "codebook_size": 256,
+  "sid_length": 4,
+  "variant": "frozen_minilm384",
+  "entrypoint": "scripts/train_rqkmeans.py",
+  "report": "experiments/sid_usage_comparison_20261016.json",
+  "downstream_recommendation_trained": false
+}

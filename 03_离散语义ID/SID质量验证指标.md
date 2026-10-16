@@ -2,7 +2,7 @@
 
 本项目使用同一批25,898件商品、冻结MiniLM 384维向量，验证不同量化器产生的SID。统一协议为 `fixed_minilm_cosine_macro_sc_centroid_pd_v1`。指标用于检查语义聚类、码本占用和商品区分性，后续再用相同推荐评测协议检验下游收益。
 
-[三种量化器实测对比](../experiments/sid_quality_comparison_20261016.md) · [评测代码](../scripts/sid_quality.py) · [碰撞分布](../experiments/sid_collision_comparison_20261016.json)
+[四种量化器实测对比](../experiments/sid_usage_comparison_20261016.md) · [SC/PD评测代码](../scripts/sid_quality.py) · [码本困惑度代码](../scripts/sid_usage.py) · [原三方案碰撞分布](../experiments/sid_collision_comparison_20261016.json)
 
 ## 验证范围
 
@@ -40,6 +40,37 @@ SC/PD借鉴[R³-VAE论文§3.4](https://arxiv.org/html/2604.11440v3#S3.SS4)。�
 
 每层分别报告。这里的死码是冻结检查点在当前目录中的零分配码字，不等于训练过程中从未更新。利用率高也不意味着分配均衡，因此还应查看频次分布、有效码字数和最大码字占比；原RQ-VAE审计保留了这些统计。
 
+## 有效码字数（码本困惑度）与分配集中程度
+
+**有效码字数不是逐个判定码字是否有效。**它是整个码本分配频次的统计量：当前分布相当于均匀使用多少个码字。标准名称为codebook perplexity，与本项目JSON中的`effective_codes`同义，另提供显式字段`codebook_perplexity`。
+
+定义来自[DeepMind Sonnet官方VQ-VAE实现](https://github.com/google-deepmind/sonnet/blob/v2/sonnet/src/nets/vqvae.py)：普通`VectorQuantizer`和EMA版`VectorQuantizerEMA`都先求one-hot分配的平均概率，再计算`exp(-sum(p * log(p)))`。这是原始实现已采用的统计方式，不是本项目新提出的指标。
+
+本项目计算：
+
+`p_k = 选中码字k的商品数 / 当前统计商品总数`
+
+`H = -Σ(p_k × ln(p_k))，仅对p_k>0的项求和`
+
+`有效码字数 = codebook_perplexity = exp(H)`
+
+`归一化有效码字数 = exp(H) / 码本大小`
+
+使用自然对数；排除零项与约定`0 ln 0 = 0`等价，避免`log(0)`。官方代码对log加微小epsilon作数值保护，数学目标相同。本项目在**完整25,898件商品目录**上每件商品计一次，逐层分别统计，不按用户交互频次加权；官方输入批次的统计范围与这里不同，不能直接比较其训练日志数值。排除padding和第四段消歧编号。
+
+| 四个码字的商品分配频次 | 活跃码字数 | 有效码字数 |
+|---|---:|---:|
+| 25、25、25、25 | 4 | 4 |
+| 50、50、0、0 | 2 | 2 |
+| 97、1、1、1 | 4 | 约1.1826 |
+| 100、0、0、0 | 1 | 1 |
+
+范围为1至活跃码字数，后者不超过码本大小256。均匀使用m个码字时等于m；分配越集中越接近1。它可以是小数，没有“超过某个命中次数才有效”的门槛，也不存在通用合格阈值。
+
+一并报告`top1_fraction`（最常用码字承载的商品比例）和`top10_fraction`（最常用10个码字合计比例），便于定位集中问题。原RQ-VAE审计中已有有效码字数；此次补入四方案统一结果及正式指标说明，没有重新训练或改变历史模型。
+
+**解释边界：** 更高说明分配更均匀，不证明语义或推荐效果更好；长尾罕用码字仍可能有价值。这是码本使用分布的困惑度，不是语言模型预测困惑度。它也不代表完整三段SID组合数，层间有关联，不能将三层困惑度直接相乘作为有效商品容量。
+
 ## 三段SID碰撞与四段唯一性
 
 **碰撞余量比例**计每个同码组保留一件之后多出的商品：
@@ -72,4 +103,7 @@ SC/PD作为验证指标不会改变训练目标。将指标加入损失需要可
 
 ```powershell
 & .venv/Scripts/python.exe scripts/report_sid_comparison.py --output outputs/sid_comparison.json
+& .venv/Scripts/python.exe scripts/report_sid_usage.py --evidence experiments/sid_usage_comparison_20261016.json --output outputs/sid_usage_from_evidence.json
 ```
+
+第二条仅需公开聚合JSON中的各层256个频次，重算四方案困惑度并生成对比表。若本地已有四套SID，可以去掉`--evidence`从真实SID重新统计；不会更新任何模型参数。

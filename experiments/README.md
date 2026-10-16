@@ -59,3 +59,7 @@ SASRec训练每个有效位置采1个负例；TIGER训练四段SID交叉熵，�
 [R³-VAE训练报告](r3vae_minilm_20261016/README.md)保存30轮CPU量化的结构、配置、逐轮记录和SID指纹；[碰撞分布](sid_collision_comparison_20261016.json)同时区分碰撞余量与参与碰撞商品占比。原始逐层报告：[RQ-VAE](sid_quality_adam_20261016.json)、[EMA](sid_quality_ema_20261016.json)、[R³-VAE](sid_quality_r3vae_20261016.json)。
 
 该阶段是离线量化与SID质量验证，R³-VAE尚无对应的下游推荐测试成绩。评测定义与复现入口见[SID质量验证指标](../03_离散语义ID/SID质量验证指标.md)。
+
+## 四方案码本困惑度
+
+[四方案对比](sid_usage_comparison_20261016.md)与[完整聚合频次](sid_usage_comparison_20261016.json)新增有效码字数（码本困惑度）、归一化值、Top1/Top10占比；正式比较梯度RQ-VAE、EMA、R³-VAE和直接384维RQ-KMeans。指标来源、公式及统计范围均已注明；聚合频次可独立重算，无需模型权重。

@@ -7,7 +7,7 @@
 ![Dataset](https://img.shields.io/badge/Dataset-Amazon%20Reviews%202018-232F3E)
 ![License](https://img.shields.io/badge/License-Apache--2.0-2563EB)
 
-[项目实现与取舍](PROJECT_OVERVIEW.md) · [正式 SFT 报告](experiments/qwen_sft_office2018_20261013/README.md) · [SID 验证指标](03_离散语义ID/SID质量验证指标.md) · [SID 对比结果](experiments/sid_quality_comparison_20261016.md) · [复现与运行](REPRODUCING.md) · [学习知识库](01_知识库/README.md)
+[项目实现与取舍](PROJECT_OVERVIEW.md) · [正式 SFT 报告](experiments/qwen_sft_office2018_20261013/README.md) · [SID 验证指标](03_离散语义ID/SID质量验证指标.md) · [SID 对比结果](experiments/sid_usage_comparison_20261016.md) · [复现与运行](REPRODUCING.md) · [学习知识库](01_知识库/README.md)
 
 ## 项目成果
 
@@ -27,19 +27,22 @@
 
 ## SID质量对比
 
-在同一批 **25,898件商品、冻结MiniLM 384维向量**上，对比梯度RQ-VAE、EMA与[R³-VAE适配](03_离散语义ID/04_MiniLM_R3VAE/README.md)。三者均为32维潜空间、三层×256码字，再追加第四段消歧。SC/PD为三个独立语义层的宏平均；利用率和死码按第一、二、三层顺序列出。
+在同一批 **25,898件商品、冻结MiniLM 384维向量**上，对比梯度RQ-VAE、EMA、[R³-VAE适配](03_离散语义ID/04_MiniLM_R3VAE/README.md)和[RQ-KMeans](03_离散语义ID/03_MiniLM_RQKMeans/README.md)。前三者使用32维潜空间，RQ-KMeans直接量化384维；均为三层×256码字，再追加第四段消歧。SC/PD为三个独立语义层的宏平均；逐层统计按第一、二、三层顺序列出。
 
-| SID方案 | SC↑ | PD↓ | 三层码本利用率↑ | 三层死码↓ | 三段碰撞余量↓ | 最大同码组↓ |
-|---|---:|---:|---|---|---:|---:|
-| RQ-VAE · 梯度更新 | 0.412843 | -0.629956 | 32.81% / 100% / 100% | 172 / 0 / 0 | 21.49% | 34 |
-| RQ-VAE · EMA更新 | 0.410850 | -0.621162 | 45.70% / 100% / 100% | 139 / 0 / 0 | 17.08% | 33 |
-| **R³-VAE** | **0.445852** | **-0.809742** | 46.88% / 93.75% / 81.25% | 136 / 16 / 48 | 44.36% | 97 |
+| SID方案 | SC↑ | PD↓ | 三层码本利用率 | 三层死码 | 三层有效码字数 | 三段碰撞余量↓ | 最大同码组↓ |
+|---|---:|---:|---|---|---|---:|---:|
+| RQ-VAE · 梯度更新 | 0.412843 | -0.629956 | 32.81% / 100% / 100% | 172 / 0 / 0 | 60.25 / 236.57 / 239.09 | 21.49% | 34 |
+| RQ-VAE · EMA更新 | 0.410850 | -0.621162 | 45.70% / 100% / 100% | 139 / 0 / 0 | 84.98 / 244.13 / 244.82 | 17.08% | 33 |
+| R³-VAE | 0.445852 | -0.809742 | 46.88% / 93.75% / 81.25% | 136 / 16 / 48 | 54.23 / 147.10 / 135.51 | 44.36% | 97 |
+| RQ-KMeans · MiniLM384 | 0.667177 | -1.132093 | 100% / 100% / 99.22% | 0 / 0 / 2 | 190.38 / 105.03 / 3.61 | 52.92% | 46 |
 
-**SC**表示同簇商品的语义内聚度，**PD**衡量簇中心的分离程度。碰撞余量为“商品数减去不同三段SID数”除以商品数；它与参与碰撞商品的占比不同。R³-VAE有3,713个碰撞组，涉及15,202件商品（58.70%）；三种方案追加第四段后均有25,898个唯一完整SID。
+**SC**表示同簇商品的语义内聚度，**PD**衡量簇中心的分离程度。碰撞余量为“商品数减去不同三段SID数”除以商品数；它与参与碰撞商品的占比不同。R³-VAE有3,713个碰撞组，涉及15,202件商品（58.70%）；四种方案追加第四段后均有25,898个唯一完整SID。
+
+**有效码字数（码本困惑度）**为`exp(-Σp_k ln p_k)`，来源于[DeepMind Sonnet官方VQ-VAE实现](https://github.com/google-deepmind/sonnet/blob/v2/sonnet/src/nets/vqvae.py)。它衡量分配多样性，不逐个判定码字有效性。本项目每件商品计一次、按全目录逐层计算；归一化值和Top1占比见完整报告。RQ-KMeans第三层虽有254个活跃码字，但65.29%的商品集中在一个码字上，有效码字数仅3.61；高利用率不等于分配均匀或推荐更好。
 
 R³-VAE已完成30轮CPU量化训练，约191.5秒、294,944参数；训练目标为余弦重构，SC/PD正则权重为0。其SC/PD和首层利用率改善，同时三段碰撞增加，体现了聚类与商品区分性的取舍。**这里是离线SID质量验证；尚无该SID对应的推荐Recall/NDCG结果。**
 
-[指标定义与边界](03_离散语义ID/SID质量验证指标.md) · [完整对照表](experiments/sid_quality_comparison_20261016.md) · [聚合JSON](experiments/sid_quality_comparison_20261016.json) · [碰撞分布](experiments/sid_collision_comparison_20261016.json) · [训练配置与指纹](experiments/r3vae_minilm_20261016/README.md)
+[指标定义与边界](03_离散语义ID/SID质量验证指标.md) · [四方案对照表](experiments/sid_usage_comparison_20261016.md) · [困惑度、频次与指纹JSON](experiments/sid_usage_comparison_20261016.json) · [历史三方案碰撞分布](experiments/sid_collision_comparison_20261016.json) · [R³-VAE训练配置与指纹](experiments/r3vae_minilm_20261016/README.md)
 
 ## 系统路线
 
@@ -89,7 +92,7 @@ Qwen 扩展后词表为 **152,689**，输入输出 embedding 共享。Q1 主任�
 | [复现与运行](REPRODUCING.md) | 数据下载、CPU 环境、SASRec 检查与训练、生成式运行入口 |
 | [01 · 知识库](01_知识库/README.md) | SASRec、语义 ID、SFT 输入输出和梯度原理 |
 | [02 · 商品编码](02_商品编码/README.md) | MiniLM 模型 / 分词器与其他编码器版本 |
-| [03 · 离散语义 ID](03_离散语义ID/README.md) | 梯度码本、EMA、R³-VAE与SID质量验证；RQ-KMeans预留 |
+| [03 · 离散语义 ID](03_离散语义ID/README.md) | 梯度码本、EMA、R³-VAE、RQ-KMeans与SID质量验证 |
 | [04 · 推荐生成](04_推荐生成/README.md) | 小型 TIGER 与 Qwen 配置、实现入口 |
 | [06 · 每日记录](06_每日效果记录/README.md) / [07 · 组合统计](07_组合结果统计/README.md) | 实验过程、组合结果、模型参数与原始指标 |
 | [实验索引](experiments/README.md) / [第三方来源](THIRD_PARTY_NOTICES.md) | 历史报告与来源、许可证、引用 |

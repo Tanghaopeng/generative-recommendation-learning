@@ -1,0 +1,25 @@
+{
+  "status": "completed",
+  "codec": "residual_minibatch_kmeans",
+  "items": 25898,
+  "sid_length": 4,
+  "semantic_layers": 3,
+  "codebook_size": 256,
+  "tokens_per_hierarchy": 256,
+  "padding_row": -1,
+  "raw_unique_ids": 12193,
+  "raw_duplicate_fraction": 0.5291914433546991,
+  "max_collision_group": 46,
+  "codebook_usage": [
+    256,
+    256,
+    254
+  ],
+  "final_unique_ids": 25898,
+  "roundtrip_verified": true,
+  "collision_order": "ascending item_id, fourth token=within-group counter",
+  "embedding_sha256": "45a2535449726c0aaebf914eb5e3021fa64f822d6bf6d0c909fbb2d20f66c6c0",
+  "items_source_sha256": "384f4e588f516272d4c43b18766b7f047ea4415d4d71b7ebb5191f12a62798ae",
+  "checkpoint_sha256": "867dece9552b5e8ce9602c55d369a984e2235242348f26184380972dce7497cf",
+  "sid_sha256": "e31ab2cbe87de12ba56f9d6ee036366d6558f947dead283ecc6d23bd1a10f929"
+}
