@@ -27,6 +27,19 @@ def digest(path):
     return h.hexdigest()
 
 
+def compare_training_config(config, baseline):
+    """Allow the measured batch-4 execution variant, preserving training scope."""
+    batch_keys = {'micro_batch_size', 'gradient_accumulation_steps'}
+    if ({k: v for k, v in config.items() if k not in batch_keys}
+            != {k: v for k, v in baseline.items() if k not in batch_keys}):
+        raise ValueError('EMA config differs from baseline outside batch execution settings')
+    pair = (config.get('micro_batch_size'), config.get('gradient_accumulation_steps'))
+    if pair not in ((2, 64), (4, 32)) or baseline['micro_batch_size'] * baseline['gradient_accumulation_steps'] != 128:
+        raise ValueError('Requires supported micro-batch/accumulation pair with effective batch 128')
+    return {k: {'gradient': baseline[k], 'ema': config[k]}
+            for k in sorted(batch_keys) if config[k] != baseline[k]}
+
+
 def check(root=ROOT):
     root = Path(root)
     processed = root/'data/processed/office2018'
@@ -68,8 +81,7 @@ def check(root=ROOT):
     np.testing.assert_array_equal(actual,np.asarray(positions,dtype=np.int64))
     config = read(root/'experiments/qwen_sft_ema_20261021.json')
     baseline = read(root/'04_推荐生成/02_Qwen2.5-1.5B-Instruct/configs/q1_full.json')
-    if config != baseline:
-        raise ValueError('EMA config must match the baseline Q1 config for this experiment')
+    config_differences = compare_training_config(config, baseline)
     old_test = read(root/'experiments/qwen_sft_office2018_20261013/test.json')
     if (old_test['prepared_manifest_sha256'] != BASE_MANIFEST_SHA256
         or old_test['code_sha256']['qwen_sft.py'] != digest(root/'scripts/qwen_sft.py')):
@@ -81,7 +93,9 @@ def check(root=ROOT):
         sequence_sha256=SEQUENCE_SHA256,train_examples_sha256=digest(data/'train_examples.npy'),
         validation_users=5000,validation_subset_seed=2027,validation_user_indices_sha256=valid_hash,
         effective_batch_size=config['micro_batch_size']*config['gradient_accumulation_steps'],
-        expected_optimizer_steps=int(np.ceil(len(actual)/128)),config_identical_to_gradient_baseline=True,
+        expected_optimizer_steps=int(np.ceil(len(actual)/128)),config_identical_to_gradient_baseline=not config_differences,
+        config_differences_from_gradient_baseline=config_differences,
+        effective_batch_matches_gradient_baseline=True,
         core_qwen_code_matches_gradient_baseline=True,actual_gpu_training=False)
 
 

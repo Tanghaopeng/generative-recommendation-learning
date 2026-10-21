@@ -192,7 +192,11 @@ def main():
             raise ValueError('Test artifact fingerprint/scope mismatch')
         keys=('Recall@10','NDCG@10','Recall@20','NDCG@20')
         comparison=dict(status='test_comparison_completed',baseline='gradient RQ-VAE Qwen Q1 SFT',
-            candidate='EMA RQ-VAE Qwen Q1 SFT',same_training_config=True,single_seed=2026,
+            candidate='EMA RQ-VAE Qwen Q1 SFT',
+            same_training_config=evidence['config_identical_to_gradient_baseline'],
+            config_differences_from_gradient_baseline=evidence['config_differences_from_gradient_baseline'],
+            effective_batch_matches_gradient_baseline=evidence['effective_batch_matches_gradient_baseline'],
+            single_seed=2026,
             metrics={k:dict(gradient=old[k],ema=new[k],absolute_delta=new[k]-old[k],
                 relative_delta=(new[k]-old[k])/old[k]) for k in keys},
             gradient_weight_sha256=old['checkpoint_weight_sha256'],ema_weight_sha256=new['checkpoint_weight_sha256'])

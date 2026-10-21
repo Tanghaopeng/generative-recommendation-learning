@@ -5,7 +5,25 @@ import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from run_ema_sft import copy_verified
-from check_ema_sft_inputs import digest
+from check_ema_sft_inputs import digest, compare_training_config
+
+
+class TrainingConfigTests(unittest.TestCase):
+    def setUp(self):
+        self.baseline = dict(micro_batch_size=2, gradient_accumulation_steps=64,
+                             learning_rate=5e-5, epochs=1)
+
+    def test_batch_four_preserves_effective_batch(self):
+        candidate = dict(self.baseline, micro_batch_size=4, gradient_accumulation_steps=32)
+        differences = compare_training_config(candidate, self.baseline)
+        self.assertEqual(set(differences), {'micro_batch_size', 'gradient_accumulation_steps'})
+        self.assertEqual(compare_training_config(self.baseline, self.baseline), {})
+
+    def test_rejects_other_training_changes(self):
+        with self.assertRaisesRegex(ValueError, 'outside batch'):
+            compare_training_config(dict(self.baseline, learning_rate=1e-4), self.baseline)
+        with self.assertRaisesRegex(ValueError, 'effective batch'):
+            compare_training_config(dict(self.baseline, micro_batch_size=4), self.baseline)
 
 
 class VerifiedCopyTests(unittest.TestCase):

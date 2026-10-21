@@ -1,0 +1,43 @@
+{
+  "status": "batch4_formal_training_running_and_v3_cloud_kit_verified",
+  "timestamp_utc": "2026-10-21T03:39:57.560649+00:00",
+  "configuration": {
+    "recipe": "q1",
+    "pilot": false,
+    "seed": 2026,
+    "max_history": 20,
+    "max_length": 512,
+    "micro_batch_size": 4,
+    "gradient_accumulation_steps": 32,
+    "epochs": 1,
+    "max_steps": -1,
+    "learning_rate": 5e-05,
+    "eval_steps": 500,
+    "validation_users": 5000,
+    "train_limit": 0,
+    "beam": 20
+  },
+  "progress_snapshot": [
+    "  1%|          | 22/3105 [01:58<4:36:36,  5.38s/it]"
+  ],
+  "loss_snapshot": [
+    "{'loss': 8.6691, 'grad_norm': 98.0, 'learning_rate': 7.446808510638298e-06, 'epoch': 0.0}",
+    "{'loss': 7.5727, 'grad_norm': 61.75, 'learning_rate': 1.0106382978723404e-05, 'epoch': 0.01}"
+  ],
+  "previous_training_steps_discarded": 87,
+  "restart_from_same_q0": true,
+  "cloud_files": {
+    "ema_sft_20261021_v3.zip": {
+      "bytes": 11340603,
+      "sha256": "c56d26066a09ab04f7a71de932ff966864b1be1a21b49ebd2c229b9d8080aee8"
+    },
+    "start_ema_sft_20261021_v3.sh": {
+      "bytes": 3150,
+      "sha256": "9d31a3bfed00862a9d26dcf85ce4fda11bfd480a31ebca279aef0b66fafe7e7a"
+    },
+    "ema_sft_20261021_v3.manifest.json": {
+      "bytes": 364,
+      "sha256": "1bc4fb96ca96b94ab547889adabacc3faae77e3f8ea8cbca2b34e0fcce4e287b"
+    }
+  }
+}
