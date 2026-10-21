@@ -6,6 +6,8 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
+import tempfile
 import zipfile
 
 from check_ema_sft_inputs import ROOT, check, digest, read
@@ -27,7 +29,7 @@ def main():
         '04_推荐生成/02_Qwen2.5-1.5B-Instruct/configs/q1_full.json',
         '04_推荐生成/02_Qwen2.5-1.5B-Instruct/EMA_SFT运行说明.md']
     names += ['scripts/'+n for n in ('qwen_sft.py','qwen_initialization.py','export_qwen_q0.py',
-        'train_qwen_sft.py','evaluate_qwen_sft.py','freeze_qwen_training_selection.py',
+        'train_qwen_sft.py','prepare_qwen_sft.py','evaluate_qwen_sft.py','freeze_qwen_training_selection.py',
         'check_ema_sft_inputs.py','run_ema_sft.py')]
     payload={name:(ROOT/name).read_bytes() for name in names}
     for directory in ('qwen_sft_ema','tiger_sids_ema_20261008'):
@@ -54,13 +56,32 @@ def main():
         for name,record in manifest['files'].items():
             data=z.read('project/'+name)
             assert len(data)==record['bytes'] and hashlib.sha256(data).hexdigest()==record['sha256']
+    print('Validating the actual extracted SFT entry point on CPU; no 1.5B model is loaded...',flush=True)
+    with tempfile.TemporaryDirectory(prefix='ema_sft_check_',dir=args.output.parent) as folder:
+        stage=Path(folder).resolve()
+        assert stage.is_relative_to(args.output.parent.resolve())
+        with zipfile.ZipFile(args.output) as z:
+            if any(not (stage/name).resolve().is_relative_to(stage) for name in z.namelist()):
+                raise ValueError('Unsafe archive path')
+            z.extractall(stage)
+        project=stage/'project'
+        result=subprocess.run([sys.executable,'-u',str(project/'scripts/train_qwen_sft.py'),
+            '--config',str(project/'experiments/qwen_sft_ema_20261021.json'),
+            '--data',str(project/'data/processed/office2018/qwen_sft_ema'),
+            '--model',str(args.model.resolve()),'--output',str(stage/'dry_run'),'--dry-run'],
+            cwd=project,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,encoding='utf-8',errors='replace',timeout=300)
+        if result.returncode:
+            raise RuntimeError('Extracted training entry point failed:\n'+result.stdout[-6000:])
+        check_record=read(stage/'dry_run/dry_run.json')
+        assert check_record['train_rows']==397345 and check_record['validation_users']==5000
+        assert check_record['actual_gpu_training'] is False
     receipt=dict(status='local_bundle_verified_cloud_upload_not_verified',archive=args.output.name,
         bytes=args.output.stat().st_size,sha256=digest(args.output),files=len(payload),
-        external_weight_sha256=manifest['external_weight_sha256'])
+        external_weight_sha256=manifest['external_weight_sha256'],extracted_sft_dry_run='passed')
     args.output.with_suffix('.manifest.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
     launcher=ROOT/'scripts/start_ema_sft.sh'
     text=launcher.read_text(encoding='utf-8').replace('__BUNDLE_SHA256__',receipt['sha256']).replace('__BUNDLE_NAME__',args.output.name)
-    target=args.output.parent/'start_ema_sft_20261021.sh'
+    target=args.output.parent/f'start_{args.output.stem}.sh'
     with target.open('w',encoding='utf-8',newline='\n') as stream:stream.write(text)
     print(json.dumps(receipt,indent=2),flush=True)
 

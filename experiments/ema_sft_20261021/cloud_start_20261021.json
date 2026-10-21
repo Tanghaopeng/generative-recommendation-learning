@@ -1,0 +1,41 @@
+{
+  "status": "region16_v2_cloud_inputs_verified_and_formal_training_started",
+  "recorded_at_utc": "2026-10-21T03:21:48.500092+00:00",
+  "files": {
+    "ema_sft_20261021_v2.zip": {
+      "bytes": 11339690,
+      "sha256": "361498c9d27fa87e66431286033ce09a79e411bc97513e673783a8220c06964a"
+    },
+    "start_ema_sft_20261021_v2.sh": {
+      "bytes": 3150,
+      "sha256": "6aed0bc325acb556c4f3419a783623ea8e42b46c448282cfae1443a4174ce06d"
+    },
+    "ema_sft_20261021_v2.manifest.json": {
+      "bytes": 326,
+      "sha256": "43f6c243086e074e4d7835b85d883305aafe8c1a2d030b3a4a6b3ac33c96d192"
+    }
+  },
+  "original_weight_sha256_verified_during_export": "dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee",
+  "q0_weight_sha256": "ee3f2353610288327d6e82c17f24a414feb7995043cac43f005bdb3dfdeb1242",
+  "training_config": {
+    "recipe": "q1",
+    "pilot": false,
+    "seed": 2026,
+    "max_history": 20,
+    "max_length": 512,
+    "micro_batch_size": 2,
+    "gradient_accumulation_steps": 64,
+    "epochs": 1,
+    "max_steps": -1,
+    "learning_rate": 5e-05,
+    "eval_steps": 500,
+    "validation_users": 5000,
+    "train_limit": 0,
+    "beam": 20
+  },
+  "train_rows": 397345,
+  "validation_users": 5000,
+  "output": "/root/ema-sft-20261021/outputs/qwen_ema_sft",
+  "backup": "/mnt/ema-sft-20261021",
+  "initial_v1_failure_before_optimizer": true
+}

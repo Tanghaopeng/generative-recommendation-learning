@@ -3,6 +3,7 @@
 set -Eeuo pipefail
 RUN=${EMA_RUN_DIR:-/root/ema-sft-20261021}
 SOURCE=$(cd -- "$(dirname -- "$0")" && pwd)
+SELF="$SOURCE/$(basename -- "$0")"
 ARCHIVE="$SOURCE/__BUNDLE_NAME__"
 STAGE=${EMA_STAGE:-all}
 SESSION=rec-ema-sft
@@ -13,7 +14,7 @@ if [ "${1:-}" != "--worker" ]; then
         echo "Session $SESSION already exists; inspect: tail -n 30 $RUN/logs/pipeline.log"
         exit 0
     fi
-    printf -v COMMAND 'EMA_RUN_DIR=%q EMA_STAGE=%q bash %q --worker >> %q 2>&1' "$RUN" "$STAGE" "$SOURCE/start_ema_sft_20261021.sh" "$RUN/logs/pipeline.log"
+    printf -v COMMAND 'EMA_RUN_DIR=%q EMA_STAGE=%q bash %q --worker >> %q 2>&1' "$RUN" "$STAGE" "$SELF" "$RUN/logs/pipeline.log"
     tmux new-session -d -s "$SESSION" "$COMMAND"
     echo "Started $SESSION; progress: tail -n 30 $RUN/logs/pipeline.log"
     exit 0

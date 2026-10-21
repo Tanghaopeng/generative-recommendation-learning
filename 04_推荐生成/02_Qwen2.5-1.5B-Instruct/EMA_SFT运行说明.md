@@ -23,12 +23,14 @@ EMA数据已经在本地准备好，启动不需要在计费服务器重新生�
 
 放到**16区网盘根目录**，实例中映射为`/mnt`：
 
-1. `ema_sft_20261021.zip`：小型离线训练包，含代码、配置、准备好的数据、EMA SID、分词器和原模型配置；不含3GB Qwen权重。
-2. `start_ema_sft_20261021.sh`：绑定该ZIP SHA256的启动器。
-3. `ema_sft_20261021.manifest.json`：上传核对清单。
+1. `ema_sft_20261021_v2.zip`：小型离线训练包，含代码、配置、准备好的数据、EMA SID、分词器和原模型配置；不含3GB Qwen权重。
+2. `start_ema_sft_20261021_v2.sh`：绑定该ZIP SHA256的启动器。
+3. `ema_sft_20261021_v2.manifest.json`：上传核对清单。
 4. 已有的`Qwen2.5-1.5B-Instruct/model.safetensors`：3,087,467,144字节，SHA256为`dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee`。
 
 本地包校验完成不等于已上传或网盘校验完成。网盘上传状态以交付时的核对记录为准；根目录权重仍会在开机复制时验证完整SHA256。输入ZIP及启动器不依赖服务器访问GitHub，避免之前raw.githubusercontent.com连接失败的问题。
+
+V2补齐了训练入口用于源码指纹记录的`prepare_qwen_sft.py`。V1首次在检查阶段因缺少该文件退出，尚未执行优化器更新。V2已在解压后的独立目录执行真实SFT dry-run；打包脚本以后也会自动执行该检查。运行记录、实际上传校验及当前训练状态分别保存，旧的本地准备记录不作为云端运行成功证据。
 
 ## 租用与启动
 
@@ -37,7 +39,7 @@ EMA数据已经在本地准备好，启动不需要在计费服务器重新生�
 Tabby连接后，复制这一条：
 
 ```bash
-bash /mnt/start_ema_sft_20261021.sh
+bash /mnt/start_ema_sft_20261021_v2.sh
 ```
 
 它在tmux的`rec-ema-sft`会话中执行：校验ZIP与所有成员 → 新建环境并安装固定依赖（复用镜像PyTorch）→ 校验并复制原模型到本地磁盘 → 导出EMA专用未训练SID初始化Q0 → tokenizer/sample检查 → 正式SFT → 冻结5000人验证集选出的模型 → 持久备份 → 全量测试 → 输出梯度版与EMA版对照 → 再次备份。
@@ -45,7 +47,7 @@ bash /mnt/start_ema_sft_20261021.sh
 若只想先准备环境和初始化、不开始训练：
 
 ```bash
-EMA_STAGE=prepare bash /mnt/start_ema_sft_20261021.sh
+EMA_STAGE=prepare bash /mnt/start_ema_sft_20261021_v2.sh
 ```
 
 准备会话结束后，再运行不带`EMA_STAGE`的那条即可继续。启动器会拒绝重复创建同名活动tmux会话。Q0初始化不做优化器更新；正式训练开始后会打印Trainer的loss/epoch。
@@ -81,7 +83,7 @@ tail -n 30 /root/ema-sft-20261021/logs/pipeline.log
 
 ```powershell
 python scripts/check_ema_sft_inputs.py --output outputs/ema_sft_input_check.json
-python scripts/package_ema_sft.py --output outputs/cloud_transfer/ema_sft_20261021/ema_sft_20261021.zip
+python scripts/package_ema_sft.py --output outputs/cloud_transfer/ema_sft_20261021_v2/ema_sft_20261021_v2.zip
 ```
 
 不需要在本机加载1.5B权重做训练；本地检查和dry-run只能证明数据/tokenizer/入口可用，GPU训练是否成功由新实例的真实日志和结果判定。
