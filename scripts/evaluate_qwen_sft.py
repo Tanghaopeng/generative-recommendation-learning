@@ -22,7 +22,8 @@ def main():
     parser.add_argument('--max-length', type=int, default=512)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--selection-record', type=Path, help='Required for test: frozen selection JSON with checkpoint and data hashes')
-    parser.add_argument('--evaluation-config', type=Path)
+    parser.add_argument('--evaluation-config', type=Path,
+                        default=Path(__file__).resolve().parents[1] / 'experiments/qwen_eval_bf16_b8.json')
     args = parser.parse_args()
     execution = load_execution(args.evaluation_config)
     manifest, rows, catalog, _ = load_prepared(args.data)

@@ -48,7 +48,7 @@ Q0 记录绑定原模型、SID 数据 manifest、seed、全部导出文件指纹
 | [q1_full.json](configs/q1_full.json) | 主任务全量样本、1轮、5000人快速验证 |
 | [q2_alignment.json](configs/q2_alignment.json) | 从同一原始权重独立训练，增加标题↔SID、历史SID→下一标题 |
 
-当前已实现代码并进行本地小模型验证；没有正式 Qwen 推荐指标。首个pilot将验证速度和显存；64人是快速工程检查，正式验证样本不能据此更改。
+梯度 SID 与 EMA SID 两版均已完成 Qwen 全参数 SFT 和正式测试。[指标与模型结构对照](../../experiments/ema_sft_20261021/README.md)。
 所有命令在仓库根目录执行。Linux建议 Python3.11/3.12；CUDA驱动与PyTorch匹配后安装：
 
 ```bash
@@ -66,8 +66,8 @@ python scripts/train_qwen_sft.py --config 04_推荐生成/02_Qwen2.5-1.5B-Instru
 python scripts/train_qwen_sft.py --config 04_推荐生成/02_Qwen2.5-1.5B-Instruct/configs/q1_full.json --data data/processed/office2018/qwen_sft_adam --model /mnt/Qwen2.5-1.5B-Instruct --output outputs/qwen_q1_full
 ```
 
-全参训练：全部Qwen层、输入embedding、输出头都更新；无LoRA、无量化训练。BF16、梯度检查点、microbatch2、累积64，即单GPU每次更新128条样本；AdamW、lr5e-5、cosine、3%warmup、梯度裁剪1.0。
-先跑pilot测峰值显存再确定正式预算；当前实例为 A100 40GB，BF16 运算和样本 dry-run 已通过，正式训练显存与耗时尚未测量。
+全参训练更新全部 Qwen 层、输入 embedding 和输出头；使用 BF16、梯度检查点与 AdamW。正式训练默认读取 [q1_full.json](configs/q1_full.json)，验证与测试默认读取 [当前评测配置](../../experiments/qwen_eval_bf16_b8.json)。命令中的 `--config` 可省略，也可显式指定试跑或其他训练方案。
+A100 40GB 上的训练、检索与备份流程已完成实测。
 Q1约397345主任务/轮。Q2每轮访问同样的主任务，再加每件有标题商品的两条对齐样本和每条有目标标题的历史→标题样本，按拼接数据集均匀shuffle；它的算力预算更大，要记录总样本/token/更新次数，不能归因于方法一定更好。
 Q2也是从原始Qwen初始化，不能偷偷接着Q1训练再与Q1当等预算比较。短pilot不用于报告算法优劣。
 
@@ -84,8 +84,8 @@ python scripts/train_qwen_sft.py --config 04_推荐生成/02_Qwen2.5-1.5B-Instru
 
 训练只读验证目标，按固定seed随机5000人商品NDCG@10选模，连续3次无提升早停；验证loss仅作诊断。
 1轮不足500步的修改配置须相应调整eval_steps。当前标准配置均会触发定期保存。
-保留的候选检查点需要分别跑全量86,713人验证后再冻结最终版本；runner只自动选择快速验证最佳，`selected/`不代表已完成全量最终选模。
-beam20从完整25,898商品前缀树近似搜索，过滤完整已知历史，输出最多20件商品；不能描述为全目录精确打分。当前检索逐用户执行，首版偏重易读性，正式全量验证可能很慢，先pilot测量，后续可批量化优化。
+可用 `freeze_qwen_training_selection.py` 冻结训练期验证选中的模型；如另行比较多个候选，也可使用下方独立完整验证入口。测试前均需固定选择记录。
+beam20从完整25,898商品前缀树近似搜索，过滤完整已知历史，输出最多20件商品；不能描述为全目录精确打分。当前入口默认使用按提示长度分桶的批量生成。
 
 ```bash
 python scripts/evaluate_qwen_sft.py --checkpoint outputs/qwen_q1_full/selected --data data/processed/office2018/qwen_sft_adam --split valid --output outputs/qwen_q1_full/full_validation.json
@@ -122,6 +122,10 @@ python scripts/evaluate_qwen_auc.py --checkpoint outputs/qwen_q1_full/selected -
 
 ## 2026-10-13 正式SFT结果
 
-Q1已完成A100 40GB全参数训练，以固定5000人验证NDCG@10选中第3000步，完成86713人全量测试。见[结果、模型结构与权重指纹](../../experiments/qwen_sft_office2018_20261013/README.md)及[精度设置](../../01_知识库/05_SFT与生成式推荐/FP32_BF16与本项目精度设置.md)。
+Q1 梯度 SID 版已完成 A100 40GB 全参数训练与全量测试。见[结果、模型结构与权重指纹](../../experiments/qwen_sft_office2018_20261013/README.md)及[精度设置](../../01_知识库/05_SFT与生成式推荐/FP32_BF16与本项目精度设置.md)。
 
 正式测试沿用sid_beam_v2、beam20与完整历史排除。冻结训练期验证选模证据可使用新增入口 `scripts/freeze_qwen_training_selection.py`；`evaluate_qwen_sft.py`接受这种固定验证子集的选模记录，不要求额外重复全用户验证。
+
+## 梯度 SID 与 EMA SID 对照
+
+[2026-10-21 正式结果](../../experiments/ema_sft_20261021/README.md)：EMA 版 Recall@10=0.092870、NDCG@10=0.074639、Recall@20=0.106466、NDCG@20=0.078065，均略低于梯度版。权重继续保存在私有网盘。

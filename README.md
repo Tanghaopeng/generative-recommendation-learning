@@ -7,7 +7,7 @@
 ![Dataset](https://img.shields.io/badge/Dataset-Amazon%20Reviews%202018-232F3E)
 ![License](https://img.shields.io/badge/License-Apache--2.0-2563EB)
 
-[项目实现与取舍](PROJECT_OVERVIEW.md) · [正式 SFT 报告](experiments/qwen_sft_office2018_20261013/README.md) · [SID 验证指标](03_离散语义ID/SID质量验证指标.md) · [SID 对比结果](experiments/sid_usage_comparison_20261016.md) · [复现与运行](REPRODUCING.md) · [学习知识库](01_知识库/README.md)
+[项目实现与取舍](PROJECT_OVERVIEW.md) · [SFT 码本对照](experiments/ema_sft_20261021/README.md) · [SID 验证指标](03_离散语义ID/SID质量验证指标.md) · [SID 对比结果](experiments/sid_usage_comparison_20261016.md) · [复现与运行](REPRODUCING.md) · [学习知识库](01_知识库/README.md)
 
 ## 项目成果
 
@@ -18,10 +18,13 @@
 | 方法 | 推荐模型参数量¹ | Recall@10 | NDCG@10 | Recall@20 | NDCG@20 |
 |---|---:|---:|---:|---:|---:|
 | Popularity | 无神经网络 | 0.008949 | 0.004577 | 0.016572 | 0.006475 |
-| SASRec · 最佳第 23 轮 | 1.71M | 0.057650 | 0.035554 | 0.074406 | 0.039775 |
+| SASRec | 1.71M | 0.057650 | 0.035554 | 0.074406 | 0.039775 |
 | 小型 TIGER · 梯度码本 SID | 0.328M | 0.049566 | 0.036792 | 0.060637 | 0.039582 |
 | 小型 TIGER · EMA 码本 SID | 0.328M | 0.049820 | 0.037539 | 0.057096 | 0.039382 |
-| **Qwen2.5-1.5B-Instruct · 全参数 SFT** | **1.545B** | **0.093677** | **0.075496** | **0.108819** | **0.079319** |
+| **Qwen · 梯度 SID · 全参数 SFT** | **1.545B** | **0.093677** | **0.075496** | **0.108819** | **0.079319** |
+| Qwen · EMA SID · 全参数 SFT | 1.545B | 0.092870 | 0.074639 | 0.106466 | 0.078065 |
+
+EMA 版四项推荐指标均略低：Recall@10、NDCG@10、Recall@20、NDCG@20 分别相对下降 **0.86%、1.13%、2.16%、1.58%**。码本利用率改善没有转化为本次下游收益，继续保留梯度 SID 作为主基线。[完整对照与原始结果](experiments/ema_sft_20261021/README.md)
 
 ¹ 表中参数量仅指在线推荐模型，不含离线 MiniLM 与 RQ-VAE。每人仅一个测试目标，HitRate@K 与 Recall@K 相同。SASRec / TIGER 为 CPU 实验；Qwen 为 A100 40GB 实验。完整记录见 [SASRec](experiments/sasrec_cpu_extend40_20261007.md)、[TIGER 对照](experiments/semantic_retrievers_comparison_20261008.md)、[Qwen SFT](experiments/qwen_sft_office2018_20261013/README.md)。
 
@@ -72,9 +75,9 @@ MiniLM 与 RQ-VAE 离线运行，生成器训练时固定 SID 映射。Qwen 学�
 | R³-VAE | 0.295M | 相同MLP规模；32维参考方向；3×256×32 rating码本 | 余弦重构；30轮CPU量化；独立SID质量验证 |
 | SASRec | 1.71M | 2 个因果注意力 Block；hidden 64；2 头 | 最近 20 件商品；BCE 与随机负例 |
 | 小型 TIGER | 0.328M | 1 层 Encoder + 1 层 Decoder；hidden 64；2 头 | 从头训练；预测四段 SID |
-| Qwen SFT | 1.545B | 28 层 Decoder；hidden 1536；Q/KV 头 12/2；FFN 8960 | 全参数训练；BF16；microbatch 2×累积 64 |
+| Qwen SFT | 1.545B | 28 层 Decoder；hidden 1536；Q/KV 头 12/2；FFN 8960 | 全参数 SFT；BF16 |
 
-Qwen 扩展后词表为 **152,689**，输入输出 embedding 共享。Q1 主任务训练 1 轮，学习率 5e-5；商品编码器与量化器不参与 SFT 梯度更新。完整结构与精度设置见[模型参数表](07_组合结果统计/模型参数_20261013.json)及[精度说明](01_知识库/05_SFT与生成式推荐/FP32_BF16与本项目精度设置.md)。
+Qwen 扩展后词表为 **152,689**，输入输出 embedding 共享。商品编码器与量化器不参与 SFT 梯度更新。完整结构与精度设置见[模型参数表](07_组合结果统计/模型参数_20261013.json)及[精度说明](01_知识库/05_SFT与生成式推荐/FP32_BF16与本项目精度设置.md)。
 
 ## 评测约定与结果边界
 

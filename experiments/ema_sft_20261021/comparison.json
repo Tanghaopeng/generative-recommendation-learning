@@ -1,0 +1,37 @@
+{
+  "updated_on": "2026-10-21",
+  "encoder": "sentence-transformers/all-MiniLM-L6-v2",
+  "generator": "Qwen2.5-1.5B-Instruct full-parameter SFT",
+  "parameters": 1544870912,
+  "sources": {
+    "gradient": "experiments/qwen_sft_office2018_20261013/test.json",
+    "ema": "experiments/ema_sft_20261021/test.json"
+  },
+  "metrics": {
+    "Recall@10": {
+      "gradient": 0.09367684199600983,
+      "ema": 0.09286958126232514,
+      "absolute_change": -0.0008072607336846865,
+      "relative_change_percent": -0.8617505847593243
+    },
+    "NDCG@10": {
+      "gradient": 0.07549556623872561,
+      "ema": 0.07463946182287166,
+      "absolute_change": -0.0008561044158539449,
+      "relative_change_percent": -1.1339797268979268
+    },
+    "Recall@20": {
+      "gradient": 0.1088187469006954,
+      "ema": 0.10646615847681432,
+      "absolute_change": -0.0023525884238810857,
+      "relative_change_percent": -2.161933022467155
+    },
+    "NDCG@20": {
+      "gradient": 0.07931915657505524,
+      "ema": 0.0780653130503998,
+      "absolute_change": -0.0012538435246554347,
+      "relative_change_percent": -1.5807575102856686
+    }
+  },
+  "conclusion": "本次Qwen SFT实验中，EMA SID的四项推荐指标均略低于梯度SID；继续保留梯度SID为主基线。码本利用率改善未转化为本次下游推荐收益。"
+}

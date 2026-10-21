@@ -2,7 +2,7 @@
 
 本实验从原始`Qwen2.5-1.5B-Instruct`重新做Q1下一商品SID监督微调，输入改为已冻结的EMA RQ-VAE SID。不加载旧梯度SID的SFT权重，也不重新训练MiniLM或量化器。
 
-## 固定比较条件
+## 当前运行配置
 
 | 项目 | 设置 |
 |---|---|
@@ -10,13 +10,13 @@
 | SID | EMA映射SHA256 `975075925cc54f903d7bc9069bf3653a96b8c29b613b846bdc4a27a8351a4554` |
 | 训练样本 | 397,345个位置，历史最多20件；按原用户内时序划分 |
 | 训练 | 全参数、BF16、SDPA、激活检查点、1轮、seed2026 |
-| 批次 | microbatch16 × 累积8 = 128；原正式SFT为2 × 64 |
+| 批次 | microbatch16 × 累积8 = 128 |
 | 优化 | AdamW，学习率5e-5，cosine，warmup3%，梯度裁剪1 |
 | 验证/测试执行 | BF16，每批8用户，按提示长度分桶；每用户beam20 |
 | 验证选模 | 每500步固定5,000用户，seed2027，NDCG@10；早停耐心3 |
 | 测试 | 冻结已选模型后，86,713用户全量测试一次；sid_beam_v2、beam20 |
 
-除microbatch及梯度累积外，训练配置逐字段与旧Q1正式配置核对。两版有效batch均为128，但浮点计算与padding分组变化，不能保证数值相同；结果对照会明确记录这两项执行配置差异。核心`qwen_sft.py`也核对旧正式测试记录的源码SHA256。批量评测实现另记源码指纹与execution配置。旧梯度基线的单用户测试指标会明确标记为不同执行方式；需用同一batch8后端复测后，才能严格归因SID版本的指标差异。重跑仍只有一个随机种子，硬件及库版本等差异保留在环境记录，不把结果描述为多种子显著性结论。
+训练与评测入口采用当前默认配置；原始运行指纹保留在各实验记录中。
 
 EMA数据已经在本地准备好，启动不需要在计费服务器重新生成商品向量、训练码本或构造样本位置。运行时仍按原实现动态分词；这次没有顺带改变训练数据加载或缓存机制。
 
@@ -31,11 +31,7 @@ EMA数据已经在本地准备好，启动不需要在计费服务器重新生�
 
 本地包校验完成不等于已上传或网盘校验完成。网盘上传状态以交付时的核对记录为准；根目录权重仍会在开机复制时验证完整SHA256。输入ZIP及启动器不依赖服务器访问GitHub，避免之前raw.githubusercontent.com连接失败的问题。
 
-V6沿用V5的batch16/累积8训练，新增BF16、batch8的验证与测试。V5的验证与测试仍为逐用户。现有实例通过`migrate_qwen_eval_b8.py`迁移：保留旧记录，统一重评保留的2000/2500步模型，再从2500步恢复优化器、scheduler和RNG；选模仅使用新的批量验证分数。已被旧清理策略移除的更早检查点不在本次重新选模候选中。迁移状态保存在实例`migration/eval_b8_20261021/status.json`。
-
-V5使用batch16/累积8，默认采用短测验证的`PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True`，并记录前10次参数更新的耗时、CUDA实际分配峰值及缓存预留峰值。V4为batch8/累积16；该任务在152步时按用户要求切换至batch16，尚无检查点，从相同Q0重新开始；旧记录保存在`history/batch8_stopped_before_checkpoint/`。V3为batch4/累积32；该任务在54步时按用户要求切换至batch8，同样未产生检查点，记录保存在`history/batch4_stopped_before_checkpoint/`。10月21日旧batch2任务在87步时按用户要求停止，尚无检查点；日志保存在实例的`history/batch2_stopped_before_checkpoint/`，本轮从完全相同的Q0重新训练。网盘另有`ema_batch4_overlay_20261021.zip`及`ema_batch4_switch_20261021.json`保存配置变更证据。旧V2包为batch2，V3为batch4，V4为batch8；当前batch16训练与batch8验证/测试使用V6。网盘另有`ema_batch8_overlay_20261021.zip`及`ema_batch8_switch_20261021.json`保存batch8变更。另有`ema_batch16_overlay_20261021.zip`及`ema_batch16_switch_20261021.json`保存当前正式配置变更。
-
-V2补齐了训练入口用于源码指纹记录的`prepare_qwen_sft.py`。V1首次在检查阶段因缺少该文件退出，尚未执行优化器更新。V2已在解压后的独立目录执行真实SFT dry-run；打包脚本以后也会自动执行该检查。运行记录、实际上传校验及当前训练状态分别保存，旧的本地准备记录不作为云端运行成功证据。
+当前启动器使用 V6 离线包。历史迁移与速度探测记录保留在 [实验目录](../../experiments/ema_sft_20261021/)。
 
 ## 租用与启动
 
@@ -92,3 +88,7 @@ python scripts/package_ema_sft.py --output outputs/cloud_transfer/ema_sft_202610
 ```
 
 不需要在本机加载1.5B权重做训练；本地检查和dry-run只能证明数据/tokenizer/入口可用，GPU训练是否成功由新实例的真实日志和结果判定。
+
+## 本次完成结果
+
+训练、正式测试及网盘校验备份已完成。[梯度 SID / EMA SID 指标对照](../../experiments/ema_sft_20261021/README.md)。EMA 版未体现推荐收益，梯度版继续作为主基线。

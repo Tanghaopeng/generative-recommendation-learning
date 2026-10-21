@@ -27,6 +27,7 @@ def main():
         'experiments/qwen_eval_bf16_b8.json',
         'experiments/ema_sft_20261021/model_source_manifest.json',
         'experiments/qwen_sft_office2018_20261013/test.json',
+        'experiments/qwen_sft_office2018_20261013/training_config.json',
         '04_推荐生成/02_Qwen2.5-1.5B-Instruct/configs/q1_full.json',
         '04_推荐生成/02_Qwen2.5-1.5B-Instruct/EMA_SFT运行说明.md']
     names += ['scripts/'+n for n in ('qwen_sft.py','qwen_initialization.py','export_qwen_q0.py',

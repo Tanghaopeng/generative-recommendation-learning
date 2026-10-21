@@ -80,7 +80,7 @@ def check(root=ROOT):
     actual = np.load(data/'train_examples.npy',allow_pickle=False)
     np.testing.assert_array_equal(actual,np.asarray(positions,dtype=np.int64))
     config = read(root/'experiments/qwen_sft_ema_20261021.json')
-    baseline = read(root/'04_推荐生成/02_Qwen2.5-1.5B-Instruct/configs/q1_full.json')
+    baseline = read(root/'experiments/qwen_sft_office2018_20261013/training_config.json')
     config_differences = compare_training_config(config, baseline)
     old_test = read(root/'experiments/qwen_sft_office2018_20261013/test.json')
     if (old_test['prepared_manifest_sha256'] != BASE_MANIFEST_SHA256

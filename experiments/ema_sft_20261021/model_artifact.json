@@ -1,0 +1,22 @@
+{
+  "model": "Qwen2.5-1.5B-Instruct full-parameter SID SFT",
+  "run_id": "ema-sft-20261021",
+  "parameters": 1544870912,
+  "weight_dtype": "bfloat16",
+  "checkpoint_weight_sha256": "edbd0c32cca576ae4e8042eeae0c56ae0a8eb15154a6cb34a5b4632b19493a0d",
+  "prepared_manifest_sha256": "3640e51714dbb009fa2e4f0186bf8ac747e7396224c94c114a2e5d0829cc402e",
+  "sid_sha256": "975075925cc54f903d7bc9069bf3653a96b8c29b613b846bdc4a27a8351a4554",
+  "weights_in_git": false,
+  "storage": "private persistent cloud disk, region 16",
+  "backup_root": "/mnt/ema-sft-20261021",
+  "selected_directory": "selected",
+  "latest_backup_record": "LATEST_BACKUP.json",
+  "backup_manifest": "backup_test_completed-1792569780594313207.json",
+  "backup_phase": "test_completed",
+  "contains": [
+    "selected model weights, model config, generation config and extended tokenizer",
+    "EMA SID mapping and prepared samples",
+    "source code, training records and final test"
+  ],
+  "optimizer_in_default_backup": false
+}

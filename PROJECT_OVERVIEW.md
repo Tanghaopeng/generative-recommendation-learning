@@ -48,7 +48,7 @@
 2. 通过 `apply_chat_template` 将系统说明、用户任务和历史 SID 编成输入；训练时拼接目标商品四段 SID 与结束标记。
 3. 提示与 padding 的 `labels=-100`，只在目标答案计算交叉熵；提示仍参与注意力，梯度可经答案回传到提示相关表示与模型参数。
 4. 全参数更新 Qwen 的 embedding、注意力、FFN、归一化等可训练参数。MiniLM、RQ-VAE 与 SID 映射保持离线固定。
-5. 在固定 5,000 人验证子集上按 NDCG@10 选中第 3,000 步，再对全部 86,713 位测试用户评测。
+5. 按验证 NDCG@10 选择模型，再对留出的测试目标评测。
 
 入口：[prepare_qwen_sft.py](scripts/prepare_qwen_sft.py)、[export_qwen_q0.py](scripts/export_qwen_q0.py)、[train_qwen_sft.py](scripts/train_qwen_sft.py)、[freeze_qwen_training_selection.py](scripts/freeze_qwen_training_selection.py)。真实分词样本见 [sample_tokenization.json](experiments/qwen_sft_office2018_20261013/sample_tokenization.json)。
 
@@ -58,11 +58,10 @@
 |---|---|---|
 | Qwen SFT 高于当前 SASRec | Recall@10：0.057650→0.093677；NDCG@10：0.035554→0.075496 | 当前方案组合的实测差异；容量、预训练、预算与搜索方式未控制，不能全部归因于生成式方法 |
 | 小型 TIGER 的 Recall@10 回退 | 梯度版 0.049566，低于 SASRec 0.057650 | 通路跑通不等于优于传统推荐；还需研究容量、训练预算、SID 质量与检索误差 |
-| EMA 提升码本利用率 | 第一层活跃码字 84→117 | 量化侧改善；下游 Recall@20 反而略降，不能声称推荐全面改善 |
-| batch4 短测快于 batch2 | 同有效 batch128；10.922→6.577 秒/更新 | 提示训练效率优化空间；只计时两步，不含评测、保存和样本构建，不代表全程加速比例 |
+| EMA 提升码本利用率，但 Qwen 推荐指标略降 | 第一层活跃码字 84→117；Qwen Recall@10：0.093677→0.092870，Recall@20：0.108819→0.106466 | 本次码本分配改善未转化为推荐收益，梯度 SID 继续作为主基线 |
 | Top20 不只共享 2–3 个首段码 | 33 人、660 候选；首段平均 5.88 种 | 反驳该抽样中的直觉假设；不能据此推断所有用户分布 |
 
-原始证据统一链接于[首页结果表](README.md#项目成果)和[SFT 报告](experiments/qwen_sft_office2018_20261013/README.md)。原 SFT 完整逐步日志本次未取回，不编造精确训练总时长；测试记录中的约 2 小时 53 分钟是检索评测时长。
+原始证据统一链接于[首页结果表](README.md#项目成果)和[SFT 码本对照](experiments/ema_sft_20261021/README.md)。原 SFT 完整逐步日志本次未取回，不编造精确训练总时长；测试记录中的约 2 小时 53 分钟是检索评测时长。
 
 ## 规模、部署与可复用资产
 

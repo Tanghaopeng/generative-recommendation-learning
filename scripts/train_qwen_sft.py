@@ -20,14 +20,16 @@ from qwen_eval_fast import evaluate_retrieval_fast
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', type=Path, required=True)
+    parser.add_argument('--config', type=Path,
+                        default=ROOT / '04_推荐生成/02_Qwen2.5-1.5B-Instruct/configs/q1_full.json')
     parser.add_argument('--data', type=Path, required=True)
     parser.add_argument('--model', type=Path, required=True)
     parser.add_argument('--initialization', type=Path, help='Verified Q0 export: load these exact weights and SID tokenizer')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--dry-run', action='store_true', help='Tokenizer and sample checks only; NO 1.5B model loaded')
     parser.add_argument('--resume', type=Path, help='A Trainer checkpoint, including optimizer/scheduler/RNG')
-    parser.add_argument('--evaluation-config', type=Path)
+    parser.add_argument('--evaluation-config', type=Path,
+                        default=ROOT / 'experiments/qwen_eval_bf16_b8.json')
     parser.add_argument('--eval-migration-record', type=Path,
                         help='Explicit audited migration from single-user validation to BF16 batch8')
     args = parser.parse_args()

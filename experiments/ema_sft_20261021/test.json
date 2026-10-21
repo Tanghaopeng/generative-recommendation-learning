@@ -1,0 +1,32 @@
+{
+  "Recall@10": 0.09286958126232514,
+  "NDCG@10": 0.07463946182287166,
+  "Recall@20": 0.10646615847681432,
+  "NDCG@20": 0.0780653130503998,
+  "users": 86713,
+  "beam": 20,
+  "shortfall_users": 13,
+  "decoding_protocol": "sid_beam_v2: no sampling; repetition_penalty=1.0; original model generation defaults disabled",
+  "search": "full catalog, finite beam approximation; complete history excluded",
+  "evaluation_execution": {
+    "backend": "equal_length_bucket_v1",
+    "batch_size": 8,
+    "precision": "bf16"
+  },
+  "split": "test",
+  "diagnostic_only": false,
+  "model_stage": "trained_checkpoint",
+  "initialization_seed": null,
+  "seconds": 3531.3353900797665,
+  "users_per_second": 24.555300027177907,
+  "peak_cuda_allocated_bytes": 5202084352,
+  "code_sha256": {
+    "qwen_sft.py": "7df6fcf5a1ef98fbd0ab562800889b6330f85165e15f99caa867fd42d51b7eca",
+    "evaluate_qwen_sft.py": "739c294f795790a8442652012c1abc114077c177086f7e3afc1f1db1462453db",
+    "qwen_eval_fast.py": "08888dd5dd51eff9278dcff773fcacf88ed1e0640fd6bb5a4e809bace2366cd4",
+    "qwen_eval_runtime.py": "c1c122747452be9bd26a0f1d3c0e8cc477edd21403ca3d3f4d4d1d886ef41ffc"
+  },
+  "max_length": 512,
+  "checkpoint_weight_sha256": "edbd0c32cca576ae4e8042eeae0c56ae0a8eb15154a6cb34a5b4632b19493a0d",
+  "prepared_manifest_sha256": "3640e51714dbb009fa2e4f0186bf8ac747e7396224c94c114a2e5d0829cc402e"
+}

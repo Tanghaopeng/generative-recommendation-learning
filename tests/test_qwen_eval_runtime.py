@@ -84,5 +84,30 @@ class EvaluationMigrationTests(unittest.TestCase):
                 freeze_training_selection(run_dir, data)
 
 
+class FullValidationSelectionTests(unittest.TestCase):
+    def test_batched_execution_is_frozen_and_mixed_reports_are_rejected(self):
+        import json
+        from unittest.mock import patch
+        from freeze_qwen_selection import main, select_full_validation
+        report = dict(split='valid', diagnostic_only=False, users=86713, beam=20,
+                      max_length=512, prepared_manifest_sha256='data',
+                      checkpoint_weight_sha256='chosen', decoding_protocol='sid_beam_v2',
+                      evaluation_execution=dict(BATCHED_EXECUTION),
+                      **{'NDCG@10': .1, 'Recall@10': .2})
+        legacy = dict(report)
+        del legacy['evaluation_execution']
+        with self.assertRaisesRegex(ValueError, 'evaluation execution'):
+            select_full_validation([report, legacy])
+        with tempfile.TemporaryDirectory() as folder:
+            source, target = Path(folder) / 'valid.json', Path(folder) / 'selection.json'
+            source.write_text(json.dumps(report), encoding='utf-8')
+            with patch.object(sys, 'argv', ['freeze_qwen_selection.py', '--reports',
+                                           str(source), '--output', str(target)]):
+                main()
+            selected = json.loads(target.read_text(encoding='utf-8'))
+            self.assertEqual(selected['evaluation_execution'], BATCHED_EXECUTION)
+            self.assertEqual(selected['checkpoint_weight_sha256'], 'chosen')
+
+
 if __name__ == '__main__':
     unittest.main()

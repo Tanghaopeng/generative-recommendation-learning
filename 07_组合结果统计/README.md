@@ -6,17 +6,23 @@
 
 | 编码器 | SID | 生成/排序模型 | 状态 | Recall@10 | NDCG@10 | Recall@20 | NDCG@20 |
 |---|---|---|---|---:|---:|---:|---:|
-| 协同行为学习 | 无 | SASRec，第23轮 | 已完成 | 0.057650 | 0.035554 | 0.074406 | 0.039775 |
-| MiniLM | RQ-VAE Adam | 小型TIGER，第3轮 | 已完成 | 0.049566 | 0.036792 | 0.060637 | 0.039582 |
-| MiniLM | RQ-VAE EMA | 小型TIGER，第3轮 | 已完成 | 0.049820 | 0.037539 | 0.057096 | 0.039382 |
-| MiniLM | RQ-VAE Adam | Qwen1.5B Q1全参SFT，第3000步 | 已完成全量测试 | 0.093677 | 0.075496 | 0.108819 | 0.079319 |
+| 协同行为学习 | 无 | SASRec | 已完成 | 0.057650 | 0.035554 | 0.074406 | 0.039775 |
+| MiniLM | RQ-VAE Adam | 小型TIGER | 已完成 | 0.049566 | 0.036792 | 0.060637 | 0.039582 |
+| MiniLM | RQ-VAE EMA | 小型TIGER | 已完成 | 0.049820 | 0.037539 | 0.057096 | 0.039382 |
+| MiniLM | RQ-VAE Adam | Qwen1.5B Q1全参SFT | 已完成全量测试 | 0.093677 | 0.075496 | 0.108819 | 0.079319 |
 | MiniLM | RQ-VAE Adam | Qwen1.5B Q2文本对齐SFT | 已实现，GPU未训练 | — | — | — | — |
-| MiniLM | RQ-VAE EMA | Qwen1.5B Q1全参SFT | 同一代码可切换，GPU未训练 | — | — | — | — |
+| MiniLM | RQ-VAE EMA | Qwen1.5B Q1全参SFT | 已完成全量测试 | 0.092870 | 0.074639 | 0.106466 | 0.078065 |
 | MiniLM | RQ-KMeans | Qwen1.5B | SID方法尚未实现 | — | — | — | — |
 
 前三行来源：[真实Transformer/SASRec汇总](../experiments/semantic_retrievers_comparison_20261008.json)。同单随机种子、短轮次，不代表稳定论文结论。
 新增编码器、量化器、生成器组合单独新增一行，同时链接每日实验记录和完整JSON；同一组合多次运行保留全部run_id。
 机器可读表：[combinations.json](combinations.json)。Qwen SFT 正式测试已完成，用户数 86713；其他未训练组合不填推测指标。
+
+## Qwen SFT：梯度 SID 与 EMA SID
+
+两版均为 1.545B 全参数 SFT。EMA 的 Recall@10、NDCG@10、Recall@20、NDCG@20 分别相对下降 **0.86%、1.13%、2.16%、1.58%**；本次未体现推荐收益，梯度版继续作为主基线。码本分配更均匀与推荐效果提升需要分别检验。
+
+[完整对照](../experiments/ema_sft_20261021/README.md) · [EMA 测试 JSON](../experiments/ema_sft_20261021/test.json) · [对照 JSON](../experiments/ema_sft_20261021/comparison.json)
 
 ## 2026 年 10 月 13 日补充比较
 
