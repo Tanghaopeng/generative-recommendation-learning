@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 import importlib.metadata
 from pathlib import Path
 import sys
+import time
 
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, set_seed
@@ -89,7 +90,33 @@ def main():
         raise ValueError('Base model weight differs from the pinned, verified Qwen checkpoint')
     if initialization and run['model_metadata_sha256'] != initialization['source_model_metadata_sha256']:
         raise ValueError('Q0 source model metadata differs from the requested original model')
-    from transformers import TrainingArguments, EarlyStoppingCallback
+    from transformers import TrainingArguments, EarlyStoppingCallback, TrainerCallback
+
+    class InitialStepProfile(TrainerCallback):
+        """Measure the first ten real optimizer steps, including allocator peaks."""
+        def __init__(self):
+            self.records = []
+
+        def on_step_begin(self, args, state, control, **kwargs):
+            if state.global_step < 10:
+                torch.cuda.synchronize()
+                torch.cuda.reset_peak_memory_stats()
+                self.started = time.perf_counter()
+
+        def on_step_end(self, args, state, control, **kwargs):
+            if state.global_step <= 10:
+                torch.cuda.synchronize()
+                record = dict(step=state.global_step, seconds=time.perf_counter() - self.started,
+                              peak_allocated_gib=torch.cuda.max_memory_allocated() / 2**30,
+                              peak_reserved_gib=torch.cuda.max_memory_reserved() / 2**30)
+                self.records.append(record)
+                write_json(Path(args.output_dir) / 'initial_step_profile.json',
+                           dict(scope='first_ten_formal_optimizer_steps',
+                                micro_batch_size=config['micro_batch_size'],
+                                gradient_accumulation_steps=config['gradient_accumulation_steps'],
+                                effective_batch_size=config['micro_batch_size'] * config['gradient_accumulation_steps'],
+                                records=self.records))
+                print('SFT_STEP_PROFILE', record, flush=True)
 
     # Resume guards prevent mixing SIDs, subsets, recipes, or code with old optimizer states.
     contract = {key: run[key] for key in ('config', 'prepared_manifest_sha256', 'code_sha256', 'model_revision', 'model_metadata_sha256', 'initialization')}
@@ -141,7 +168,7 @@ def main():
                                     ranking_evaluator=lambda model: evaluate_retrieval(
                                         model, tokenizer, catalog, valid_rows, 'valid', config['beam'],
                                         config['max_history'], config['max_length']),
-                                    callbacks=[EarlyStoppingCallback(early_stopping_patience=3)])
+                                    callbacks=[EarlyStoppingCallback(early_stopping_patience=3), InitialStepProfile()])
     trainer.train(resume_from_checkpoint=str(args.resume) if args.resume else None)
     # Export selected weights; periodic checkpoint-* directories retain optimizer/scheduler/RNG.
     final_metrics = trainer.evaluate()

@@ -1,6 +1,6 @@
 """Disposable full-parameter SFT capacity benchmark; never saves model weights.
 
-Compare batch=2/accum=64 and batch=4/accum=32 on identical 128 train examples.
+Compare micro-batches 2/4/8/16 at effective batch 128 on identical examples.
 This is not a GRPO memory benchmark, which also needs rollout/reference buffers.
 """
 import argparse
@@ -17,7 +17,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--checkpoint', type=Path, required=True)
     p.add_argument('--data', type=Path, required=True)
-    p.add_argument('--batch', type=int, choices=[2,4], required=True)
+    p.add_argument('--batch', type=int, choices=[2,4,8,16], required=True)
     p.add_argument('--output', type=Path, required=True)
     args = p.parse_args()
     if args.output.exists():

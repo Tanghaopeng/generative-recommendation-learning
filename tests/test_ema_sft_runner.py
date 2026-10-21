@@ -13,10 +13,12 @@ class TrainingConfigTests(unittest.TestCase):
         self.baseline = dict(micro_batch_size=2, gradient_accumulation_steps=64,
                              learning_rate=5e-5, epochs=1)
 
-    def test_batch_four_preserves_effective_batch(self):
-        candidate = dict(self.baseline, micro_batch_size=4, gradient_accumulation_steps=32)
-        differences = compare_training_config(candidate, self.baseline)
-        self.assertEqual(set(differences), {'micro_batch_size', 'gradient_accumulation_steps'})
+    def test_supported_batches_preserve_effective_batch(self):
+        for batch, accum in [(4, 32), (8, 16)]:
+            with self.subTest(batch=batch):
+                candidate = dict(self.baseline, micro_batch_size=batch, gradient_accumulation_steps=accum)
+                differences = compare_training_config(candidate, self.baseline)
+                self.assertEqual(set(differences), {'micro_batch_size', 'gradient_accumulation_steps'})
         self.assertEqual(compare_training_config(self.baseline, self.baseline), {})
 
     def test_rejects_other_training_changes(self):

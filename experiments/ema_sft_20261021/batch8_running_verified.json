@@ -1,0 +1,112 @@
+{
+  "status": "batch8_formal_training_running_v4_cloud_kit_verified",
+  "timestamp_utc": "2026-10-21T03:46:22.140043+00:00",
+  "configuration": {
+    "recipe": "q1",
+    "pilot": false,
+    "seed": 2026,
+    "max_history": 20,
+    "max_length": 512,
+    "micro_batch_size": 8,
+    "gradient_accumulation_steps": 16,
+    "epochs": 1,
+    "max_steps": -1,
+    "learning_rate": 5e-05,
+    "eval_steps": 500,
+    "validation_users": 5000,
+    "train_limit": 0,
+    "beam": 20
+  },
+  "progress_snapshot": [
+    "  1%|          | 25/3105 [01:11<2:22:32,  2.78s/it]"
+  ],
+  "loss_snapshot": [
+    "{'loss': 7.5549, 'grad_norm': 57.25, 'learning_rate': 1.0106382978723404e-05, 'epoch': 0.01}",
+    "{'loss': 6.6961, 'grad_norm': 28.125, 'learning_rate': 1.2765957446808511e-05, 'epoch': 0.01}"
+  ],
+  "previous_batch4_steps_discarded": 54,
+  "restart_from_same_q0": true,
+  "first10steps_profile": {
+    "scope": "first_ten_formal_optimizer_steps",
+    "micro_batch_size": 8,
+    "gradient_accumulation_steps": 16,
+    "effective_batch_size": 128,
+    "records": [
+      {
+        "step": 1,
+        "seconds": 3.31072136759758,
+        "peak_allocated_gib": 14.419848442077637,
+        "peak_reserved_gib": 14.998046875
+      },
+      {
+        "step": 2,
+        "seconds": 2.728835579007864,
+        "peak_allocated_gib": 14.40923261642456,
+        "peak_reserved_gib": 18.49609375
+      },
+      {
+        "step": 3,
+        "seconds": 2.7739387601614,
+        "peak_allocated_gib": 14.412236213684082,
+        "peak_reserved_gib": 20.46484375
+      },
+      {
+        "step": 4,
+        "seconds": 2.8755794540047646,
+        "peak_allocated_gib": 14.410459041595459,
+        "peak_reserved_gib": 20.46484375
+      },
+      {
+        "step": 5,
+        "seconds": 2.9253237023949623,
+        "peak_allocated_gib": 14.40972375869751,
+        "peak_reserved_gib": 20.46484375
+      },
+      {
+        "step": 6,
+        "seconds": 2.7159986943006516,
+        "peak_allocated_gib": 14.409264087677002,
+        "peak_reserved_gib": 20.46484375
+      },
+      {
+        "step": 7,
+        "seconds": 2.731801051646471,
+        "peak_allocated_gib": 14.418785572052002,
+        "peak_reserved_gib": 20.46484375
+      },
+      {
+        "step": 8,
+        "seconds": 2.6878594271838665,
+        "peak_allocated_gib": 14.410398006439209,
+        "peak_reserved_gib": 20.46484375
+      },
+      {
+        "step": 9,
+        "seconds": 2.694325465708971,
+        "peak_allocated_gib": 14.412325859069824,
+        "peak_reserved_gib": 20.46484375
+      },
+      {
+        "step": 10,
+        "seconds": 2.9729581251740456,
+        "peak_allocated_gib": 14.411760807037354,
+        "peak_reserved_gib": 20.46484375
+      }
+    ]
+  },
+  "mean_seconds_steps2_to10": 2.7896244732869997,
+  "cloud_files": {
+    "ema_sft_20261021_v4.zip": {
+      "bytes": 11341109,
+      "sha256": "07ca9d0e6b03c07e9a240ec93be814413701b1874cdde5a7beecb75be33d1f6f"
+    },
+    "start_ema_sft_20261021_v4.sh": {
+      "bytes": 3150,
+      "sha256": "b623e0764d91421ed14699cc7192be7d2f25fdb32ec97703afe97d70394608ef"
+    },
+    "ema_sft_20261021_v4.manifest.json": {
+      "bytes": 364,
+      "sha256": "753868370d138a0e02cfc96ff9875733686da0df0d767c72b8e74e2ecb77ea7a"
+    }
+  }
+}
