@@ -1,0 +1,9 @@
+{
+  "status": "completed",
+  "formal_training_pid": 801,
+  "formal_training_modified": false,
+  "started_at_utc": "2026-10-21T04:08:13.223617+00:00",
+  "exit_code": 0,
+  "formal_training_resumed": true,
+  "paused_seconds": 60.84567439183593
+}

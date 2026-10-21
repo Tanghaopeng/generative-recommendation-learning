@@ -1,0 +1,74 @@
+{
+  "status": "evaluation_prototype_benchmark",
+  "diagnostic_only": true,
+  "checkpoint": "/root/ema-sft-20261021/outputs/qwen_ema_q0",
+  "users": 32,
+  "split": "valid",
+  "subset_seed": 2027,
+  "beam": 20,
+  "precision": "fp32",
+  "tf32": false,
+  "prepared_manifest_sha256": "3640e51714dbb009fa2e4f0186bf8ac747e7396224c94c114a2e5d0829cc402e",
+  "checkpoint_weight_sha256": "ee3f2353610288327d6e82c17f24a414feb7995043cac43f005bdb3dfdeb1242",
+  "code_sha256": {
+    "qwen_sft.py": "7df6fcf5a1ef98fbd0ab562800889b6330f85165e15f99caa867fd42d51b7eca",
+    "qwen_eval_fast.py": "b8613296dbf4c486195444ed5bc8f6a1ae77783b86fc51b73b6fb6673871dc41",
+    "benchmark_qwen_eval.py": "ea790ce52374d4fff9e91401e9ab5a6347e49e826f79963c076db88f1e6b1d91"
+  },
+  "model_training_or_weights_modified": false,
+  "modes": {
+    "reference": {
+      "batch_size": 1,
+      "seconds": 10.895655076950788,
+      "users_per_second": 2.936950534318436,
+      "peak_cuda_allocated_gib": 6.1995110511779785,
+      "peak_cuda_reserved_gib": 6.236328125,
+      "exact_order_matches": 32,
+      "item_set_mismatches": 0,
+      "all_ordered_candidates_identical": true,
+      "shortfall_users": 0,
+      "prediction_sha256": "c83ceb150b279a7710c595cba8939324b218852bc107d1babdf8c3fcfd992acf",
+      "mismatch_examples": []
+    },
+    "bulk_io_b1": {
+      "batch_size": 1,
+      "seconds": 10.680946175009012,
+      "users_per_second": 2.9959892574754035,
+      "peak_cuda_allocated_gib": 6.1995110511779785,
+      "peak_cuda_reserved_gib": 6.236328125,
+      "exact_order_matches": 32,
+      "item_set_mismatches": 0,
+      "all_ordered_candidates_identical": true,
+      "shortfall_users": 0,
+      "prediction_sha256": "c83ceb150b279a7710c595cba8939324b218852bc107d1babdf8c3fcfd992acf",
+      "mismatch_examples": []
+    },
+    "bucket_b4": {
+      "batch_size": 4,
+      "seconds": 8.753008376806974,
+      "users_per_second": 3.6558859105848747,
+      "peak_cuda_allocated_gib": 6.7282538414001465,
+      "peak_cuda_reserved_gib": 6.802734375,
+      "exact_order_matches": 32,
+      "item_set_mismatches": 0,
+      "all_ordered_candidates_identical": true,
+      "shortfall_users": 0,
+      "prediction_sha256": "c83ceb150b279a7710c595cba8939324b218852bc107d1babdf8c3fcfd992acf",
+      "mismatch_examples": []
+    },
+    "bucket_b8": {
+      "batch_size": 8,
+      "seconds": 8.673935625702143,
+      "users_per_second": 3.689213452908194,
+      "peak_cuda_allocated_gib": 7.327969551086426,
+      "peak_cuda_reserved_gib": 7.431640625,
+      "exact_order_matches": 32,
+      "item_set_mismatches": 0,
+      "all_ordered_candidates_identical": true,
+      "shortfall_users": 0,
+      "prediction_sha256": "c83ceb150b279a7710c595cba8939324b218852bc107d1babdf8c3fcfd992acf",
+      "mismatch_examples": []
+    }
+  },
+  "limitations": "Short validation-only prototype benchmark, not formal model evaluation. Batched BF16 computation can change near-tied rankings. A matching audit is evidence for this checkpoint/subset only; re-audit a selected trained checkpoint before deployment."
+}
