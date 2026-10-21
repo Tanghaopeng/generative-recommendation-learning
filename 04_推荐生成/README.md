@@ -4,6 +4,7 @@
 |---|---|---|---|
 | [01_小型TIGER](01_小型TIGER/README.md) | 随机初始化小型T5 | 历史SID→下一商品SID | Adam/EMA两版已训练 |
 | [02_Qwen2.5-1.5B-Instruct](02_Qwen2.5-1.5B-Instruct/README.md) | 已训练好的Qwen Instruct权重 | Q1主任务、Q2可选文本对齐，全参数SFT | Q1梯度/EMA SID两版均完成GPU训练与全量测试；Q2未训练 |
+| [03_Qwen2.5-1.5B_SFT_HPR](03_Qwen2.5-1.5B_SFT_HPR/README.md) | 冻结已有梯度 SID 版 SFT Qwen | 训练分层路径双塔，逐段 beam 重评分 | 代码与 CPU 小模型检查完成；真实 HPR 训练待执行 |
 
 SASRec 对照保留在 `baselines/sasrec/`。当前公开实验截至Q1 SFT；后续偏好优化将另行发布。
 

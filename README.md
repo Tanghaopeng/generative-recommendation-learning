@@ -7,7 +7,7 @@
 ![Dataset](https://img.shields.io/badge/Dataset-Amazon%20Reviews%202018-232F3E)
 ![License](https://img.shields.io/badge/License-Apache--2.0-2563EB)
 
-[项目实现与取舍](PROJECT_OVERVIEW.md) · [SFT 码本对照](experiments/ema_sft_20261021/README.md) · [SID 验证指标](03_离散语义ID/SID质量验证指标.md) · [SID 对比结果](experiments/sid_usage_comparison_20261016.md) · [复现与运行](REPRODUCING.md) · [学习知识库](01_知识库/README.md)
+[项目实现与取舍](PROJECT_OVERVIEW.md) · [SFT 码本对照](experiments/ema_sft_20261021/README.md) · [SFT＋HPR 代码导读](04_推荐生成/03_Qwen2.5-1.5B_SFT_HPR/README.md) · [SID 验证指标](03_离散语义ID/SID质量验证指标.md) · [SID 对比结果](experiments/sid_usage_comparison_20261016.md) · [复现与运行](REPRODUCING.md) · [学习知识库](01_知识库/README.md)
 
 ## 项目成果
 

@@ -1,0 +1,12 @@
+{
+  "seed": 2026,
+  "projection_dim": 64,
+  "initial_temperature": 0.07,
+  "batch_size": 256,
+  "epochs": 5,
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "max_grad_norm": 1.0,
+  "catalog_negatives": 8,
+  "early_stopping_patience": 2
+}
