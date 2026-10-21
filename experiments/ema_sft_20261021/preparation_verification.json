@@ -1,0 +1,17 @@
+{
+  "status": "local_training_kit_verified",
+  "files": 28,
+  "bytes": 11338149,
+  "archive_sha256": "0d769129f4001060040480f0ff3f29472dfcc28f2d583d36ae0a6fd05b006aeb",
+  "checks": [
+    "ZIP and member hashes",
+    "materialized bash syntax",
+    "real bootstrap extraction replay",
+    "full EMA data contract after extraction",
+    "real Qwen tokenizer dry run; no 1.5B model loaded",
+    "3 verified-copy tests passed"
+  ],
+  "actual_gpu_training": false,
+  "cloud_upload_verified": false,
+  "cloud_weight_verified_this_session": false
+}

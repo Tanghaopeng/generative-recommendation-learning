@@ -1,0 +1,16 @@
+{
+  "recipe": "q1",
+  "pilot": false,
+  "seed": 2026,
+  "max_history": 20,
+  "max_length": 512,
+  "micro_batch_size": 2,
+  "gradient_accumulation_steps": 64,
+  "epochs": 1,
+  "max_steps": -1,
+  "learning_rate": 5e-05,
+  "eval_steps": 500,
+  "validation_users": 5000,
+  "train_limit": 0,
+  "beam": 20
+}

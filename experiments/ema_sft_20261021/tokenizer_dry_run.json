@@ -1,0 +1,56 @@
+{
+  "status": "tokenizer_and_sample_checks_passed",
+  "actual_gpu_training": false,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "model_metadata_sha256": {
+    "config.json": "98d2ff8cc47488d08a2b0b3acf4eb99ef210779b42bd48605f6b8e36acdbf670",
+    "tokenizer_config.json": "5b5d4f65d0acd3b2d56a35b56d374a36cbc1c8fa5cf3b3febbbfabf22f359583",
+    "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+    "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+  },
+  "config": {
+    "recipe": "q1",
+    "pilot": false,
+    "seed": 2026,
+    "max_history": 20,
+    "max_length": 512,
+    "micro_batch_size": 2,
+    "gradient_accumulation_steps": 64,
+    "epochs": 1,
+    "max_steps": -1,
+    "learning_rate": 5e-05,
+    "eval_steps": 500,
+    "validation_users": 5000,
+    "train_limit": 0,
+    "beam": 20
+  },
+  "prepared_manifest_sha256": "3640e51714dbb009fa2e4f0186bf8ac747e7396224c94c114a2e5d0829cc402e",
+  "initialization": null,
+  "vocabulary": {
+    "original_tokenizer_size": 151665,
+    "added_tokens": 1024,
+    "tokenizer_size": 152689,
+    "sid_token_count": 1024
+  },
+  "train_rows": 397345,
+  "main_next_item_rows": 397345,
+  "validation_users": 5000,
+  "example_batch_shape": [
+    3,
+    64
+  ],
+  "supervised_tokens_per_example": [
+    5,
+    5,
+    5
+  ],
+  "code_sha256": {
+    "qwen_sft.py": "7df6fcf5a1ef98fbd0ab562800889b6330f85165e15f99caa867fd42d51b7eca",
+    "qwen_initialization.py": "368c583cc4634960d5d846cd21dacd32c01e67c502d32868c36ba75ec4ff931b",
+    "prepare_qwen_sft.py": "57c3deb4f2b86ef68d6465f07bdeb7ada01e38f6bb877b40a760adbf26709046",
+    "train_qwen_sft.py": "f59481708031b9004f0755326274b8f93cc03e0b920d4d965555ee2eae5f3738"
+  },
+  "timestamp_utc": "2026-10-21T02:29:34.112726+00:00"
+}
