@@ -1,0 +1,22 @@
+{
+  "status": "v6_cloud_kit_verified",
+  "evaluation_execution": {
+    "backend": "equal_length_bucket_v1",
+    "batch_size": 8,
+    "precision": "bf16"
+  },
+  "files": {
+    "ema_sft_20261021_v6.zip": {
+      "bytes": 11351023,
+      "sha256": "e57a1a1f695cbee0ec2b5fdea19938eb649440ecf71ef8133dc01656cd69d88c"
+    },
+    "start_ema_sft_20261021_v6.sh": {
+      "bytes": 3150,
+      "sha256": "2bbb89a717138a3f3b88d02867cf74521fad9b0871dd52c0df5cadeeca063369"
+    },
+    "ema_sft_20261021_v6.manifest.json": {
+      "bytes": 364,
+      "sha256": "eba788085244e314c5a180c7e6dddfd57006441662366f3941f01c70b251587d"
+    }
+  }
+}

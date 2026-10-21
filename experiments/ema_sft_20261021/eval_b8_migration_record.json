@@ -1,0 +1,27 @@
+{
+  "source_contract_sha256": "e43e62db13a52ceb4386755489cfba8036238540d1661ad93d947594f3f1c221",
+  "target_code_sha256": {
+    "qwen_sft.py": "7df6fcf5a1ef98fbd0ab562800889b6330f85165e15f99caa867fd42d51b7eca",
+    "qwen_initialization.py": "368c583cc4634960d5d846cd21dacd32c01e67c502d32868c36ba75ec4ff931b",
+    "prepare_qwen_sft.py": "57c3deb4f2b86ef68d6465f07bdeb7ada01e38f6bb877b40a760adbf26709046",
+    "train_qwen_sft.py": "267f1d6d9a3892a3eb89771ac5066858f08cf1279da02030e1894c0631d90f00",
+    "qwen_eval_fast.py": "08888dd5dd51eff9278dcff773fcacf88ed1e0640fd6bb5a4e809bace2366cd4",
+    "qwen_eval_runtime.py": "c1c122747452be9bd26a0f1d3c0e8cc477edd21403ca3d3f4d4d1d886ef41ffc"
+  },
+  "resume_weight_sha256": "064aff15332a81a9dac83b16f8f272df8f442533bbb9e0f5e6b9cb1d44a2b2f0",
+  "resume_step": 2500,
+  "original_progress_retained_through_step": 2500,
+  "evaluation_execution": {
+    "backend": "equal_length_bucket_v1",
+    "batch_size": 8,
+    "precision": "bf16"
+  },
+  "source_archive": "/root/ema-sft-20261021/history/single_user_eval_before_b8",
+  "candidate_reports": {
+    "checkpoint_2000_valid5000_b8.json": "41545fa53b7621474e331aae3ff1dce43430e811770e66b64937ee872fe0d9b6",
+    "checkpoint_2500_valid5000_b8.json": "1e818887a2aa8107a0a2ff9ea1be3531707a189c0eb48fc5b17e3bb3f9e77362"
+  },
+  "source_trainer_state_sha256": "5bf4dab2e01244ee1ad9aad4464f2f1d08f5d7d1472053939bd39aadeddac31c",
+  "projected_trainer_state_sha256": "3df45ad9501f064b7413750438e8e565d2fe0631d4f2e724c7cf0c53e0d3bc91",
+  "optimizer_scheduler_rng_preserved_by_hardlink": true
+}

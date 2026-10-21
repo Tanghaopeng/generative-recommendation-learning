@@ -1,0 +1,66 @@
+{
+  "status": "BF16_batch8_validation_and_test_configured_training_resumed",
+  "timestamp_utc": "2026-10-21T06:38:07.715554+00:00",
+  "evaluation_execution": {
+    "backend": "equal_length_bucket_v1",
+    "batch_size": 8,
+    "precision": "bf16"
+  },
+  "training_config": {
+    "recipe": "q1",
+    "pilot": false,
+    "seed": 2026,
+    "max_history": 20,
+    "max_length": 512,
+    "micro_batch_size": 16,
+    "gradient_accumulation_steps": 8,
+    "epochs": 1,
+    "max_steps": -1,
+    "learning_rate": 5e-05,
+    "eval_steps": 500,
+    "validation_users": 5000,
+    "train_limit": 0,
+    "beam": 20
+  },
+  "resume_step": 2500,
+  "original_paused_step": 2760,
+  "replayed_optimizer_steps": 260,
+  "optimizer_scheduler_rng_preserved": true,
+  "source_records": "/root/ema-sft-20261021/history/single_user_eval_before_b8",
+  "progress_snapshot": [
+    " 83%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e | 2570/3105 [02:11<07:12,  1.24it/s]"
+  ],
+  "loss_snapshot": [
+    "{'loss': 1.8105, 'grad_norm': 8.0625, 'learning_rate': 3.878115767687837e-06, 'epoch': 0.83}",
+    "{'loss': 1.7703, 'grad_norm': 7.375, 'learning_rate': 3.8086328146806046e-06, 'epoch': 0.83}"
+  ],
+  "migration_record_sha256": "7f25f6008266a2ae39a84924c27db3e449d5d06bfa401e74947456d0ba9aeae9",
+  "candidate_validation": {
+    "checkpoint_2000_valid5000_b8.json": {
+      "users": 5000,
+      "seconds": 193.99948528781533,
+      "users_per_second": 25.773264256768822,
+      "NDCG@10": 0.09352022166171008,
+      "Recall@10": 0.1146,
+      "evaluation_execution": {
+        "backend": "equal_length_bucket_v1",
+        "batch_size": 8,
+        "precision": "bf16"
+      },
+      "checkpoint_weight_sha256": "222588935832baecfb0bdb797d294bf302f47af9599ae23db3adf7c4b4d079f1"
+    },
+    "checkpoint_2500_valid5000_b8.json": {
+      "users": 5000,
+      "seconds": 194.27457370981574,
+      "users_per_second": 25.736769894903517,
+      "NDCG@10": 0.09561822079211259,
+      "Recall@10": 0.1178,
+      "evaluation_execution": {
+        "backend": "equal_length_bucket_v1",
+        "batch_size": 8,
+        "precision": "bf16"
+      },
+      "checkpoint_weight_sha256": "064aff15332a81a9dac83b16f8f272df8f442533bbb9e0f5e6b9cb1d44a2b2f0"
+    }
+  }
+}
