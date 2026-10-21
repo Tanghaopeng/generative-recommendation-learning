@@ -126,6 +126,8 @@ def main():
     run=args.run.resolve(); logs=run/'logs';checks=run/'checks'
     logs.mkdir(parents=True,exist_ok=True);checks.mkdir(exist_ok=True)
     os.environ.update(TOKENIZERS_PARALLELISM='false',HF_HUB_DISABLE_TELEMETRY='1',PYTHONUNBUFFERED='1')
+    # Set before importing torch; use the allocator verified in the batch-16 probe.
+    os.environ.setdefault('PYTORCH_CUDA_ALLOC_CONF','expandable_segments:True')
     evidence=check();save(checks/'input_verification.json',evidence)
     data=ROOT/'data/processed/office2018/qwen_sft_ema'
     q0=run/'outputs/qwen_ema_q0';out=run/'outputs/qwen_ema_sft'
@@ -144,6 +146,7 @@ def main():
         assert torch.isfinite(tensor@tensor.T).all()
         save(checks/'environment.json',dict(gpu=torch.cuda.get_device_name(0),
             total_memory_bytes=torch.cuda.get_device_properties(0).total_memory,cuda=torch.version.cuda,
+            cuda_allocator_config=os.environ.get('PYTORCH_CUDA_ALLOC_CONF'),
             versions={n:importlib.metadata.version(n) for n in ('torch','transformers','accelerate','numpy','safetensors')},
             bf16_smoke_test='passed'))
         source=read(ROOT/'experiments/ema_sft_20261021/model_source_manifest.json')

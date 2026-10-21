@@ -34,7 +34,7 @@ def compare_training_config(config, baseline):
             != {k: v for k, v in baseline.items() if k not in batch_keys}):
         raise ValueError('EMA config differs from baseline outside batch execution settings')
     pair = (config.get('micro_batch_size'), config.get('gradient_accumulation_steps'))
-    if pair not in ((2, 64), (4, 32), (8, 16)) or baseline['micro_batch_size'] * baseline['gradient_accumulation_steps'] != 128:
+    if pair not in ((2, 64), (4, 32), (8, 16), (16, 8)) or baseline['micro_batch_size'] * baseline['gradient_accumulation_steps'] != 128:
         raise ValueError('Requires supported micro-batch/accumulation pair with effective batch 128')
     return {k: {'gradient': baseline[k], 'ema': config[k]}
             for k in sorted(batch_keys) if config[k] != baseline[k]}

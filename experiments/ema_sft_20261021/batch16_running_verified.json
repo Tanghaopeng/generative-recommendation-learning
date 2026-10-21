@@ -1,0 +1,113 @@
+{
+  "status": "batch16_formal_training_running_v5_cloud_kit_verified",
+  "timestamp_utc": "2026-10-21T03:57:10.611139+00:00",
+  "configuration": {
+    "recipe": "q1",
+    "pilot": false,
+    "seed": 2026,
+    "max_history": 20,
+    "max_length": 512,
+    "micro_batch_size": 16,
+    "gradient_accumulation_steps": 8,
+    "epochs": 1,
+    "max_steps": -1,
+    "learning_rate": 5e-05,
+    "eval_steps": 500,
+    "validation_users": 5000,
+    "train_limit": 0,
+    "beam": 20
+  },
+  "cuda_allocator_config": "expandable_segments:True",
+  "progress_snapshot": [
+    "  2%|\u258f         | 56/3105 [01:44<1:37:33,  1.92s/it]"
+  ],
+  "loss_snapshot": [
+    "{'loss': 4.4003, 'grad_norm': 10.0, 'learning_rate': 2.6063829787234046e-05, 'epoch': 0.02}",
+    "{'loss': 4.1164, 'grad_norm': 9.25, 'learning_rate': 2.8723404255319154e-05, 'epoch': 0.02}"
+  ],
+  "previous_batch8_steps_discarded": 152,
+  "restart_from_same_q0": true,
+  "first10steps_profile": {
+    "scope": "first_ten_formal_optimizer_steps",
+    "micro_batch_size": 16,
+    "gradient_accumulation_steps": 8,
+    "effective_batch_size": 128,
+    "records": [
+      {
+        "step": 1,
+        "seconds": 2.3939044922590256,
+        "peak_allocated_gib": 14.40310525894165,
+        "peak_reserved_gib": 14.56640625
+      },
+      {
+        "step": 2,
+        "seconds": 1.7905421443283558,
+        "peak_allocated_gib": 15.439133167266846,
+        "peak_reserved_gib": 17.3984375
+      },
+      {
+        "step": 3,
+        "seconds": 1.744553878903389,
+        "peak_allocated_gib": 15.66933012008667,
+        "peak_reserved_gib": 17.400390625
+      },
+      {
+        "step": 4,
+        "seconds": 1.7125549130141735,
+        "peak_allocated_gib": 15.669318675994873,
+        "peak_reserved_gib": 17.400390625
+      },
+      {
+        "step": 5,
+        "seconds": 1.7229878045618534,
+        "peak_allocated_gib": 15.208946228027344,
+        "peak_reserved_gib": 17.400390625
+      },
+      {
+        "step": 6,
+        "seconds": 1.8209124691784382,
+        "peak_allocated_gib": 15.669353008270264,
+        "peak_reserved_gib": 17.400390625
+      },
+      {
+        "step": 7,
+        "seconds": 1.837215542793274,
+        "peak_allocated_gib": 15.669341564178467,
+        "peak_reserved_gib": 17.400390625
+      },
+      {
+        "step": 8,
+        "seconds": 1.7329931296408176,
+        "peak_allocated_gib": 15.439147472381592,
+        "peak_reserved_gib": 17.40234375
+      },
+      {
+        "step": 9,
+        "seconds": 1.8923668190836906,
+        "peak_allocated_gib": 15.43919038772583,
+        "peak_reserved_gib": 17.40234375
+      },
+      {
+        "step": 10,
+        "seconds": 1.8302224576473236,
+        "peak_allocated_gib": 15.66933298110962,
+        "peak_reserved_gib": 17.40234375
+      }
+    ]
+  },
+  "mean_seconds_steps2_to10": 1.7871499065723684,
+  "cloud_files": {
+    "ema_sft_20261021_v5.zip": {
+      "bytes": 11341349,
+      "sha256": "fed5f381178336c9b93c85310e783a5e4bf9da24daf4b355387467d9219287cc"
+    },
+    "start_ema_sft_20261021_v5.sh": {
+      "bytes": 3150,
+      "sha256": "27918e0fc59fa371d0c010703b368c5c3b1ab01c0a1fc08be8767a295f2f84c2"
+    },
+    "ema_sft_20261021_v5.manifest.json": {
+      "bytes": 364,
+      "sha256": "0548c35f4cc948762ede3e48b090d182d1f73e7ee553629b0a531e375f819380"
+    }
+  }
+}

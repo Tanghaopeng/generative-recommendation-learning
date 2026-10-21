@@ -14,7 +14,7 @@ class TrainingConfigTests(unittest.TestCase):
                              learning_rate=5e-5, epochs=1)
 
     def test_supported_batches_preserve_effective_batch(self):
-        for batch, accum in [(4, 32), (8, 16)]:
+        for batch, accum in [(4, 32), (8, 16), (16, 8)]:
             with self.subTest(batch=batch):
                 candidate = dict(self.baseline, micro_batch_size=batch, gradient_accumulation_steps=accum)
                 differences = compare_training_config(candidate, self.baseline)
