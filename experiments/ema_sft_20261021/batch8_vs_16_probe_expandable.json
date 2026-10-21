@@ -1,0 +1,130 @@
+{
+  "status": "completed",
+  "formal_training_pid": 595,
+  "formal_model_weights_modified": false,
+  "probe_allocator": "expandable_segments:True",
+  "limitation": "Formal process paused but retained GPU allocation; probe OOM is not standalone capacity evidence",
+  "started_at_utc": "2026-10-21T03:49:39.273605+00:00",
+  "results": {
+    "8": {
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "benchmark": "disposable_sft_not_grpo",
+        "batch": 8,
+        "gradient_accumulation_steps": 16,
+        "effective_batch_size": 128,
+        "precision": "bf16",
+        "optimizer": "adamw_torch",
+        "gradient_checkpointing": true,
+        "samples": 128,
+        "sample_seed": 2026,
+        "sequence_min": 48,
+        "sequence_max": 143,
+        "padded_batch_width_min": 72,
+        "padded_batch_width_max": 144,
+        "warmup_optimizer_steps": 1,
+        "timed_optimizer_steps": 2,
+        "steps": [
+          {
+            "step": 1,
+            "warmup": true,
+            "seconds": 3.3953479528427124,
+            "loss": 10.201567947864532,
+            "grad_norm": 185.0,
+            "peak_allocated_gib": 14.40360164642334,
+            "peak_reserved_gib": 14.52734375,
+            "driver_free_gib_after_step": 2.974365234375
+          },
+          {
+            "step": 2,
+            "warmup": false,
+            "seconds": 2.6819804906845093,
+            "loss": 10.162229120731354,
+            "grad_norm": 180.0,
+            "peak_allocated_gib": 14.40360164642334,
+            "peak_reserved_gib": 14.60546875,
+            "driver_free_gib_after_step": 2.896240234375
+          },
+          {
+            "step": 3,
+            "warmup": false,
+            "seconds": 2.6782395616173744,
+            "loss": 10.104842901229858,
+            "grad_norm": 177.0,
+            "peak_allocated_gib": 14.40360164642334,
+            "peak_reserved_gib": 14.60546875,
+            "driver_free_gib_after_step": 2.896240234375
+          }
+        ],
+        "seconds_per_effective_step": 2.680110026150942,
+        "samples_per_second": 47.759233296786725,
+        "longest_sample_backward_peak_gib": 12.399775505065918,
+        "weights_saved": false,
+        "formal_checkpoint_modified": false,
+        "limitations": "Short SFT benchmark on actual sampled lengths, not 512-token stress or GRPO; timing is approximate."
+      }
+    },
+    "16": {
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "benchmark": "disposable_sft_not_grpo",
+        "batch": 16,
+        "gradient_accumulation_steps": 8,
+        "effective_batch_size": 128,
+        "precision": "bf16",
+        "optimizer": "adamw_torch",
+        "gradient_checkpointing": true,
+        "samples": 128,
+        "sample_seed": 2026,
+        "sequence_min": 48,
+        "sequence_max": 143,
+        "padded_batch_width_min": 88,
+        "padded_batch_width_max": 144,
+        "warmup_optimizer_steps": 1,
+        "timed_optimizer_steps": 2,
+        "steps": [
+          {
+            "step": 1,
+            "warmup": true,
+            "seconds": 2.518982097506523,
+            "loss": 10.216068267822266,
+            "grad_norm": 190.0,
+            "peak_allocated_gib": 14.40360164642334,
+            "peak_reserved_gib": 14.568359375,
+            "driver_free_gib_after_step": 2.933349609375
+          },
+          {
+            "step": 2,
+            "warmup": false,
+            "seconds": 1.7978728078305721,
+            "loss": 10.144462585449219,
+            "grad_norm": 178.0,
+            "peak_allocated_gib": 15.66905403137207,
+            "peak_reserved_gib": 17.388671875,
+            "driver_free_gib_after_step": 0.113037109375
+          },
+          {
+            "step": 3,
+            "warmup": false,
+            "seconds": 1.790488462895155,
+            "loss": 10.099921107292175,
+            "grad_norm": 173.0,
+            "peak_allocated_gib": 15.66905403137207,
+            "peak_reserved_gib": 17.388671875,
+            "driver_free_gib_after_step": 0.113037109375
+          }
+        ],
+        "seconds_per_effective_step": 1.7941806353628635,
+        "samples_per_second": 71.34175761188766,
+        "longest_sample_backward_peak_gib": 12.791507244110107,
+        "weights_saved": false,
+        "formal_checkpoint_modified": false,
+        "limitations": "Short SFT benchmark on actual sampled lengths, not 512-token stress or GRPO; timing is approximate."
+      }
+    }
+  },
+  "formal_training_resumed": true,
+  "paused_seconds": 29.812817260622978
+}
