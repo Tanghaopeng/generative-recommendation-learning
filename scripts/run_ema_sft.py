@@ -11,6 +11,7 @@ import sys
 import time
 
 from check_ema_sft_inputs import ROOT, check, digest, read
+from qwen_eval_runtime import load_execution, REFERENCE_EXECUTION
 
 
 def save(path,record):
@@ -73,6 +74,7 @@ def backup(run,cloud,include_resume=False):
         mapping[p]=cloud/'checks'/p.name
     mapping[run/'outputs/qwen_ema_q0/q0_initialization.json']=cloud/'training_records/q0_initialization.json'
     mapping[ROOT/'experiments/qwen_sft_ema_20261021.json']=cloud/'training_records/training_config.json'
+    mapping[ROOT/'experiments/qwen_eval_bf16_b8.json']=cloud/'training_records/evaluation_config.json'
     for p in (ROOT/'scripts').glob('*.py'):
         mapping[p]=cloud/'code'/p.name
     mapping[ROOT/'requirements-qwen-sft.txt']=cloud/'code/requirements-qwen-sft.txt'
@@ -122,7 +124,10 @@ def main():
     p.add_argument('--stage',choices=['prepare','train','test','backup','all'],default='all')
     p.add_argument('--resume',type=Path)
     p.add_argument('--backup-resume',action='store_true')
+    p.add_argument('--evaluation-config',type=Path,default=ROOT/'experiments/qwen_eval_bf16_b8.json')
+    p.add_argument('--eval-migration-record',type=Path)
     args=p.parse_args()
+    execution=load_execution(args.evaluation_config)
     run=args.run.resolve(); logs=run/'logs';checks=run/'checks'
     logs.mkdir(parents=True,exist_ok=True);checks.mkdir(exist_ok=True)
     os.environ.update(TOKENIZERS_PARALLELISM='false',HF_HUB_DISABLE_TELEMETRY='1',PYTHONUNBUFFERED='1')
@@ -160,19 +165,21 @@ def main():
         dry=checks/'sft_dry_run'
         if dry.exists():
             previous=read(dry/'dry_run.json')
-            if previous['prepared_manifest_sha256']!=evidence['prepared_manifest_sha256'] or previous['config']!=read(config):
+            if (previous['prepared_manifest_sha256']!=evidence['prepared_manifest_sha256'] or previous['config']!=read(config)
+                or previous.get('evaluation_execution',REFERENCE_EXECUTION)!=execution):
                 raise ValueError('Existing dry run differs; preserve it and inspect')
         else:
             run_python('train_qwen_sft.py','--config',config,'--data',data,'--model',model,
-                '--initialization',q0,'--output',dry,'--dry-run',log_dir=logs)
+                '--initialization',q0,'--output',dry,'--dry-run','--evaluation-config',args.evaluation_config,log_dir=logs)
         save(checks/'prepare_ready.json',dict(status='ready_for_formal_ema_sft',optimizer_steps=0,
             sid_sha256=evidence['sid_sha256'],prepared_manifest_sha256=evidence['prepared_manifest_sha256']))
         print('EMA_PREPARE_READY; original Qwen + deterministic untrained SID rows, no optimizer step.',flush=True)
     if args.stage in ('train','all'):
         if not (out/'run.json').is_file() or read(out/'run.json')['status']!='sft_completed_requires_full_validation_before_test':
             extra=['--resume',args.resume] if args.resume else []
+            if args.eval_migration_record:extra+=['--eval-migration-record',args.eval_migration_record]
             run_python('train_qwen_sft.py','--config',config,'--data',data,'--model',model,
-                '--initialization',q0,'--output',out,*extra,log_dir=logs)
+                '--initialization',q0,'--output',out,'--evaluation-config',args.evaluation_config,*extra,log_dir=logs)
     if args.stage in ('train','test','all'):
         selection=checks/'selection_valid5000.json'
         if not selection.exists():
@@ -187,11 +194,13 @@ def main():
         if not result.exists():
             run_python('evaluate_qwen_sft.py','--checkpoint',out/'selected','--data',data,
                 '--split','test','--users',0,'--seed',2027,'--beam',20,'--max-length',512,
-                '--selection-record',checks/'selection_valid5000.json','--output',result,log_dir=logs)
+                '--selection-record',checks/'selection_valid5000.json','--output',result,
+                '--evaluation-config',args.evaluation_config,log_dir=logs)
         new=read(result);old=read(ROOT/'experiments/qwen_sft_office2018_20261013/test.json')
         if (new['users']!=86713 or new['split']!='test' or new['diagnostic_only']
             or new['checkpoint_weight_sha256']!=digest(out/'selected/model.safetensors')
-            or new['prepared_manifest_sha256']!=evidence['prepared_manifest_sha256']):
+            or new['prepared_manifest_sha256']!=evidence['prepared_manifest_sha256']
+            or new.get('evaluation_execution',REFERENCE_EXECUTION)!=execution):
             raise ValueError('Test artifact fingerprint/scope mismatch')
         keys=('Recall@10','NDCG@10','Recall@20','NDCG@20')
         comparison=dict(status='test_comparison_completed',baseline='gradient RQ-VAE Qwen Q1 SFT',
@@ -200,6 +209,10 @@ def main():
             config_differences_from_gradient_baseline=evidence['config_differences_from_gradient_baseline'],
             effective_batch_matches_gradient_baseline=evidence['effective_batch_matches_gradient_baseline'],
             single_seed=2026,
+            evaluation_execution=execution,
+            baseline_evaluation_execution=old.get('evaluation_execution',REFERENCE_EXECUTION),
+            same_evaluation_execution=old.get('evaluation_execution',REFERENCE_EXECUTION)==execution,
+            comparison_note='BF16 batch8 and legacy single-user results use different execution settings; re-evaluate baseline with batch8 before attributing deltas to SID quality.',
             metrics={k:dict(gradient=old[k],ema=new[k],absolute_delta=new[k]-old[k],
                 relative_delta=(new[k]-old[k])/old[k]) for k in keys},
             gradient_weight_sha256=old['checkpoint_weight_sha256'],ema_weight_sha256=new['checkpoint_weight_sha256'])

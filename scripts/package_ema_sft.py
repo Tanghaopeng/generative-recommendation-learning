@@ -24,13 +24,15 @@ def main():
     if digest(args.model/'model.safetensors')!=source['files']['model.safetensors']['sha256']:
         raise ValueError('Local original Qwen weight hash differs from pinned source')
     names=['requirements-qwen-sft.txt','experiments/qwen_sft_ema_20261021.json',
+        'experiments/qwen_eval_bf16_b8.json',
         'experiments/ema_sft_20261021/model_source_manifest.json',
         'experiments/qwen_sft_office2018_20261013/test.json',
         '04_推荐生成/02_Qwen2.5-1.5B-Instruct/configs/q1_full.json',
         '04_推荐生成/02_Qwen2.5-1.5B-Instruct/EMA_SFT运行说明.md']
     names += ['scripts/'+n for n in ('qwen_sft.py','qwen_initialization.py','export_qwen_q0.py',
         'train_qwen_sft.py','prepare_qwen_sft.py','evaluate_qwen_sft.py','freeze_qwen_training_selection.py',
-        'check_ema_sft_inputs.py','run_ema_sft.py')]
+        'check_ema_sft_inputs.py','run_ema_sft.py','qwen_eval_fast.py','qwen_eval_runtime.py',
+        'migrate_qwen_eval_b8.py')]
     payload={name:(ROOT/name).read_bytes() for name in names}
     for directory in ('qwen_sft_ema','tiger_sids_ema_20261008'):
         for f in (ROOT/'data/processed/office2018'/directory).iterdir():
@@ -68,13 +70,15 @@ def main():
         result=subprocess.run([sys.executable,'-u',str(project/'scripts/train_qwen_sft.py'),
             '--config',str(project/'experiments/qwen_sft_ema_20261021.json'),
             '--data',str(project/'data/processed/office2018/qwen_sft_ema'),
-            '--model',str(args.model.resolve()),'--output',str(stage/'dry_run'),'--dry-run'],
+            '--model',str(args.model.resolve()),'--output',str(stage/'dry_run'),'--dry-run',
+            '--evaluation-config',str(project/'experiments/qwen_eval_bf16_b8.json')],
             cwd=project,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,encoding='utf-8',errors='replace',timeout=300)
         if result.returncode:
             raise RuntimeError('Extracted training entry point failed:\n'+result.stdout[-6000:])
         check_record=read(stage/'dry_run/dry_run.json')
         assert check_record['train_rows']==397345 and check_record['validation_users']==5000
         assert check_record['actual_gpu_training'] is False
+        assert check_record['evaluation_execution']['batch_size']==8
     receipt=dict(status='local_bundle_verified_cloud_upload_not_verified',archive=args.output.name,
         bytes=args.output.stat().st_size,sha256=digest(args.output),files=len(payload),
         external_weight_sha256=manifest['external_weight_sha256'],extracted_sft_dry_run='passed')

@@ -7,6 +7,8 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from qwen_sft import (SID_DECODING_PROTOCOL, load_prepared, load_qwen_tokenizer,
                       evaluate_retrieval, select_subset, write_json, sha256)
+from qwen_eval_runtime import load_execution, REFERENCE_EXECUTION
+from qwen_eval_fast import evaluate_retrieval_fast
 
 
 def main():
@@ -20,7 +22,9 @@ def main():
     parser.add_argument('--max-length', type=int, default=512)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--selection-record', type=Path, help='Required for test: frozen selection JSON with checkpoint and data hashes')
+    parser.add_argument('--evaluation-config', type=Path)
     args = parser.parse_args()
+    execution = load_execution(args.evaluation_config)
     manifest, rows, catalog, _ = load_prepared(args.data)
     q0 = None
     if (args.checkpoint / 'q0_initialization.json').is_file():
@@ -44,6 +48,8 @@ def main():
             raise ValueError('Selection requires completed validation evidence and frozen beam')
         if selected.get('decoding_protocol') != SID_DECODING_PROTOCOL:
             raise ValueError('Decoding changed; repeat validation and freeze the current protocol before testing')
+        if selected.get('evaluation_execution', REFERENCE_EXECUTION) != execution:
+            raise ValueError('Validation/test execution mismatch: precision, backend or batch size differs')
     if not torch.cuda.is_available():
         raise RuntimeError('Qwen 1.5B evaluation requires the GPU environment')
     tokenizer = load_qwen_tokenizer(args.checkpoint)
@@ -52,8 +58,14 @@ def main():
     torch.cuda.synchronize()
     started = time.perf_counter()
     torch.cuda.reset_peak_memory_stats()
-    result = evaluate_retrieval(model, tokenizer, catalog, select_subset(rows, args.users, args.seed),
-                                args.split, args.beam, manifest['max_history'], args.max_length)
+    evaluation_rows = select_subset(rows, args.users, args.seed)
+    if execution['backend'] == 'equal_length_bucket_v1':
+        result = evaluate_retrieval_fast(model, tokenizer, catalog, evaluation_rows,
+            args.split, args.beam, manifest['max_history'], args.max_length, execution['batch_size'])
+    else:
+        result = evaluate_retrieval(model, tokenizer, catalog, evaluation_rows,
+                                    args.split, args.beam, manifest['max_history'], args.max_length)
+    result['evaluation_execution'] = execution
     torch.cuda.synchronize()
     seconds = time.perf_counter() - started
     result.update(split=args.split, diagnostic_only=args.users > 0,
@@ -62,7 +74,7 @@ def main():
                   seconds=seconds, users_per_second=result['users'] / seconds,
                   peak_cuda_allocated_bytes=torch.cuda.max_memory_allocated(),
                   code_sha256={name: sha256(Path(__file__).with_name(name)) for name in
-                               ('qwen_sft.py', 'evaluate_qwen_sft.py')},
+                               ('qwen_sft.py', 'evaluate_qwen_sft.py', 'qwen_eval_fast.py', 'qwen_eval_runtime.py')},
                   max_length=args.max_length,
                   checkpoint_weight_sha256=sha256(args.checkpoint / 'model.safetensors'),
                   prepared_manifest_sha256=sha256(args.data / 'manifest.json'))

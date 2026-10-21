@@ -14,6 +14,8 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, set_seed
 from qwen_sft import (ROOT, MODEL_REVISION, MODEL_SHA256, read_json, write_json, sha256,
                       load_prepared, load_qwen_tokenizer, extend_tokenizer, select_subset, SFTDataset,
                       ValidationDataset, CompletionCollator, evaluate_retrieval, RankingTrainer)
+from qwen_eval_runtime import load_execution, validate_eval_migration
+from qwen_eval_fast import evaluate_retrieval_fast
 
 
 def main():
@@ -25,8 +27,12 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--dry-run', action='store_true', help='Tokenizer and sample checks only; NO 1.5B model loaded')
     parser.add_argument('--resume', type=Path, help='A Trainer checkpoint, including optimizer/scheduler/RNG')
+    parser.add_argument('--evaluation-config', type=Path)
+    parser.add_argument('--eval-migration-record', type=Path,
+                        help='Explicit audited migration from single-user validation to BF16 batch8')
     args = parser.parse_args()
     config = read_json(args.config)
+    execution = load_execution(args.evaluation_config)
     manifest, rows, catalog, examples = load_prepared(args.data)
     if config['max_history'] != manifest['max_history']:
         raise ValueError('Config history length differs from prepared training positions')
@@ -65,7 +71,8 @@ def main():
                model='Qwen/Qwen2.5-1.5B-Instruct', model_revision=MODEL_REVISION,
                model_metadata_sha256={name: sha256(args.model / name) for name in
                                       ('config.json', 'tokenizer_config.json', 'tokenizer.json', 'vocab.json', 'merges.txt')},
-               config=config, prepared_manifest_sha256=sha256(args.data / 'manifest.json'),
+               config=config, evaluation_execution=execution,
+               prepared_manifest_sha256=sha256(args.data / 'manifest.json'),
                initialization=None if initialization is None else {
                    'checkpoint_weight_sha256': initialization['checkpoint_weight_sha256'],
                    'record_sha256': sha256(args.initialization / 'q0_initialization.json'),
@@ -74,7 +81,8 @@ def main():
                validation_users=len(valid_rows), example_batch_shape=list(batch['input_ids'].shape),
                supervised_tokens_per_example=[sum(x != -100 for x in row['labels']) for row in checks],
                code_sha256={name: sha256(ROOT / 'scripts' / name) for name in
-                            ('qwen_sft.py', 'qwen_initialization.py', 'prepare_qwen_sft.py', 'train_qwen_sft.py')},
+                            ('qwen_sft.py', 'qwen_initialization.py', 'prepare_qwen_sft.py', 'train_qwen_sft.py',
+                             'qwen_eval_fast.py', 'qwen_eval_runtime.py')},
                timestamp_utc=datetime.now(timezone.utc).isoformat())
     if args.dry_run:
         args.output.mkdir(parents=True)
@@ -119,12 +127,20 @@ def main():
                 print('SFT_STEP_PROFILE', record, flush=True)
 
     # Resume guards prevent mixing SIDs, subsets, recipes, or code with old optimizer states.
-    contract = {key: run[key] for key in ('config', 'prepared_manifest_sha256', 'code_sha256', 'model_revision', 'model_metadata_sha256', 'initialization')}
+    contract = {key: run[key] for key in ('config', 'prepared_manifest_sha256', 'code_sha256', 'model_revision', 'model_metadata_sha256', 'initialization', 'evaluation_execution')}
     if args.resume:
         if args.dry_run or not args.resume.is_dir():
             raise ValueError('Invalid resume checkpoint')
-        if read_json(args.output / 'contract.json') != contract:
-            raise ValueError('Resume contract mismatch: configuration, data or code changed')
+        old_contract = read_json(args.output / 'contract.json')
+        if old_contract != contract:
+            if not args.eval_migration_record:
+                raise ValueError('Resume contract mismatch: configuration, data or code changed')
+            migration = read_json(args.eval_migration_record)
+            validate_eval_migration(old_contract, contract, migration)
+            if sha256(args.resume / 'model.safetensors') != migration['resume_weight_sha256']:
+                raise ValueError('Migration resume weight fingerprint mismatch')
+            run['evaluation_migration'] = dict(record=str(args.eval_migration_record),
+                                              sha256=sha256(args.eval_migration_record))
         if not (args.resume / 'optimizer.pt').is_file():
             raise ValueError('Resume requires optimizer state, not just model weights')
         saved_tokenizer = load_qwen_tokenizer(args.resume)
@@ -149,9 +165,23 @@ def main():
                base_weight_sha256=MODEL_SHA256,
                effective_batch_size=config['micro_batch_size'] * config['gradient_accumulation_steps'])
     write_json(args.output / 'run.json', run)
+    class ExecutionRankingTrainer(RankingTrainer):
+        def evaluation_loop(self, *values, metric_key_prefix='eval', **kwargs):
+            output = super().evaluation_loop(*values, metric_key_prefix=metric_key_prefix, **kwargs)
+            output.metrics[metric_key_prefix + '_execution_backend'] = execution['backend']
+            output.metrics[metric_key_prefix + '_execution_batch_size'] = execution['batch_size']
+            return output
+
+    def ranking_evaluator(model):
+        if execution['backend'] == 'equal_length_bucket_v1':
+            return evaluate_retrieval_fast(model, tokenizer, catalog, valid_rows, 'valid', config['beam'],
+                                           config['max_history'], config['max_length'], execution['batch_size'])
+        return evaluate_retrieval(model, tokenizer, catalog, valid_rows, 'valid', config['beam'],
+                                  config['max_history'], config['max_length'])
+
     training_args = TrainingArguments(
         output_dir=str(args.output), per_device_train_batch_size=config['micro_batch_size'],
-        per_device_eval_batch_size=config['micro_batch_size'],
+        per_device_eval_batch_size=execution['batch_size'] if args.evaluation_config else config['micro_batch_size'],
         gradient_accumulation_steps=config['gradient_accumulation_steps'],
         num_train_epochs=config['epochs'], max_steps=config['max_steps'],
         learning_rate=config['learning_rate'], warmup_ratio=0.03, max_grad_norm=1.0,
@@ -163,11 +193,9 @@ def main():
         logging_steps=5, prediction_loss_only=True, report_to=[],
         seed=config['seed'], data_seed=config['seed'], dataloader_num_workers=0,
         remove_unused_columns=False)
-    trainer = RankingTrainer(model=model, args=training_args, train_dataset=train,
+    trainer = ExecutionRankingTrainer(model=model, args=training_args, train_dataset=train,
                                     eval_dataset=valid, data_collator=collator, processing_class=tokenizer,
-                                    ranking_evaluator=lambda model: evaluate_retrieval(
-                                        model, tokenizer, catalog, valid_rows, 'valid', config['beam'],
-                                        config['max_history'], config['max_length']),
+                                    ranking_evaluator=ranking_evaluator,
                                     callbacks=[EarlyStoppingCallback(early_stopping_patience=3), InitialStepProfile()])
     trainer.train(resume_from_checkpoint=str(args.resume) if args.resume else None)
     # Export selected weights; periodic checkpoint-* directories retain optimizer/scheduler/RNG.

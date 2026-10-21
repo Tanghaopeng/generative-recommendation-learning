@@ -4,6 +4,7 @@ import math
 from pathlib import Path
 
 from qwen_sft import SID_DECODING_PROTOCOL, read_json, write_json, sha256
+from qwen_eval_runtime import REFERENCE_EXECUTION
 
 
 def freeze_training_selection(run_dir, data):
@@ -30,6 +31,15 @@ def freeze_training_selection(run_dir, data):
     if not matching or not math.isclose(matching[0]['eval_ndcg10'], state['best_metric'], abs_tol=1e-12):
         raise ValueError('Missing best-checkpoint validation evidence')
     evaluations = [row['eval_ndcg10'] for row in state['log_history'] if 'eval_ndcg10' in row]
+    execution = run.get('evaluation_execution', REFERENCE_EXECUTION)
+    if execution != REFERENCE_EXECUTION:
+        if any(row.get('eval_execution_backend') != execution['backend'] or
+               row.get('eval_execution_batch_size') != execution['batch_size']
+               for row in state['log_history'] if 'eval_ndcg10' in row):
+            raise ValueError('Mixed single-user and batch validation metrics cannot select a model')
+        for name in ('qwen_eval_fast.py', 'qwen_eval_runtime.py'):
+            if run['code_sha256'][name] != sha256(Path(__file__).with_name(name)):
+                raise ValueError('Batched evaluator implementation differs from validation')
     if not math.isclose(max(evaluations), state['best_metric'], abs_tol=1e-12):
         raise ValueError('Chosen checkpoint is not validation-best')
     weight_hash = sha256(run_dir / 'selected/model.safetensors')
@@ -41,6 +51,7 @@ def freeze_training_selection(run_dir, data):
                 prepared_manifest_sha256=run['prepared_manifest_sha256'],
                 beam=run['config']['beam'], max_length=run['config']['max_length'],
                 decoding_protocol=SID_DECODING_PROTOCOL,
+                evaluation_execution=execution,
                 validation_completed=True, full_validation_completed=False,
                 validation_scope='fixed_training_validation_subset',
                 validation_users=run['validation_users'],

@@ -10,7 +10,7 @@ import math
 import torch
 from transformers import GenerationConfig, LogitsProcessor
 
-from qwen_sft import CatalogConstraint, prompt_ids
+from qwen_sft import CatalogConstraint, prompt_ids, SID_DECODING_PROTOCOL
 
 
 class BulkCatalogConstraint(LogitsProcessor):
@@ -89,23 +89,72 @@ def retrieve_group(model, tokenizer, requests, index, beam=20):
 
 
 def predict_histories(model, tokenizer, catalog, histories, batch_size=1,
-                      beam=20, max_history=20, max_length=512, index=None):
+                      beam=20, max_history=20, max_length=512, index=None, on_batch=None):
     if batch_size < 1:
         raise ValueError('Positive evaluation batch required')
     index = index if index is not None else CatalogConstraint(tokenizer, catalog, 0, [])
     requests = [prepare_request(tokenizer, catalog, history, max_history, max_length)
                 for history in histories]
     if batch_size == 1:
-        return [retrieve_group(model, tokenizer, [request], index, beam)[0]
-                for request in requests]
+        predictions = []
+        for request in requests:
+            predictions.append(retrieve_group(model, tokenizer, [request], index, beam)[0])
+            if on_batch:
+                on_batch(len(predictions), len(requests))
+        return predictions
     buckets = defaultdict(list)
     for user, request in enumerate(requests):
         buckets[len(request['prompt'])].append((user, request))
     predictions = [None] * len(requests)
+    completed = 0
     for entries in buckets.values():
         for start in range(0, len(entries), batch_size):
             chunk = entries[start:start + batch_size]
             values = retrieve_group(model, tokenizer, [r for _, r in chunk], index, beam)
             for (user, _), value in zip(chunk, values):
                 predictions[user] = value
+            completed += len(chunk)
+            if on_batch:
+                on_batch(completed, len(requests))
     return predictions
+
+
+def evaluate_retrieval_fast(model, tokenizer, catalog, rows, split='valid', beam=20,
+                            max_history=20, max_length=512, batch_size=8):
+    if not rows or split not in ('valid', 'test'):
+        raise ValueError('Nonempty valid/test rows required')
+    histories = [row['train'] + (row['valid'] if split == 'test' else []) for row in rows]
+    targets = [row[split][0] for row in rows]
+    if any(target in history for target, history in zip(targets, histories)):
+        raise ValueError('Held-out target overlaps observed history')
+    was_training, use_cache = model.training, model.config.use_cache
+    model.eval()
+    last_report = 0
+
+    def progress(done, total):
+        nonlocal last_report
+        if done - last_report >= 100 or done == total:
+            print(f'{split} batched retrieval: {done}/{total} (batch={batch_size})', flush=True)
+            last_report = done
+
+    try:
+        predictions = predict_histories(model, tokenizer, catalog, histories, batch_size,
+                                        beam, max_history, max_length, on_batch=progress)
+    finally:
+        model.config.use_cache = use_cache
+        model.train(was_training)
+    totals = {f'{name}@{k}': 0.0 for k in (10, 20) for name in ('Recall', 'NDCG')}
+    for target, predicted in zip(targets, predictions):
+        if target in predicted:
+            rank = predicted.index(target) + 1
+            for k in (10, 20):
+                if rank <= k:
+                    totals[f'Recall@{k}'] += 1
+                    totals[f'NDCG@{k}'] += 1 / math.log2(rank + 1)
+    return {**{key: value / len(rows) for key, value in totals.items()},
+            'users': len(rows), 'beam': beam,
+            'shortfall_users': sum(len(items) < 20 for items in predictions),
+            'decoding_protocol': SID_DECODING_PROTOCOL,
+            'search': 'full catalog, finite beam approximation; complete history excluded',
+            'evaluation_execution': dict(backend='equal_length_bucket_v1', batch_size=batch_size,
+                precision='bf16' if next(model.parameters()).dtype == torch.bfloat16 else 'fp32')}
