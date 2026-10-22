@@ -1,0 +1,16 @@
+{
+  "seed": 2026,
+  "max_history": 20,
+  "max_length": 512,
+  "micro_batch_size": 16,
+  "gradient_accumulation_steps": 8,
+  "epochs": 1,
+  "max_steps": -1,
+  "learning_rate": 0.00001,
+  "eval_steps": 500,
+  "validation_users": 5000,
+  "train_limit": 0,
+  "beam": 20,
+  "evaluation_batch_size": 8,
+  "ica": {"enabled": true, "attention_dim": 128, "heads": 4, "bottleneck": 256}
+}
