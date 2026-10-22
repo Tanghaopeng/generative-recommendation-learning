@@ -1,0 +1,20 @@
+{
+  "seed": 2026,
+  "max_history": 20,
+  "max_length": 512,
+  "micro_batch_size": 16,
+  "gradient_accumulation_steps": 8,
+  "epochs": 1,
+  "max_steps": -1,
+  "learning_rate": 0.00001,
+  "hpr_learning_rate": 0.001,
+  "eval_steps": 500,
+  "validation_users": 5000,
+  "train_limit": 0,
+  "beam": 20,
+  "evaluation_batch_size": 8,
+  "validation_strength": 0.25,
+  "pool_size": 400,
+  "ica": {"enabled": true, "attention_dim": 128, "heads": 4, "bottleneck": 256},
+  "joint": {"projection_dim": 64, "loss_weight": 0.05, "catalog_negatives": 8, "negative_seed": 2026}
+}
